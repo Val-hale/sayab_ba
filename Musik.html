@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemutar Musik dengan Animasi</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            color: #e94560;
+        }
+
+        .player-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .visualizer {
+            width: 100%;
+            height: 150px;
+            margin: 20px 0;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .bar {
+            width: 8px;
+            margin: 0 2px;
+            background: linear-gradient(to top, #e94560, #f9b208);
+            border-radius: 5px;
+            animation: equalize 1.5s infinite alternate;
+            animation-play-state: paused;
+        }
+
+        @keyframes equalize {
+            0% {
+                height: 10%;
+            }
+            100% {
+                height: 100%;
+            }
+        }
+
+        .song-info {
+            margin: 15px 0;
+        }
+
+        .song-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .artist {
+            font-size: 1em;
+            color: #ccc;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            margin: 0 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            color: #e94560;
+            transform: scale(1.1);
+        }
+
+        .play-btn {
+            font-size: 2.5em;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #e94560, #f9b208);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8em;
+            color: #ccc;
+        }
+
+        .playlist {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .playlist-header {
+            text-align: left;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #e94560;
+        }
+
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+        }
+
+        .playlist-item:hover {
+            background: rgba(233, 69, 96, 0.2);
+        }
+
+        .playlist-item.active {
+            background: rgba(233, 69, 96, 0.4);
+        }
+
+        .playlist-item-number {
+            margin-right: 15px;
+            color: #ccc;
+            width: 20px;
+        }
+
+        .playlist-item-info {
+            flex-grow: 1;
+        }
+
+        .playlist-item-title {
+            font-weight: 500;
+        }
+
+        .playlist-item-artist {
+            font-size: 0.8em;
+            color: #ccc;
+        }
+
+        .playlist-item-duration {
+            color: #ccc;
+            font-size: 0.8em;
+        }
+
+        .playlist-item-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 14px;
+            border: 2px solid #e94560;
+            background: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px #0002;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(233, 69, 96, 0.5);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(233, 69, 96, 0.7);
+        }
+
+        .rotating {
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pemutar Musik</h1>
+        
+        <div class="player-container">
+            <div class="visualizer" id="visualizer">
+                <!-- Bars will be added by JavaScript -->
+            </div>
+            
+            <div class="song-info">
+                <div class="song-title" id="song-title">Pilih Lagu</div>
+                <div class="artist" id="artist">-</div>
+            </div>
+            
+            <div class="progress-container" id="progress-container">
+                <div class="progress" id="progress"></div>
+            </div>
+            
+            <div class="time-info">
+                <span id="current-time">0:00</span>
+                <span id="duration">0:00</span>
+            </div>
+            
+            <div class="controls">
+                <button class="control-btn" id="prev-btn">⏮</button>
+                <button class="control-btn play-btn" id="play-btn">▶</button>
+                <button class="control-btn" id="next-btn">⏭</button>
+            </div>
+            <div class="volume-container" style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;">
+                <span id="volume-icon" style="font-size:1.3em;">🔊</span>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1" style="width:110px;">
+            </div>
+        </div>
+        
+        <div class="playlist">
+            <div class="playlist-header">Daftar Putar</div>
+            <div id="playlist-items">
+                <!-- Playlist items will be added by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <audio id="audio-player"></audio>
+
+    <script>
+        // Daftar lagu
+        const songs = [
+            {
+                title: "Mathsbnesh",
+                artist: "Artis Satu",
+                src: "Musik/youtube_5O8_uaI0qdo_audio.mp3",
+                duration: "4:52",
+                img: "https://i.pinimg.com/736x/b0/95/08/b0950893078d372b2cabb36208ca633c.jpg"
+            },
+            {
+                title: "Miye w khamsin",
+                artist: "Artis Dua",
+                src: "Musik/youtube_cai8p-ubcdo_audio.mp3",
+                duration: "2:54",
+                img: "https://i.pinimg.com/736x/82/f0/4a/82f04ae79f5b056f20b299f542f84efe.jpg"
+            },
+            {
+                title: "راح اسجل روحي باسمك بطيء",
+                artist: "Artis Tiga",
+                src: "Musik/youtube_fosTQOELD2g_audio.mp3",
+                duration: "5:46",
+                img: "https://i.pinimg.com/736x/42/2b/30/422b302711f703d53f568ad8f9e25706.jpg"
+            },
+            {
+                title: "ياما ليالي وانت مش معايا",
+                artist: "Artis Empat",
+                src: "Musik/youtube_hwW9hbvWozM_audio.mp3",
+                duration: "3:51",
+                img: "https://i.pinimg.com/736x/76/c2/69/76c26912ce6d67c6acf838ef6530f671.jpg"
+            },
+            {
+                title: "عيشنا قد أيه",
+                artist: "Artis Lima",
+                src: "Musik/youtube_jimtJOQFsqg_audio.mp3",
+                duration: "2:21",
+                img: "https://i.pinimg.com/736x/4a/ce/35/4ace35ef3914df247d9b5e6e29a5ab30.jpg"
+            },
+            {
+                title: "Ana Bansa Nafsy",
+                artist: "Artis Enam",
+                src: "Musik/youtube_ks9_4oJycF8_audio.mp3",
+                duration: "4:33",
+                img: "https://i.pinimg.com/736x/59/ba/b8/59bab85930714ed8c079f1d2ec6273de.jpg"
+            },
+            {
+                title: "QESSET HOB",
+                artist: "Artis Ketujuh",
+                src: "Musik/youtube_oOU9v8aFuxE_audio.mp3",
+                duration: "3:08",
+                img: "https://i.pinimg.com/736x/9c/14/53/9c14531816e6a1fd8ed6050d38f7a8b1.jpg"
+            },
+            {
+                title: "Bi Saraha",
+                artist: "Artis Delapan",
+                src: "Musik/youtube_pLTVYt2ZEww_audio.mp3",
+                duration: "3:19",
+                img: "https://i.pinimg.com/736x/14/ad/31/14ad3171038b99261210a9fbe6785d41.jpg"
+            },
+            {
+                title: "تلوتك",
+                artist: "Artis Sembilan",
+                src: "Musik/youtube_pLTVYt2ZEww_audio.mp3",
+                duration: "3:42",
+                img: "https://i.pinimg.com/736x/21/8a/6c/218a6c43c37a157985e50f37f15eccd5.jpg"
+            },
+            {
+                title: "كالشوق الليالي",
+                artist: "Artis Sepuluh",
+                src: "Musik/youtube_wRFqSTfUsog_audio.mp3",
+                duration: "4:33",
+                img: "https://i.pinimg.com/736x/8e/a0/2a/8ea02ad651a8f052f8f186a178fde7cc.jpg"
+            },
+            {
+                title: "ميدلي فضل شاكر",
+                artist: "Artis Sebelas",
+                src: "Musik/youtube_xXPde49Sys8_audio.mp3",
+                duration: "4:33",
+                img: "https://i.pinimg.com/736x/90/44/14/9044142367081a8f990cd95576ec3b6e.jpg"
+            },
+            {
+                title: "ولو",
+                artist: "Artis Duabelas",
+                src: "Musik/youtube_ziPxthmUgGE_audio.mp3",
+                duration: "2:58",
+                img: "https://i.pinimg.com/736x/1e/73/23/1e7323a7c94ab09b848efff5cf3933c0.jpg"
+            },
+            {
+                title: "آدب الحديث",
+                artist: "Artis Duabelas",
+                src: "Musik/آدب الحديث.mp3",
+                duration: "2:58",
+                img: "https://i.pinimg.com/736x/1e/5f/9c/1e5f9cd165d869f33ec941f26861898a.jpg"
+            },
+            {
+                title: "أرحنا بها",
+                artist: "Artis Duabelas",
+                src: "Musik/أرحنا بها.mp3",
+                duration: "2:58",
+                img: "https://i.pinimg.com/736x/a6/ca/4d/a6ca4d0ded17d1c352a00d950b67806f.jpg"
+            },
+            {
+                title: "أو عديني",
+                artist: "Artis Duabelas",
+                src: "Musik/أوعديني.mp3",
+                duration: "2:58",
+                img: "https://i.pinimg.com/736x/b9/69/0a/b9690ac7ec4b7c94d44d9e519b6c30e7.jpg"
+            },
+            {
+                title: "الفكر يا إنسان",
+                artist: "Artis Duabelas",
+                src: "Musik/الفكر يا إنسان.mp3",
+                duration: "2:58",
+                img: "https://i.pinimg.com/736x/eb/d8/fe/ebd8fefecec772603fe1e55d0f6fff12.jpg"
+            },
+            {
+                title: "ذكرينا يا بقايا ",
+                artist: "Artis Duabelas",
+                src: "Musik/ذكرينا يا بقايا.mp3",
+                duration: "2:58",
+                img: "https://i.pinimg.com/736x/b4/82/fc/b482fcd100dc48ef117fbdd6644424c2.jpg"
+            },
+            {
+                title: "واسع الكرم",
+                artist: "Artis Duabelas",
+                src: "Musik/واسع الكرم.mp3",
+                duration: "2:58",
+                img: "https://i.pinimg.com/736x/ba/36/2d/ba362d30e4fbbdaff6a2daba0fb46422.jpg"
+            },
+            {
+                title: "يا سكن النفس",
+                artist: "Artis Duabelas",
+                src: "Musik/ياسكن النفس.mp3",
+                duration: "3:49",
+                img: "https://i.pinimg.com/736x/fd/fd/03/fdfd03f43e3da7ede6112814943ca594.jpg"
+            },
+            {
+                title: "ياما ليالي وأنت مش",
+                artist: "Artis Duabelas",
+                src: "Musik/ياما ليالي وانت مش معايا.mp3",
+                duration: "3:51",
+                img: "https://i.pinimg.com/736x/47/0f/da/470fdacd8b3187ab35cac5124255dc17.jpg"
+            },
+            {
+                title: "لست أعرفني",
+                artist: "ziad ayman",
+                src: "Musik/song (1).mp3",
+                duration: "3:30",
+                img: "https://i.pinimg.com/736x/08/28/f1/0828f13680b61b7e53042f931b945341.jpg"
+            },
+            {
+                title: "أتدري من يزيل الهم",
+                artist: "abduallah ajarallah",
+                src: "Musik/song (2).mp3",
+                duration: "3:00",
+                img: "https://i.pinimg.com/736x/62/e0/10/62e010abb34c4c422896bce3eda66abb.jpg"
+            },
+            {
+                title: "أجرمت",
+                artist: "aflah masruri",
+                src: "Musik/song (3).mp3",
+                duration: "3:56",
+                img: "https://i.pinimg.com/736x/21/b2/92/21b292d0c6b6b9fdf44be7375cdc7127.jpg"
+            },
+            {
+                title: "زوجتي",
+                artist: "abu majid",
+                src: "Musik/song (4).mp3",
+                duration: "4:25",
+                img: "https://i.pinimg.com/736x/8b/c5/c2/8bc5c2eced57f0e2b9fadd646030d195.jpg"
+            },
+            {
+                title: "أنا الليل بلا نجم",
+                artist: "shimoh&af;ah",
+                src: "Musik/song (5).mp3",
+                duration: "3:37",
+                img: "https://i.pinimg.com/736x/87/78/0d/87780de8f0156fc338f087e1faf96cb1.jpg"
+            },
+            {
+                title: "حين التيقتك",
+                artist: "Maher Zain",
+                src: "Musik/song (6).mp3",
+                duration: "4:10",
+                img: "https://i.pinimg.com/736x/92/3b/7b/923b7b5cdb50f006e8e9a50a882cea10.jpg"
+            },
+            {
+                title: "ذكرينا يا بقايا",
+                artist: "Sami Yusuf",
+                src: "Musik/song (7).mp3",
+                duration: "3:55",
+                img: "https://i.pinimg.com/736x/8c/c2/88/8cc2881f7fec605ba00800117102bc40.jpg"
+            },
+            {
+                title: "رأيت الناس قد مالوا",
+                artist: "Maher Zain",
+                src: "Musik/song (8).mp3",
+                duration: "3:30",
+                img: "https://i.pinimg.com/736x/18/7e/88/187e88557de11edd55f14672c5dd7fdc.jpg"
+            },
+            {
+                title: "رسيس الحب",
+                artist: "Sami Yusuf",
+                src: "Musik/song (9).mp3",
+                duration: "4:00",
+                img: "https://i.pinimg.com/736x/1b/78/20/1b78202d3748bd45f7297664c416492f.jpg"
+            },
+            {
+                title: "سيجبرك اللطيف",
+                artist: "Maher Zain",
+                src: "Musik/song (10).mp3",
+                duration: "3:45",
+                img: "https://i.pinimg.com/736x/cd/6f/31/cd6f31596f6ce272d75bd63a04b7835a.jpg"
+            },
+            {
+                title: "دع الدنيا",
+                artist: "Sami Yusuf",
+                src: "Musik/song (11).mp3",
+                duration: "4:15",
+                img: "https://i.pinimg.com/736x/7e/6a/84/7e6a84174d1ee5f3236fd0f6a65f3387.jpg"
+            },
+            {
+                title: "قصيدتك إليك",
+                artist: "Maher Zain",
+                src: "Musik/song (12).mp3",
+                duration: "3:50",
+                img: "https://i.pinimg.com/736x/0f/e3/f5/0fe3f5234fcf967905a002c7fcb7279c.jpg"
+            },
+            {
+                title: "كنت أعلم",
+                artist: "Sami Yusuf",
+                src: "Musik/song (13).mp3",
+                duration: "4:25",
+                img: "https://i.pinimg.com/736x/42/11/8d/42118d36ceaadacbea41418d40a2ed42.jpg"
+            },
+            {
+                title: "كنت وحدي",
+                artist: "Maher Zain",
+                src: "Musik/song (14).mp3",
+                duration: "3:35",
+                img: "https://i.pinimg.com/736x/d0/6b/b1/d06bb15b0cafebb5c795758b2ba709b3.jpg"
+            },
+            {
+                title: "الأئمة الأربعة",
+                artist: "Sami Yusuf",
+                src: "Musik/song (15).mp3",
+                duration: "4:05",
+                img: "https://i.pinimg.com/736x/af/60/e9/af60e97a46506de7a144188aa2483cda.jpg"
+            },
+            {
+                title: "العشرة المبشرين",
+                artist: "Maher Zain",
+                src: "Musik/song (16).mp3",
+                duration: "4:20",
+                img: "https://i.pinimg.com/736x/31/7c/e2/317ce2620a19c21404525bd72d9d8193.jpg"
+            },
+            {
+                title: "Healing",
+                artist: "Sami Yusuf",
+                src: "Musik/song (17).mp3",
+                duration: "3:50",
+                img: "https://i.pinimg.com/736x/69/99/cc/6999cc63f4c5af73d5bafdad3895d025.jpg"
+            },
+            {
+                title: "يا راكبا",
+                artist: "Maher Zain",
+                src: "Musik/song (19).mp3",
+                duration: "3:45",
+                img: "https://i.pinimg.com/736x/ab/01/b5/ab01b55f122c634626c83cf139eefe90.jpg"
+            },
+            {
+                title: "يا سكن النفس",
+                artist: "Maher Zain",
+                src: "Musik/song (20).mp3",
+                duration: "4:00",
+                img: "https://i.pinimg.com/736x/61/7d/b4/617db4af8c628ce71fb4ab8f797a1a46.jpg"
+            },
+            {
+                title: "حبيك يا خير الخلق",
+                artist: "Sami Yusuf",
+                src: "Musik/song (21).mp3",
+                duration: "4:15",
+                img: "https://i.pinimg.com/736x/6d/40/5a/6d405ad2900f1002b3cb6a74dd970981.jpg"
+            },
+            {
+                title: "تأمل يا إنسان",
+                artist: "Maher Zain",
+                src: "Musik/تأمل_يا_إنسان_مريم_نبيل_كلمات_القمص_إبرآم_أبسخيرون_ألحان_وتوزيع.mp3",
+                duration: "3:55",
+                img: "https://i.pinimg.com/736x/2d/5e/40/2d5e4034cf55ebf9991cca2ed317e128.jpg"
+            }
+        ];
+
+        // Elemen DOM
+        const audioPlayer = document.getElementById('audio-player');
+        const playBtn = document.getElementById('play-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const songTitle = document.getElementById('song-title');
+        const artist = document.getElementById('artist');
+        const progress = document.getElementById('progress');
+        const progressContainer = document.getElementById('progress-container');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationEl = document.getElementById('duration');
+        const visualizer = document.getElementById('visualizer');
+        const playlistItems = document.getElementById('playlist-items');
+        const volumeSlider = document.getElementById('volume-slider');
+        const volumeIcon = document.getElementById('volume-icon');
+
+        // State
+        let currentSongIndex = 0;
+        let isPlaying = false;
+
+        // Inisialisasi visualizer
+        function initVisualizer() {
+            visualizer.innerHTML = '';
+            for (let i = 0; i < 30; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.animationDelay = `${i * 0.05}s`;
+                visualizer.appendChild(bar);
+            }
+        }
+
+        // Memuat lagu
+        function loadSong(song) {
+            songTitle.textContent = song.title;
+            artist.textContent = song.artist;
+            
+            // Check if song source is YouTube Music
+            if (song.src.includes('music.youtube.com')) {
+                try {
+                    loadYouTubeMusic(song.src);
+                    // Hide audio player when using YouTube
+                    audioPlayer.style.display = 'none';
+                } catch (error) {
+                    console.error('Error loading YouTube Music:', error);
+                }
+            } else {
+                // Regular audio file
+                audioPlayer.src = song.src;
+                audioPlayer.style.display = 'block';
+            }
+
+            // Update playlist active item
+            const items = document.querySelectorAll('.playlist-item');
+            items.forEach(item => item.classList.remove('active'));
+            items[currentSongIndex].classList.add('active');
+        }
+
+        // Memutar lagu
+        function playSong() {
+            isPlaying = true;
+            playBtn.textContent = '⏸';
+            audioPlayer.play();
+
+            // Jalankan animasi visualizer
+            const bars = document.querySelectorAll('.bar');
+            bars.forEach(bar => {
+                bar.style.animationPlayState = 'running';
+            });
+            updatePlaylistRotation();
+        }
+
+        // Menjeda lagu
+        function pauseSong() {
+            isPlaying = false;
+            playBtn.textContent = '▶';
+            audioPlayer.pause();
+
+            // Hentikan animasi visualizer
+            const bars = document.querySelectorAll('.bar');
+            bars.forEach(bar => {
+                bar.style.animationPlayState = 'paused';
+            });
+            updatePlaylistRotation();
+        }
+
+        // Lagu sebelumnya
+        function prevSong() {
+            currentSongIndex--;
+            if (currentSongIndex < 0) {
+                currentSongIndex = songs.length - 1;
+            }
+            loadSong(songs[currentSongIndex]);
+            if (isPlaying) playSong(); else updatePlaylistRotation();
+        }
+
+        // Lagu berikutnya
+        function nextSong() {
+            currentSongIndex++;
+            if (currentSongIndex > songs.length - 1) {
+                currentSongIndex = 0;
+            }
+            loadSong(songs[currentSongIndex]);
+            if (isPlaying) playSong(); else updatePlaylistRotation();
+        }
+
+        // Update progress bar
+        function updateProgress(e) {
+            const { duration, currentTime } = e.srcElement;
+            const progressPercent = (currentTime / duration) * 100;
+            progress.style.width = `${progressPercent}%`;
+
+            // Format waktu
+            const durationMinutes = Math.floor(duration / 60);
+            let durationSeconds = Math.floor(duration % 60);
+            if (durationSeconds < 10) {
+                durationSeconds = `0${durationSeconds}`;
+            }
+
+            // Hindari NaN
+            if (!isNaN(durationMinutes) && !isNaN(durationSeconds)) {
+                durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
+            }
+
+            const currentMinutes = Math.floor(currentTime / 60);
+            let currentSeconds = Math.floor(currentTime % 60);
+            if (currentSeconds < 10) {
+                currentSeconds = `0${currentSeconds}`;
+            }
+            currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
+        }
+
+        // Set progress bar
+        function setProgress(e) {
+            const width = this.clientWidth;
+            const clickX = e.offsetX;
+            const duration = audioPlayer.duration;
+            audioPlayer.currentTime = (clickX / width) * duration;
+        }
+
+        // Tambahkan gambar default (atau custom) untuk setiap lagu
+        const defaultImg = "https://i.pinimg.com/736x/b0/95/08/b0950893078d372b2cabb36208ca633c.jpg";
+
+        // Membuat daftar putar
+        function createPlaylist() {
+            playlistItems.innerHTML = ""; // Bersihkan sebelum render ulang
+            songs.forEach((song, index) => {
+                const item = document.createElement('div');
+                item.className = 'playlist-item';
+                if (index === currentSongIndex) {
+                    item.classList.add('active');
+                }
+                // Gunakan song.img jika ada, jika tidak pakai defaultImg
+                const imgSrc = song.img ? song.img : defaultImg;
+                item.innerHTML = `
+                    <img class="playlist-item-img${(index === currentSongIndex && isPlaying) ? ' rotating' : ''}" src="${imgSrc}" alt="cover">
+                    <div class="playlist-item-number">${index + 1}</div>
+                    <div class="playlist-item-info">
+                        <div class="playlist-item-title">${song.title}</div>
+                        <div class="playlist-item-artist">${song.artist}</div>
+                    </div>
+                    <div class="playlist-item-duration">${song.duration}</div>
+                `;
+
+                item.addEventListener('click', () => {
+                    currentSongIndex = index;
+                    loadSong(songs[currentSongIndex]);
+                    playSong();
+                });
+
+                playlistItems.appendChild(item);
+            });
+        }
+
+        // Update gambar berputar saat play/pause/next/prev
+        function updatePlaylistRotation() {
+            document.querySelectorAll('.playlist-item-img').forEach((img, idx) => {
+                if (idx === currentSongIndex && isPlaying) {
+                    img.classList.add('rotating');
+                } else {
+                    img.classList.remove('rotating');
+                }
+            });
+        }
+
+        // Extract video ID from YouTube Music URL
+        const getYTVideoId = (url) => {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        };
+
+        // Load YouTube Music video
+        function loadYouTubeMusic(videoId) {
+            const videoURL = `https://www.youtube-nocookie.com/embed/${getYTVideoId(videoId)}?autoplay=1&enablejsapi=1`;
+            
+            // Create YouTube iframe if not exists
+            if (!document.getElementById('yt-player')) {
+                const iframe = document.createElement('iframe');
+                iframe.id = 'yt-player';
+                iframe.style.display = 'none';
+                iframe.src = videoURL;
+                document.body.appendChild(iframe);
+            } else {
+                // Update existing iframe source
+                document.getElementById('yt-player').src = videoURL;
+            }
+        }
+
+        // Event listeners
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                pauseSong();
+            } else {
+                playSong();
+            }
+        });
+
+        prevBtn.addEventListener('click', prevSong);
+        nextBtn.addEventListener('click', nextSong);
+
+        audioPlayer.addEventListener('timeupdate', updateProgress);
+        audioPlayer.addEventListener('ended', nextSong);
+
+        progressContainer.addEventListener('click', setProgress);
+
+        // Inisialisasi
+        initVisualizer();
+        createPlaylist();
+        loadSong(songs[currentSongIndex]);
+
+        // Mengatur volume
+        audioPlayer.volume = 1;
+        volumeSlider.value = 1;
+
+        volumeSlider.addEventListener('input', function() {
+            audioPlayer.volume = this.value;
+            if (audioPlayer.volume == 0) {
+                volumeIcon.textContent = "🔇";
+            } else if (audioPlayer.volume < 0.5) {
+                volumeIcon.textContent = "🔉";
+            } else {
+                volumeIcon.textContent = "🔊";
+            }
+        });
+    </script>
+</body>
+</html>

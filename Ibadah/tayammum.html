@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tayammum - Panduan Lengkap</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(-45deg, #e0eafc, #cfdef3, #a8edea, #2c786c, #f8b400, #fbc2eb, #fad0c4);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease-in-out infinite;
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease;
+        }
+        
+        h1 {
+            color: #2c786c;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+        
+        .tayammum-steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        
+        .step-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: calc(50% - 20px);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .step-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .step-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .step-content {
+            padding: 20px;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #2c786c;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .step-title {
+            color: #2c786c;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .step-desc {
+            color: #6b7280;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .btn-show {
+            background: #2c786c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .btn-show:hover {
+            background: #235e55;
+        }
+        
+        .detail-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            background: #f8f8f8;
+            border-radius: 0 0 15px 15px;
+        }
+        
+        .detail-content.active {
+            max-height: 1000px;
+            padding: 20px;
+        }
+        
+        .arabic-text {
+            font-size: 1.5rem;
+            text-align: right;
+            direction: rtl;
+            margin-bottom: 15px;
+            color: #2c786c;
+            font-weight: bold;
+        }
+        
+        .translation {
+            font-style: italic;
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .explanation {
+            margin-bottom: 15px;
+            color: #444;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #6b7280;
+            font-size: 0.9rem;
+            animation: fadeIn 1s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .step-card {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        .islamic-decoration {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            z-index: 20;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            pointer-events: none;
+            animation: floatDecor 4s ease-in-out infinite alternate;
+        }
+        .islamic-decoration .crescent {
+            filter: drop-shadow(0 0 8px #f8b40088);
+        }
+        .islamic-decoration .star {
+            margin-top: 10px;
+            filter: drop-shadow(0 0 6px #f8b40055);
+            animation: spinStar 3s linear infinite;
+        }
+        @keyframes floatDecor {
+            0% { transform: translateY(0);}
+            100% { transform: translateY(18px);}
+        }
+        @keyframes spinStar {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+        @media (max-width: 600px) {
+            .islamic-decoration {
+                top: 10px;
+                right: 10px;
+                gap: 4px;
+            }
+            .islamic-decoration .crescent,
+            .islamic-decoration .star {
+                width: 32px;
+                height: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Tayammum</h1>
+            <p class="subtitle">Panduan Lengkap Tata Cara dan Bacaan Tayammum</p>
+        </header>
+        
+        <div class="tayammum-steps">
+            <!-- Step 1 -->
+            <div class="step-card" onclick="toggleDetail(1)">
+                <img src="tayamum/Niat Tayammum.jpg" alt="Niat Tayammum" class="step-image">
+                <div class="step-content">
+                    <span class="step-number">1</span>
+                    <h3 class="step-title">Niat Tayammum</h3>
+                    <p class="step-desc">Membaca niat dalam hati untuk bersuci dengan tayammum</p>
+                    <button class="btn-show" onclick="event.stopPropagation(); toggleDetail(1)">Tampilkan Bacaan</button>
+                </div>
+                <div class="detail-content" id="detail-1">
+                    <div class="arabic-text">نَوَيْتُ التَّيَمُّمَ لِاسْتِبَاحَةِ الصَّلاَةِ فَرْضًالِلَّهِ تَعَالَى</div>
+                    <div class="translation">"Nawaitut tayammuma li istibaahatish shalaati fardhal lillaahi ta'aalaa."</div>
+                    <div class="explanation">
+                        <p><strong>Artinya:</strong> "Aku berniat tayammum untuk dapat mengerjakan shalat, fardhu karena Allah Ta'ala."</p>
+                        <p><strong>Penjelasan:</strong> Niat adalah langkah pertama dalam tayammum. Niat dilakukan dalam hati ketika memulai tayammum. Tidak perlu diucapkan secara lisan, tetapi cukup dihadirkan dalam hati.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="step-card" onclick="toggleDetail(2)">
+                <img src="tayamum/Memukul Telapak Tangan ke Debu.jpg" alt="Memukulkan telapak tangan ke debu" class="step-image">
+                <div class="step-content">
+                    <span class="step-number">2</span>
+                    <h3 class="step-title">Memukul Telapak Tangan ke Debu</h3>
+                    <p class="step-desc">Memukulkan kedua telapak tangan ke permukaan yang berdebu</p>
+                    <button class="btn-show" onclick="event.stopPropagation(); toggleDetail(2)">Tampilkan Bacaan</button>
+                </div>
+                <div class="detail-content" id="detail-2">
+                    <div class="arabic-text">بِسْمِ اللَّهِ</div>
+                    <div class="translation">"Bismillah."</div>
+                    <div class="explanation">
+                        <p><strong>Artinya:</strong> "Dengan nama Allah."</p>
+                        <p><strong>Penjelasan:</strong> Disunnahkan membaca basmalah ketika memulai tayammum. Pukulkan kedua telapak tangan ke permukaan yang berdebu (tanah, pasir, dinding batu, atau permukaan lain yang berdebu dan suci) dengan sekali pukulan.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 3 -->
+            <div class="step-card" onclick="toggleDetail(3)">
+                <img src="tayamum/Mengusap Wajah.jpg" alt="Mengusap wajah" class="step-image">
+                <div class="step-content">
+                    <span class="step-number">3</span>
+                    <h3 class="step-title">Mengusap Wajah</h3>
+                    <p class="step-desc">Mengusap debu ke seluruh bagian wajah</p>
+                    <button class="btn-show" onclick="event.stopPropagation(); toggleDetail(3)">Tampilkan Bacaan</button>
+                </div>
+                <div class="detail-content" id="detail-3">
+                    <div class="arabic-text">اللَّهُمَّ بَيِّضْ وَجْهِي بِنُورِكَ يَوْمَ تَبْيَضُّ وُجُوهٌ وَتَسْوَدُّ وُجُوهٌ</div>
+                    <div class="translation">"Allahumma bayyidh wajhi binuurika yauma tabyadhdhu wujuuhun wa taswaddu wujuuhun."</div>
+                    <div class="explanation">
+                        <p><strong>Artinya:</strong> "Ya Allah, putihkanlah wajahku dengan cahaya-Mu pada hari di mana wajah-wajah menjadi putih dan wajah-wajah menjadi hitam."</p>
+                        <p><strong>Penjelasan:</strong> Setelah menepukkan tangan ke debu, usapkan kedua telapak tangan ke seluruh wajah mulai dari bagian atas dahi hingga bawah dagu, dan dari telinga kanan hingga telinga kiri. Pastikan debu mengenai seluruh bagian wajah.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 4 -->
+            <div class="step-card" onclick="toggleDetail(4)">
+                <img src="tayamum/Mengusap Kedua Tangan.jpg" alt="Mengusap kedua tangan" class="step-image">
+                <div class="step-content">
+                    <span class="step-number">4</span>
+                    <h3 class="step-title">Mengusap Kedua Tangan</h3>
+                    <p class="step-desc">Mengusap debu ke kedua tangan hingga siku</p>
+                    <button class="btn-show" onclick="event.stopPropagation(); toggleDetail(4)">Tampilkan Bacaan</button>
+                </div>
+                <div class="detail-content" id="detail-4">
+                    <div class="arabic-text">اللَّهُمَّ أَعْطِ كِتَابِي بِيَمِينِي وَحَاسِبْنِي حِسَابًا يَسِيرًا</div>
+                    <div class="translation">"Allahumma a'thi kitaabi bi yamiini wa haasibni hisaaban yasiiraa."</div>
+                    <div class="explanation">
+                        <p><strong>Artinya:</strong> "Ya Allah, berikanlah catatan amalku dengan tangan kananku dan hisablah aku dengan hisab yang mudah."</p>
+                        <p><strong>Penjelasan:</strong> Setelah mengusap wajah, tepukkan kembali tangan ke debu, lalu usapkan tangan kiri ke tangan kanan dari ujung jari hingga siku, dan sebaliknya. Pastikan debu mengenai seluruh bagian yang diusap.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 5 -->
+            <div class="step-card" onclick="toggleDetail(5)">
+                <img src="tayamum/Doa Setelah Tayammum.jpg" alt="Doa setelah tayammum" class="step-image">
+                <div class="step-content">
+                    <span class="step-number">5</span>
+                    <h3 class="step-title">Doa Setelah Tayammum</h3>
+                    <p class="step-desc">Membaca doa setelah menyelesaikan tayammum</p>
+                    <button class="btn-show" onclick="event.stopPropagation(); toggleDetail(5)">Tampilkan Bacaan</button>
+                </div>
+                <div class="detail-content" id="detail-5">
+                    <div class="arabic-text">أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ اللَّهُمَّ اجْعَلْنِي مِنَ التَّوَّابِينَ وَاجْعَلْنِي مِنَ الْمُتَطَهِّرِينَ</div>
+                    <div class="translation">"Asyhadu an laa ilaaha illallaahu wahdahu laa syariika lahu wa asyhadu anna muhammadan 'abduhu wa rasuuluhu. Allahummaj'alnii minat tawwaabiina waj'alnii minal mutathahhiriin."</div>
+                    <div class="explanation">
+                        <p><strong>Artinya:</strong> "Aku bersaksi bahwa tidak ada Tuhan selain Allah Yang Maha Esa, tidak ada sekutu bagi-Nya, dan aku bersaksi bahwa Muhammad adalah hamba dan utusan-Nya. Ya Allah, jadikanlah aku termasuk orang-orang yang bertaubat dan jadikanlah aku termasuk orang-orang yang menyucikan diri."</p>
+                        <p><strong>Penjelasan:</strong> Setelah selesai tayammum, disunnahkan membaca doa ini seperti halnya doa setelah wudhu. Tayammum ini sah untuk satu kali shalat fardhu atau beberapa shalat sunnah.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Step 6 -->
+            <div class="step-card" onclick="toggleDetail(6)">
+                <img src="tayamum/Syarat dan Ketentuan Tayammum.jpg" alt="Syarat Tayammum" class="step-image">
+                <div class="step-content">
+                    <span class="step-number">6</span>
+                    <h3 class="step-title">Syarat dan Ketentuan Tayammum</h3>
+                    <p class="step-desc">Hal-hal yang perlu diperhatikan dalam tayammum</p>
+                    <button class="btn-show" onclick="event.stopPropagation(); toggleDetail(6)">Tampilkan Penjelasan</button>
+                </div>
+                <div class="detail-content" id="detail-6">
+                    <div class="explanation">
+                        <h4>Syarat Sah Tayammum:</h4>
+                        <ul>
+                            <li>Tidak ada air atau ada air tetapi tidak mencukupi atau tidak bisa digunakan karena sakit</li>
+                            <li>Menggunakan debu yang suci dan belum digunakan untuk tayammum sebelumnya</li>
+                            <li>Sudah masuk waktu shalat</li>
+                            <li>Menghilangkan najis terlebih dahulu jika ada</li>
+                        </ul>
+                        
+                        <h4>Hal yang Membatalkan Tayammum:</h4>
+                        <ul>
+                            <li>Segala sesuatu yang membatalkan wudhu</li>
+                            <li>Menemukan air sebelum shalat jika tayammum karena tidak ada air</li>
+                            <li>Mampu menggunakan air jika sebelumnya tidak mampu karena sakit</li>
+                        </ul>
+                        
+                        <h4>Waktu yang Diperbolehkan Tayammum:</h4>
+                        <ul>
+                            <li>Ketika tidak ada air sama sekali</li>
+                            <li>Ketika air yang ada hanya cukup untuk minum</li>
+                            <li>Ketika menggunakan air akan membahayakan kesehatan</li>
+                            <li>Ketika air sangat dingin dan tidak ada alat untuk menghangatkannya</li>
+                            <li>Ketika khawatir akan kehabisan waktu shalat jika mencari air</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="islamic-decoration">
+        <svg class="crescent" width="60" height="60" viewBox="0 0 60 60">
+            <path d="M40 30a20 20 0 1 1-20-20 15 15 0 1 0 20 20z" fill="#f8b400"/>
+        </svg>
+        <svg class="star" width="32" height="32" viewBox="0 0 32 32">
+            <polygon points="16,2 19,12 30,12 21,18 24,28 16,22 8,28 11,18 2,12 13,12" fill="#f8b400"/>
+        </svg>
+    </div>
+    
+    <footer>
+        <p>© 2023 Panduan Tayammum | By Val_Ky</p>
+    </footer>
+    
+    <script>
+        function toggleDetail(step) {
+            const detail = document.getElementById(`detail-${step}`);
+            detail.classList.toggle('active');
+            
+            // Scroll to the detail if opening
+            if (detail.classList.contains('active')) {
+                setTimeout(() => {
+                    detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            }
+        }
+        
+        // Close all details when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.step-card') && !e.target.closest('.btn-show')) {
+                document.querySelectorAll('.detail-content').forEach(detail => {
+                    detail.classList.remove('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembuatan Kisi-Kisi Otomatis</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        .reset-btn {
+            background: #e74c3c;
+            margin-top: 10px;
+        }
+        .reset-btn:hover {
+            background: #c0392b;
+        }
+        .download-btn {
+            background: #2ecc71;
+            margin-top: 10px;
+        }
+        .download-btn:hover {
+            background: #27ae60;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            animation: slideUp 0.5s ease-in-out;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        tr:hover {
+            background: #e0e7ff;
+            transition: background 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pembuatan Kisi-Kisi PAI Otomatis</h1>
+        <div class="form-group">
+            <label for="kelas">Kelas:</label>
+            <select id="kelas">
+                <option value="1">Kelas 1</option>
+                <option value="2">Kelas 2</option>
+                <option value="3">Kelas 3</option>
+                <option value="4">Kelas 4</option>
+                <option value="5">Kelas 5</option>
+                <option value="6">Kelas 6</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="semester">Semester:</label>
+            <select id="semester">
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="materi">Materi:</label>
+            <input type="text" id="materi" placeholder="Masukkan materi, misal: Iman kepada Allah">
+        </div>
+        <div class="form-group">
+            <label for="kompetensi">Kompetensi Dasar:</label>
+            <input type="text" id="kompetensi" placeholder="Masukkan kompetensi dasar">
+        </div>
+        <div class="form-group">
+            <label for="indikator">Indikator:</label>
+            <input type="text" id="indikator" placeholder="Masukkan indikator pencapaian">
+        </div>
+        <div class="form-group">
+            <label for="level">Level Kognitif:</label>
+            <select id="level">
+                <option value="Pengetahuan">Pengetahuan</option>
+                <option value="Pemahaman">Pemahaman</option>
+                <option value="Aplikasi">Aplikasi</option>
+                <option value="Analisis">Analisis</option>
+            </select>
+        </div>
+        <button onclick="tambahKisi()">Tambah Kisi-Kisi</button>
+        <button class="reset-btn" onclick="resetData()">Reset Semua Data</button>
+        <button class="download-btn" onclick="downloadCSV()">Download CSV</button>
+        <table id="tabelKisi">
+            <thead>
+                <tr>
+                    <th>No Kisi-Kisi</th>
+                    <th>Kelas</th>
+                    <th>Semester</th>
+                    <th>Materi</th>
+                    <th>Kompetensi Dasar</th>
+                    <th>Indikator</th>
+                    <th>Level Kognitif</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody id="tabelBody"></tbody>
+        </table>
+    </div>
+
+    <script>
+        let kisiList = [];
+
+        // Memuat data dari localStorage saat halaman dimuat
+        function loadFromLocalStorage() {
+            const storedData = localStorage.getItem('kisiPAI');
+            if (storedData) {
+                kisiList = JSON.parse(storedData);
+                updateTabel();
+            }
+        }
+
+        // Menyimpan data ke localStorage
+        function saveToLocalStorage() {
+            localStorage.setItem('kisiPAI', JSON.stringify(kisiList));
+        }
+
+        function tambahKisi() {
+            const kelas = document.getElementById('kelas').value;
+            const semester = document.getElementById('semester').value;
+            const materi = document.getElementById('materi').value;
+            const kompetensi = document.getElementById('kompetensi').value;
+            const indikator = document.getElementById('indikator').value;
+            const level = document.getElementById('level').value;
+
+            if (kelas && semester && materi && kompetensi && indikator) {
+                kisiList.push({ kelas, semester, materi, kompetensi, indikator, level });
+                updateTabel();
+                saveToLocalStorage(); // Simpan ke localStorage
+                clearForm();
+            } else {
+                alert('Lengkapi semua kolom!');
+            }
+        }
+
+        function updateTabel() {
+            const tabelBody = document.getElementById('tabelBody');
+            tabelBody.innerHTML = '';
+            // Mengelompokkan data berdasarkan kelas untuk nomor kisi-kisi
+            const kisiByKelas = {};
+            kisiList.forEach((kisi, index) => {
+                if (!kisiByKelas[kisi.kelas]) {
+                    kisiByKelas[kisi.kelas] = [];
+                }
+                kisiByKelas[kisi.kelas].push({ ...kisi, originalIndex: index });
+            });
+
+            Object.keys(kisiByKelas).forEach(kelas => {
+                kisiByKelas[kelas].forEach((kisi, kisiIndex) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${kisi.kelas}.${kisiIndex + 1}</td>
+                        <td>Kelas ${kisi.kelas}</td>
+                        <td>Semester ${kisi.semester}</td>
+                        <td>${kisi.materi}</td>
+                        <td>${kisi.kompetensi}</td>
+                        <td>${kisi.indikator}</td>
+                        <td>${kisi.level}</td>
+                        <td><button onclick="hapusKisi(${kisi.originalIndex})" style="background: #e74c3c;">Hapus</button></td>
+                    `;
+                    tabelBody.appendChild(row);
+                });
+            });
+        }
+
+        function hapusKisi(index) {
+            kisiList.splice(index, 1);
+            updateTabel();
+            saveToLocalStorage(); // Perbarui localStorage setelah hapus
+        }
+
+        function clearForm() {
+            document.getElementById('kelas').value = '1';
+            document.getElementById('semester').value = '1';
+            document.getElementById('materi').value = '';
+            document.getElementById('kompetensi').value = '';
+            document.getElementById('indikator').value = '';
+            document.getElementById('level').value = 'Pengetahuan';
+        }
+
+        function resetData() {
+            localStorage.removeItem('kisiPAI');
+            kisiList = [];
+            updateTabel();
+        }
+
+        function downloadCSV() {
+            if (kisiList.length === 0) {
+                alert('Tidak ada data untuk diunduh!');
+                return;
+            }
+
+            // Mengelompokkan data berdasarkan kelas dan semester untuk nama file
+            const kelasSet = new Set(kisiList.map(kisi => kisi.kelas));
+            const semesterSet = new Set(kisiList.map(kisi => kisi.semester));
+            const kelasStr = Array.from(kelasSet).join('-');
+            const semesterStr = Array.from(semesterSet).join('-');
+
+            // Membuat header CSV
+            let csvContent = 'No Kisi-Kisi,Kelas,Semester,Materi,Kompetensi Dasar,Indikator,Level Kognitif\n';
+
+            // Mengelompokkan untuk nomor kisi-kisi
+            const kisiByKelas = {};
+            kisiList.forEach((kisi, index) => {
+                if (!kisiByKelas[kisi.kelas]) {
+                    kisiByKelas[kisi.kelas] = [];
+                }
+                kisiByKelas[kisi.kelas].push(kisi);
+            });
+
+            // Mengisi konten CSV
+            Object.keys(kisiByKelas).forEach(kelas => {
+                kisiByKelas[kelas].forEach((kisi, kisiIndex) => {
+                    const row = [
+                        `"${kisi.kelas}.${kisiIndex + 1}"`,
+                        `"Kelas ${kisi.kelas}"`,
+                        `"Semester ${kisi.semester}"`,
+                        `"${kisi.materi.replace(/"/g, '""')}"`,
+                        `"${kisi.kompetensi.replace(/"/g, '""')}"`,
+                        `"${kisi.indikator.replace(/"/g, '""')}"`,
+                        `"${kisi.level}"`
+                    ].join(',');
+                    csvContent += row + '\n';
+                });
+            });
+
+            // Membuat file CSV
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `Kisi-Kisi_PAI_Kelas${kelasStr}_Semester${semesterStr}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Panggil fungsi untuk memuat data saat halaman dimuat
+        window.onload = loadFromLocalStorage;
+    </script>
+</body>
+</html>

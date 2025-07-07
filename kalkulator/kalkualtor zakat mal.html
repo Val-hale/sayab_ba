@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Zakat Mal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: #2c786c;
+            --secondary: #004445;
+            --accent: #f8b400;
+            --light: #faf5e4;
+            --dark: #333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .calculator {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+        }
+        
+        .calculator:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44, 120, 108, 0.2);
+        }
+        
+        button {
+            background-color: var(--accent);
+            color: var(--secondary);
+            border: none;
+            padding: 14px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: block;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        button:hover {
+            background-color: #e0a800;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(248, 180, 0, 0.3);
+        }
+        
+        .result {
+            background-color: var(--primary);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .result h2 {
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 20px 0;
+            color: var(--accent);
+        }
+        
+        .info-section {
+            margin-top: 50px;
+        }
+        
+        .info-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .info-card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: var(--dark);
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .gold-icon {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .calculator, .result, .info-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="animate__animated animate__fadeInDown">
+            <div class="gold-icon">💰</div>
+            <h1>Kalkulator Zakat Mal</h1>
+            <p>Hasil perhitungan ini bersifat informatif. Untuk kepastian,Teman-teman konsultasikan dengan ahli zakat atau ustadz, Ok Gaesssss😊</p>
+        </header>
+        
+        <section class="calculator animate__animated animate__fadeIn">
+            <div class="form-group">
+                <label for="wealth-type">Jenis Harta</label>
+                <select id="wealth-type">
+                    <option value="money">Uang Tunai</option>
+                    <option value="gold">Emas/Perak</option>
+                    <option value="business">Usaha/Dagang</option>
+                    <option value="savings">Tabungan/Deposito</option>
+                    <option value="stocks">Saham/Investasi</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="wealth-amount">Jumlah Harta (Rp)</label>
+                <input type="number" id="wealth-amount" placeholder="Masukkan jumlah harta dalam Rupiah">
+            </div>
+            
+            <div class="form-group" id="gold-weight-group" style="display: none;">
+                <label for="gold-weight">Berat Emas/Perak (gram)</label>
+                <input type="number" id="gold-weight" placeholder="Masukkan berat dalam gram">
+            </div>
+            
+            <div class="form-group">
+                <label for="debt">Hutang (Rp)</label>
+                <input type="number" id="debt" placeholder="Masukkan jumlah hutang jika ada" value="0">
+            </div>
+            
+            <div class="form-group">
+                <label for="period">Periode Kepemilikan (bulan)</label>
+                <input type="number" id="period" placeholder="Masukkan periode kepemilikan" value="12" min="1" max="12">
+            </div>
+            
+            <button id="calculate-btn" class="animate__animated animate__pulse animate__infinite">Hitung Zakat</button>
+        </section>
+        
+        <section id="result" class="result">
+            <h2>Zakat Mal yang Harus Dibayarkan</h2>
+            <div class="result-value" id="zakat-amount">Rp 0</div>
+            <p>Zakat sebesar 2.5% dari harta yang telah memenuhi nisab</p>
+            <p id="additional-info"></p>
+        </section>
+        
+        <section class="info-section">
+            <div class="info-card animate__animated animate__fadeInLeft">
+                <h3>Tentang Zakat Mal</h3>
+                <p>Zakat mal adalah zakat yang dikenakan atas harta yang dimiliki oleh seseorang dengan syarat-syarat tertentu. Zakat ini wajib dikeluarkan apabila harta telah mencapai nisab (batas minimum) dan haul (masa kepemilikan).</p>
+            </div>
+            
+            <div class="info-card animate__animated animate__fadeInRight">
+                <h3>Nisab Zakat</h3>
+                <ul>
+                    <li>Emas: 85 gram (harga emas saat ini)</li>
+                    <li>Perak: 595 gram</li>
+                    <li>Uang tunai/tabungan: setara dengan 85 gram emas</li>
+                    <li>Hasil perniagaan: setara dengan 85 gram emas</li>
+                </ul>
+            </div>
+            
+            <div class="info-card animate__animated animate__fadeInLeft">
+                <h3>Cara Menghitung</h3>
+                <p>Zakat mal dihitung sebesar 2.5% dari total harta setelah dikurangi hutang dan telah memenuhi nisab serta haul (dimiliki selama 1 tahun hijriyah).</p>
+                <p>Rumus: (Total Harta - Hutang) × 2.5%</p>
+            </div>
+        </section>
+        
+        <footer class="animate__animated animate__fadeInUp">
+            <p>&copy; 2025 By Val_Ky</p>
+            <p>Disclaimer: Hasil perhitungan ini bersifat informatif. Untuk kepastian, konsultasikan dengan ahli zakat atau ustadz.</p>
+        </footer>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const wealthType = document.getElementById('wealth-type');
+            const goldWeightGroup = document.getElementById('gold-weight-group');
+            
+            // Toggle gold weight input based on selection
+            wealthType.addEventListener('change', function() {
+                if (this.value === 'gold') {
+                    goldWeightGroup.style.display = 'block';
+                } else {
+                    goldWeightGroup.style.display = 'none';
+                }
+            });
+            
+            // Calculate button click
+            document.getElementById('calculate-btn').addEventListener('click', function() {
+                calculateZakat();
+            });
+            
+            // Function to calculate zakat
+            function calculateZakat() {
+                const type = wealthType.value;
+                const amount = parseFloat(document.getElementById('wealth-amount').value) || 0;
+                const debt = parseFloat(document.getElementById('debt').value) || 0;
+                const period = parseInt(document.getElementById('period').value) || 12;
+                const goldWeight = parseFloat(document.getElementById('gold-weight').value) || 0;
+                
+                // Get current gold price (simulated API call)
+                const goldPricePerGram = 1000000; // Rp 1.000.000 per gram (example)
+                const nisabGold = 85; // 85 gram
+                const nisabMoney = nisabGold * goldPricePerGram;
+                
+                let netWealth = amount - debt;
+                let zakat = 0;
+                let additionalInfo = '';
+                
+                // Check if period is at least 12 months (haul)
+                if (period < 12) {
+                    additionalInfo = 'Catatan: Harta Anda belum memenuhi haul (1 tahun hijriyah).';
+                }
+                
+                // Calculate based on wealth type
+                if (type === 'gold') {
+                    const totalGoldValue = goldWeight * goldPricePerGram;
+                    netWealth = totalGoldValue - debt;
+                    
+                    if (goldWeight >= nisabGold && period >= 12) {
+                        zakat = totalGoldValue * 0.025;
+                        additionalInfo = `Nisab emas: ${nisabGold} gram (Rp ${nisabMoney.toLocaleString('id-ID')})`;
+                    }
+                } else {
+                    if (netWealth >= nisabMoney && period >= 12) {
+                        zakat = netWealth * 0.025;
+                        additionalInfo = `Nisab: Rp ${nisabMoney.toLocaleString('id-ID')}`;
+                    }
+                }
+                
+                // Display result
+                if (zakat > 0) {
+                    document.getElementById('zakat-amount').textContent = `Rp ${zakat.toLocaleString('id-ID')}`;
+                    document.getElementById('additional-info').textContent = additionalInfo;
+                    document.getElementById('result').style.display = 'block';
+                    
+                    // Add animation to result
+                    document.getElementById('result').classList.add('animate__animated', 'animate__fadeInUp');
+                } else {
+                    document.getElementById('zakat-amount').textContent = 'Rp 0';
+                    document.getElementById('additional-info').textContent = 'Harta Anda belum mencapai nisab atau belum memenuhi haul.';
+                    document.getElementById('result').style.display = 'block';
+                }
+                
+                // Scroll to result
+                document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Add floating animation to elements
+            const elementsToFloat = document.querySelectorAll('.gold-icon, .info-card h3');
+            elementsToFloat.forEach(el => {
+                el.classList.add('floating');
+            });
+        });
+    </script>
+</body>
+</html>

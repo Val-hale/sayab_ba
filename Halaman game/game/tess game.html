@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Game Teka-Teki Bergambar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --primary-color: #1f4037;
+      --secondary-color: #99f2c8;
+      --accent-color: #f6f6f2;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      background: linear-gradient(to right, #667eea, #764ba2);
+    }
+    .fade-enter-active {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Islamic Decorative Elements */
+    .islamic-pattern {
+        position: fixed;
+        width: 300px;
+        height: 300px;
+        opacity: 0.1;
+        z-index: -1;
+        background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
+    }
+
+    .pattern-1 { top: -50px; right: -50px; transform: rotate(45deg); }
+    .pattern-2 { bottom: -50px; left: -50px; transform: rotate(-45deg); }
+
+    .puzzle-card {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .puzzle-card::before,
+    .puzzle-card::after {
+        content: '۞';
+        position: absolute;
+        font-size: 2rem;
+        color: var(--primary-color);
+        opacity: 0.2;
+    }
+
+    .puzzle-card::before { top: 10px; left: 10px; }
+    .puzzle-card::after { bottom: 10px; right: 10px; }
+
+    /* Islamic Animations */
+    @keyframes floatPattern {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); }
+        50% { transform: translate(10px, 5px) rotate(5deg); }
+    }
+
+    @keyframes glowBorder {
+        0%, 100% { border-color: var(--primary-color); }
+        50% { border-color: var(--secondary-color); }
+    }
+
+    @keyframes fadeInScale {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* Apply Animations */
+    .islamic-pattern {
+        animation: floatPattern 20s infinite ease-in-out;
+    }
+
+    .puzzle-card {
+        animation: fadeInScale 0.5s ease-out;
+        border: 2px solid var(--primary-color);
+        animation: glowBorder 3s infinite;
+    }
+
+    .option-btn {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .option-btn::before {
+        content: '✧';
+        position: absolute;
+        left: 10px;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .option-btn:hover::before {
+        opacity: 1;
+    }
+
+    /* Islamic Frame Styles */
+    .puzzle-container {
+        position: relative;
+        padding: 1rem;
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+
+    .frame-top,
+    .frame-bottom {
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px var(--shadow-color);
+    }
+
+    .frame-top {
+        top: -1.5rem;
+    }
+
+    .frame-bottom {
+        bottom: -1.5rem;
+        margin-top: 20px;
+    }
+
+    .decoration {
+        display: inline-block;
+        transform: rotate(20deg);
+        font-size: 1.5rem;
+        color: var(--primary-color);
+        opacity: 0.7;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center text-white font-sans">
+
+  <div class="max-w-xl w-full p-6 bg-white/10 backdrop-blur-md rounded-2xl shadow-xl" id="gameContainer">
+    <h1 class="text-3xl font-bold mb-4 text-center">🧠 Game Teka-Teki Bergambar</h1>
+    
+    <div id="questionContainer" class="text-lg leading-relaxed mb-4 fade-enter-active">
+      <!-- Pertanyaan akan dimuat di sini -->
+    </div>
+    
+    <div id="imageContainer" class="mb-4">
+      <img id="questionImage" src="" alt="Ilustrasi soal" class="w-full h-60 object-cover rounded-lg shadow-lg">
+    </div>
+
+    <div id="answersContainer" class="space-y-2">
+      <!-- Jawaban -->
+    </div>
+
+    <div class="mt-6 text-sm text-center">
+      Skor: <span id="score">0</span>
+    </div>
+
+    <div class="islamic-pattern pattern-1"></div>
+    <div class="islamic-pattern pattern-2"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "Ada rumah satu lantai berwarna biru. Semua perabotan juga biru. Apa warna tangga di rumah itu?",
+        image: "https://i.pinimg.com/736x/65/3d/15/653d158997847ae1319d699ec480ff35.jpg", // rumah biru
+        answers: ["Biru", "Putih", "Tidak ada tangga", "Abu-abu"],
+        correct: 2
+      },
+      {
+        question: "Sekarang ada 36 koin di tabungan Ahmad. Setiap tahun dia diberi koin sesuai umurnya. Berapa usia Ahmad?",
+        image: "https://i.pinimg.com/736x/f6/e9/04/f6e904891ef5bf65cf0bbb158a4da1db.jpg", // ilustrasi koin
+        answers: ["6 tahun", "8 tahun", "9 tahun", "10 tahun"],
+        correct: 1
+      },
+      {
+        question: "Dalam suatu kolam ada 12 ikan. 5 dimakan bangau, 3 tenggelam, 1 dimakan kucing. Berapa sisanya?",
+        image: "https://i.pinimg.com/736x/a2/bd/e3/a2bde39c28850c53720968af5bb21c77.jpg", // kolam & ikan
+        answers: ["6", "10", "3", "Salah semua"],
+        correct: 0
+      },
+        {
+            question: "Jika 5 kucing menangkap 5 tikus dalam 5 menit, berapa banyak kucing yang dibutuhkan untuk menangkap 100 tikus dalam 100 menit?",
+            image: "https://i.pinimg.com/736x/3c/8f/3c8f3c5b0d1e2f4a6b7d8e9f0a1b2c3d.jpg", // ilustrasi kucing
+            answers: ["5 kucing", "10 kucing", "20 kucing", "25 kucing"],
+            correct: 0
+        },
+        {
+            question: "Ada 3 buah apel. Kamu mengambil 2. Berapa banyak apel yang kamu miliki sekarang?",
+            image: "https://i.pinimg.com/736x/8c/1f/8c1f8c5b0d1e2f4a6b7d8e9f0a1b2c3d.jpg", // ilustrasi apel
+            answers: ["1", "2", "3", "Tidak ada"],
+            correct: 1
+        }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const questionContainer = document.getElementById('questionContainer');
+    const imageElement = document.getElementById('questionImage');
+    const answersContainer = document.getElementById('answersContainer');
+    const scoreDisplay = document.getElementById('score');
+
+    function loadQuestion(index) {
+      const q = questions[index];
+      questionContainer.innerHTML = `<p>${q.question}</p>`;
+      imageElement.src = q.image;
+      answersContainer.innerHTML = "";
+
+      q.answers.forEach((answer, i) => {
+        const btn = document.createElement("button");
+        btn.className = "w-full bg-white/20 hover:bg-white/30 text-white font-semibold py-2 px-4 rounded-xl transition";
+        btn.innerText = answer;
+        btn.onclick = () => handleAnswer(i);
+        answersContainer.appendChild(btn);
+      });
+    }
+
+    function handleAnswer(selectedIndex) {
+      if (selectedIndex === questions[currentQuestion].correct) {
+        score += 10;
+      }
+      currentQuestion++;
+      scoreDisplay.textContent = score;
+      if (currentQuestion < questions.length) {
+        loadQuestion(currentQuestion);
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      questionContainer.innerHTML = `<h2 class="text-2xl font-bold">🎉 Selesai!</h2><p class="mt-2">Skor akhir kamu: ${score}</p>`;
+      imageElement.src = "https://images.unsplash.com/photo-1607746882042-944635dfe10e"; // ilustrasi selesai
+      answersContainer.innerHTML = `<button onclick="restartGame()" class="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full">Main Lagi</button>`;
+    }
+
+    function restartGame() {
+      currentQuestion = 0;
+      score = 0;
+      scoreDisplay.textContent = score;
+      loadQuestion(currentQuestion);
+    }
+
+    loadQuestion(currentQuestion);
+  </script>
+</body>
+</html>

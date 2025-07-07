@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator RPP PAI Otomatis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            transform: scale(1.02);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .output-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            min-height: 400px;
+        }
+
+        .rpp-output {
+            line-height: 1.8;
+            color: #2c3e50;
+            font-size: 1em;
+        }
+
+        .rpp-output h2 {
+            color: #3498db;
+            margin: 20px 0 10px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .rpp-output h3 {
+            color: #2980b9;
+            margin: 15px 0 8px 0;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #e74c3c;
+            animation: expandWidth 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes expandWidth {
+            from { width: 50px; }
+            to { width: 100px; }
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: -2s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            right: 10%;
+            animation-delay: -4s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -1s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .btn-download {
+            min-width: 150px;
+            margin: 5px;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        .download-section {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            border: 2px dashed #dee2e6;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        select[multiple] {
+            height: auto;
+            min-height: 120px;
+        }
+        
+        select[multiple] option {
+            padding: 8px 12px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        select[multiple] option:checked {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .form-section, .output-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🕌 Generator RPP PAI</h1>
+            <p>Pembuat Rencana Pelaksanaan Pembelajaran PAI Otomatis (selamat mencoba Gaessss😁😁😁)</p>
+        </div>
+
+        <div class="main-content">
+            <div class="form-section">
+                <h2 class="section-title">📝 Input Data RPP</h2>
+                
+                <div class="form-group">
+                    <label for="sekolah">Nama Sekolah:</label>
+                    <input type="text" id="sekolah" placeholder="Contoh: SDQ Madhani Al-Washiyah">
+                </div>
+
+                <div class="form-group">
+                    <label for="kelas">Kelas:</label>
+                    <select id="kelas">
+                        <option value="">Pilih Kelas</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="semester">Semester:</label>
+                    <select id="semester">
+                        <option value="">Pilih Semester</option>
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option> 
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="materi">Pilih Materi Pembelajaran:</label>
+                    <select id="materi" multiple>
+                        <option value="Fqih(Safinatun Najah), Sirah(Nurul Yaqin), Hadits, Bahasa Arab">Fqih(Safinatun Najah),Sirah (Nurul Yaqin),Hadits,Bahasa Arab</option>
+                        <option value="Bahsa Arab, Asmaul Husna">Bahsa Arab,Asmaul Husna</option>
+                        <option value="Asmaul Husna">Asmaul Husna</option>
+                        <option value="Complete">Semua Materi</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="topik">Topik/Sub Materi:</label>
+                    <input type="text" id="topik" placeholder="Contoh: Haadits Tentang Niat">
+                </div>
+
+                <div class="form-group">
+                    <label for="alokasi">Alokasi Waktu:</label>
+                    <select id="alokasi">
+                        <option value="">Pilih Alokasi Waktu</option>
+                        <option value="2 x 40 menit (1 pertemuan)">2 x 45 menit (1 pertemuan)</option>
+                        <option value="4 x 40 menit (1 pertemuan)">4 x 45 menit (1 pertemuan)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="tanggal">Tanggal Pelaksanaan:</label>
+                    <input type="date" id="tanggal">
+                </div>
+
+                <div class="form-group">
+                    <label for="jam">Jam Pelajaran:</label>
+                    <select id="jam">
+                        <option value="">Pilih Jam Pelajaran</option>
+                        <option value="11:00-11:55">11:00-11:55 WIB</option>
+                        <option value="13:00-14:15">13:00-14:15 WIB</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="guru">Nama Guru:</label>
+                    <input type="text" id="guru" placeholder="Contoh: Ustadz Assadullah">
+                </div>
+
+                <div class="form-group">
+                    <label for="tujuan">Tujuan Pembelajaran Khusus:</label>
+                    <textarea id="tujuan" placeholder="Tuliskan tujuan pembelajaran yang ingin dicapai..."></textarea>
+                </div>
+
+                <button class="btn" onclick="generateRPP()">
+                    <span>🚀 Generate RPP</span>
+                </button>
+                
+                <div id="download-buttons" style="display: none; margin-top: 20px; text-align: center;">
+                    <button class="btn btn-download" onclick="downloadPDF()" style="background: linear-gradient(135deg, #e74c3c, #c0392b); margin-right: 10px;">
+                        <span>📄 Download PDF</span>
+                    </button>
+                    <button class="btn btn-download" onclick="downloadExcel()" style="background: linear-gradient(135deg, #27ae60, #229954);">
+                        <span>📊 Download Excel</span>
+                    </button>
+                    <button class="btn btn-download" onclick="downloadWord()" style="background: linear-gradient(135deg, #3498db, #2980b9);">
+                        <span>📝 Download Word</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="output-section">
+                <h2 class="section-title">📄 Hasil RPP</h2>
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Sedang membuat RPP...</p>
+                </div>
+                <div id="rpp-output" class="rpp-output">
+                    <p style="text-align: center; color: #7f8c8d; font-style: italic; margin-top: 100px;">
+                        Silakan isi form di sebelah kiri untuk mulai membuat RPP PAI
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        let rppData = {};
+
+        function generateRPP() {
+            // Ambil data dari form
+            const sekolah = document.getElementById('sekolah').value;
+            const kelas = document.getElementById('kelas').value;
+            const semester = document.getElementById('semester').value;
+            const selectedMateris = Array.from(document.getElementById('materi').selectedOptions)
+                                       .map(option => option.value);
+            const topik = document.getElementById('topik').value;
+            const alokasi = document.getElementById('alokasi').value;
+            const tanggal = document.getElementById('tanggal').value;
+            const jam = document.getElementById('jam').value;
+            const guru = document.getElementById('guru').value;
+            const tujuan = document.getElementById('tujuan').value;
+
+            // Validasi input
+            if (!sekolah || !kelas || !semester || selectedMateris.length === 0 || !topik || !alokasi || !guru || !tanggal || !jam) {
+                alert('Mohon lengkapi semua field yang diperlukan!');
+                return;
+            }
+
+            // Simpan data
+            rppData = { sekolah, kelas, semester, materi: selectedMateris, topik, alokasi, tanggal, jam, guru, tujuan };
+
+            // Tampilkan loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('rpp-output').style.display = 'none';
+
+            // Simulasi proses generate (2 detik)
+            setTimeout(() => {
+                const rppContent = createRPPContent();
+                document.getElementById('rpp-output').innerHTML = rppContent;
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('rpp-output').style.display = 'block';
+                
+                // Tampilkan tombol download
+                document.getElementById('download-buttons').style.display = 'block';
+                
+                // Animasi fade in
+                document.getElementById('rpp-output').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('rpp-output').style.transition = 'opacity 0.5s ease';
+                    document.getElementById('rpp-output').style.opacity = '1';
+                }, 100);
+            }, 2000);
+        }
+
+        function createRPPContent() {
+            const kompetensiDasar = getKompetensiDasar(rppData.materi);
+            const indikator = getIndikator(rppData.materi, rppData.topik);
+            const langkahPembelajaran = getLangkahPembelajaran(rppData.materi, rppData.topik);
+            const penilaian = getPenilaian(rppData.materi);
+
+            return `
+                <div style="animation: slideInUp 0.8s ease-out;">
+                    <h2 style="text-align: center; color: #2c3e50; margin-bottom: 30px;">
+                        RENCANA PELAKSANAAN PEMBELAJARAN (RPP)
+                    </h2>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <h3>📋 IDENTITAS PEMBELAJARAN</h3>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr><td style="padding: 5px; font-weight: bold;">Sekolah</td><td style="padding: 5px;">: ${rppData.sekolah}</td></tr>
+                            <tr><td style="padding: 5px; font-weight: bold;">Mata Pelajaran</td><td style="padding: 5px;">: Pendidikan Agama Islam</td></tr>
+                            <tr><td style="padding: 5px; font-weight: bold;">Kelas/Semester</td><td style="padding: 5px;">: ${rppData.kelas}/${rppData.semester}</td></tr>
+                            <tr><td style="padding: 5px; font-weight: bold;">Materi Pokok</td><td style="padding: 5px;">: ${rppData.materi.join(' + ')}</td></tr>
+                            <tr><td style="padding: 5px; font-weight: bold;">Pelaksanaan</td><td style="padding: 5px;">: ${rppData.tanggal}, ${rppData.jam}</td></tr>
+                            <tr><td style="padding: 5px; font-weight: bold;">Alokasi Waktu</td><td style="padding: 5px;">: ${rppData.alokasi}</td></tr>
+                            <tr><td style="padding: 5px; font-weight: bold;">Guru</td><td style="padding: 5px;">: ${rppData.guru}</td></tr>
+                        </table>
+                    </div>
+
+                    <h3>🎯 KOMPETENSI DASAR</h3>
+                    <p>${kompetensiDasar}</p>
+
+                    <h3>📊 INDIKATOR PENCAPAIAN KOMPETENSI</h3>
+                    <ul>
+                        ${indikator.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+
+                    <h3>🎓 TUJUAN PEMBELAJARAN</h3>
+                    <p>${rppData.tujuan || `Setelah mengikuti pembelajaran tentang ${rppData.topik}, peserta didik diharapkan dapat memahami konsep dan mengaplikasikan dalam kehidupan sehari-hari.`}</p>
+
+                    <h3>📚 MATERI PEMBELAJARAN</h3>
+                    <p>Materi pokok: ${rppData.materi} dengan fokus pada ${rppData.topik}</p>
+
+                    <h3>🔄 LANGKAH-LANGKAH PEMBELAJARAN</h3>
+                    ${langkahPembelajaran}
+
+                    <h3>📖 SUMBER BELAJAR</h3>
+                    <ul>
+                        <li>Al-Quran dan Terjemahan</li>
+                        <li>Buku Paket PAI Kelas ${rppData.kelas}</li>
+                        <li>Hadits Shahih</li>
+                        <li>Media pembelajaran digital</li>
+                    </ul>
+
+                    <h3>📋 PENILAIAN</h3>
+                    ${penilaian}
+                </div>
+            `;
+        }
+
+        function getKompetensiDasar(materi) {
+            const kd = {
+                'Fqih (Safinatun Najah)': 'Memahami dan mengamalkan hukum-hukum fiqih dasar sesuai dengan Safinatun Najah dalam kehidupan sehari-hari.',
+                'Sirah Nabawiyah (Nurul Yaqin)': 'Memahami perjalanan hidup Nabi Muhammad SAW berdasarkan Khulasoh Nurul Yaqin dan meneladani akhlaknya.',
+                'Hadits': 'Memahami, menghafal, dan mengamalkan hadits-hadits pilihan dalam kehidupan sehari-hari.',
+                'Bahsa Arab': 'Memahami kosakata dan struktur dasar Bahasa Arab serta menggunakannya dalam komunikasi sederhana.',
+                'Asmaul Husna': 'Menghafal, memahami makna, dan meneladani sifat-sifat Allah melalui Asmaul Husna.'
+            };
+            return kd[materi] || 'Kompetensi dasar sesuai dengan materi pembelajaran yang dipilih.';
+        }
+
+        function getIndikator(materi, topik) {
+            return [
+                `Menjelaskan pengertian ${topik} dalam konteks ${materi}`,
+                `Mengidentifikasi dalil-dalil yang berkaitan dengan ${topik}`,
+                `Mendemonstrasikan penerapan ${topik} dalam kehidupan sehari-hari`,
+                `Menganalisis hikmah dan manfaat ${topik} bagi kehidupan`
+            ];
+        }
+
+        function getLangkahPembelajaran(materi, topik) {
+            return `
+                <div style="margin-left: 20px;">
+                    <h4 style="color: #27ae60;">⏰ Kegiatan Pendahuluan (10 menit)</h4>
+                    <ul>
+                        <li>Guru membuka pembelajaran dengan salam dan doa</li>
+                        <li>Guru mengecek kehadiran siswa</li>
+                        <li>Guru menyampaikan tujuan pembelajaran tentang ${topik}</li>
+                        <li>Apersepsi: mengaitkan materi dengan kehidupan sehari-hari</li>
+                    </ul>
+
+                    <h4 style="color: #f39c12;">📖 Kegiatan Inti (60 menit)</h4>
+                    <ul>
+                        <li><strong>Mengamati:</strong> Siswa mengamati tayangan/gambar tentang ${topik}</li>
+                        <li><strong>Menanya:</strong> Siswa mengajukan pertanyaan tentang ${topik}</li>
+                        <li><strong>Mengumpulkan Informasi:</strong> Siswa mencari informasi dari berbagai sumber</li>
+                        <li><strong>Mengasosiasi:</strong> Siswa menganalisis dan menghubungkan informasi</li>
+                        <li><strong>Mengkomunikasikan:</strong> Siswa mempresentasikan hasil diskusi</li>
+                    </ul>
+
+                    <h4 style="color: #e74c3c;">🎯 Kegiatan Penutup (10 menit)</h4>
+                    <ul>
+                        <li>Guru dan siswa menyimpulkan pembelajaran</li>
+                        <li>Guru memberikan evaluasi dan refleksi</li>
+                        <li>Guru menyampaikan materi untuk pertemuan berikutnya</li>
+                        <li>Pembelajaran ditutup dengan doa dan salam</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        function getPenilaian(materi) {
+            return `
+                <div style="margin-left: 20px;">
+                    <h4 style="color: #3498db;">📝 Penilaian Sikap (Spiritual dan Sosial)</h4>
+                    <p>Observasi terhadap sikap spiritual dan sosial siswa selama pembelajaran</p>
+
+                    <h4 style="color: #9b59b6;">🧠 Penilaian Pengetahuan</h4>
+                    <p>Tes tertulis berupa pilihan ganda dan essay tentang ${materi}</p>
+
+                    <h4 style="color: #1abc9c;">⚡ Penilaian Keterampilan</h4>
+                    <p>Penilaian presentasi dan praktik penerapan materi dalam kehidupan</p>
+                </div>
+            `;
+        }
+
+        // Animasi saat halaman dimuat
+        window.addEventListener('load', function() {
+            const elements = document.querySelectorAll('.form-group');
+            elements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+
+        // Fungsi Download PDF
+        async function downloadPDF() {
+            const element = document.getElementById('rpp-output');
+            const canvas = await html2canvas(element, {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true
+            });
+            
+            const imgData = canvas.toDataURL('image/png');
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            
+            const imgWidth = 210;
+            const pageHeight = 295;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            // Header PDF
+            pdf.setFontSize(16);
+            pdf.setTextColor(44, 62, 80);
+            pdf.text('RENCANA PELAKSANAAN PEMBELAJARAN (RPP)', 105, 15, { align: 'center' });
+            pdf.text('PENDIDIKAN AGAMA ISLAM', 105, 25, { align: 'center' });
+            
+            pdf.addImage(imgData, 'PNG', 0, 35, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+
+            const filename = `RPP_PAI_${rppData.kelas}_${rppData.topik.replace(/\s+/g, '_')}.pdf`;
+            pdf.save(filename);
+        }
+
+        // Fungsi Download Excel
+        function downloadExcel() {
+            const kompetensiDasar = getKompetensiDasar(rppData.materi);
+            const indikator = getIndikator(rppData.materi, rppData.topik);
+            
+            // Data untuk Excel
+            const excelData = [
+                ['RENCANA PELAKSANAAN PEMBELAJARAN (RPP)'],
+                ['PENDIDIKAN AGAMA ISLAM'],
+                [''],
+                ['IDENTITAS PEMBELAJARAN'],
+                ['Sekolah', rppData.sekolah],
+                ['Mata Pelajaran', 'Pendidikan Agama Islam'],
+                ['Kelas/Semester', `${rppData.kelas}/${rppData.semester}`],
+                ['Materi Pokok', `${rppData.materi.join(' + ')} - ${rppData.topik}`],
+                ['Alokasi Waktu', rppData.alokasi],
+                ['Tanggal Pelaksanaan', rppData.tanggal],
+                ['Jam Pelajaran', rppData.jam],
+                ['Guru', rppData.guru],
+                [''],
+                ['KOMPETENSI DASAR'],
+                [kompetensiDasar],
+                [''],
+                ['INDIKATOR PENCAPAIAN KOMPETENSI'],
+                ...indikator.map(item => [item]),
+                [''],
+                ['TUJUAN PEMBELAJARAN'],
+                [rppData.tujuan || `Setelah mengikuti pembelajaran tentang ${rppData.topik}, peserta didik diharapkan dapat memahami konsep dan mengaplikasikan dalam kehidupan sehari-hari.`],
+                [''],
+                ['MATERI PEMBELAJARAN'],
+                [`Materi pokok: ${rppData.materi} dengan fokus pada ${rppData.topik}`],
+                [''],
+                ['LANGKAH-LANGKAH PEMBELAJARAN'],
+                ['Kegiatan Pendahuluan (10 menit)'],
+                ['- Guru membuka pembelajaran dengan salam dan doa'],
+                ['- Guru mengecek kehadiran siswa'],
+                [`- Guru menyampaikan tujuan pembelajaran tentang ${rppData.topik}`],
+                ['- Apersepsi: mengaitkan materi dengan kehidupan sehari-hari'],
+                [''],
+                ['Kegiatan Inti (60 menit)'],
+                [`- Mengamati: Siswa mengamati tayangan/gambar tentang ${rppData.topik}`],
+                [`- Menanya: Siswa mengajukan pertanyaan tentang ${rppData.topik}`],
+                ['- Mengumpulkan Informasi: Siswa mencari informasi dari berbagai sumber'],
+                ['- Mengasosiasi: Siswa menganalisis dan menghubungkan informasi'],
+                ['- Mengkomunikasikan: Siswa mempresentasikan hasil diskusi'],
+                [''],
+                ['Kegiatan Penutup (10 menit)'],
+                ['- Guru dan siswa menyimpulkan pembelajaran'],
+                ['- Guru memberikan evaluasi dan refleksi'],
+                ['- Guru menyampaikan materi untuk pertemuan berikutnya'],
+                ['- Pembelajaran ditutup dengan doa dan salam'],
+                [''],
+                ['SUMBER BELAJAR'],
+                ['- Al-Quran dan Terjemahan'],
+                [`- Buku Paket PAI Kelas ${rppData.kelas}`],
+                ['- Hadits Shahih'],
+                ['- Media pembelajaran digital'],
+                [''],
+                ['PENILAIAN'],
+                ['Penilaian Sikap (Spiritual dan Sosial)'],
+                ['Observasi terhadap sikap spiritual dan sosial siswa selama pembelajaran'],
+                [''],
+                ['Penilaian Pengetahuan'],
+                [`Tes tertulis berupa pilihan ganda dan essay tentang ${rppData.materi}`],
+                [''],
+                ['Penilaian Keterampilan'],
+                ['Penilaian presentasi dan praktik penerapan materi dalam kehidupan']
+            ];
+
+            // Buat workbook dan worksheet
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(excelData);
+            
+            // Styling untuk header
+            ws['A1'].s = {
+                font: { bold: true, sz: 16 },
+                alignment: { horizontal: 'center' }
+            };
+            ws['A2'].s = {
+                font: { bold: true, sz: 14 },
+                alignment: { horizontal: 'center' }
+            };
+            
+            // Set column widths
+            ws['!cols'] = [
+                { wch: 30 },
+                { wch: 50 }
+            ];
+
+            XLSX.utils.book_append_sheet(wb, ws, 'RPP PAI');
+            
+            const filename = `RPP_PAI_${rppData.kelas}_${rppData.topik.replace(/\s+/g, '_')}.xlsx`;
+            XLSX.writeFile(wb, filename);
+        }
+
+        // Fungsi Download Word
+        function downloadWord() {
+            // Create heading and content
+            const header = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head><meta charset='utf-8'><title>RPP PAI</title></head>
+                <body>
+            `;
+            
+            const footer = `</body></html>`;
+            const sourceHTML = header + document.getElementById("rpp-output").innerHTML + footer;
+
+            const source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+            const fileDownload = document.createElement("a");
+            document.body.appendChild(fileDownload);
+            
+            const tanggal = document.getElementById('tanggal').value;
+            const formattedDate = tanggal ? new Date(tanggal).toLocaleDateString('id-ID') : '';
+            
+            fileDownload.href = source;
+            fileDownload.download = `RPP_PAI_${rppData.kelas}_${formattedDate}.doc`;
+            fileDownload.click();
+            document.body.removeChild(fileDownload);
+        }
+    </script>
+</body>
+</html>

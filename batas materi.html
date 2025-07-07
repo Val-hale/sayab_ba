@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROSES PAI - Pembatas Semester</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #f0f8ff;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .semester-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .semester-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            animation: slideInUp 1s ease-out;
+        }
+
+        .semester-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        }
+
+        .semester-title {
+            color: white;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .class-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .class-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .class-item:hover::before {
+            left: 100%;
+        }
+
+        .class-item:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .divider {
+            height: 4px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #f093fb);
+            border-radius: 2px;
+            margin: 40px 0;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            top: 80%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .footer h3 {
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .footer p {
+            opacity: 0.8;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(180deg);
+            }
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            }
+            to {
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .semester-card:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .semester-card:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .class-item {
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .class-item:nth-child(odd) {
+            animation-delay: 0.5s;
+        }
+
+        .class-item:nth-child(even) {
+            animation-delay: 1s;
+        }
+
+        @media (max-width: 768px) {
+            .semester-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .semester-title {
+                font-size: 2rem;
+            }
+            
+            .class-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .class-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🕌 PROSES PAI 🕌</h1>
+            <p>Pembatas Pelajaran Pendidikan Agama Islam</p>
+        </div>
+
+        <div class="semester-container">
+            <div class="semester-card">
+                <div class="semester-title">📚 SEMESTER 1</div>
+                <div class="divider"></div>
+                <div class="class-grid">
+                    <div class="class-item" onclick="showMessage('Kelas 1 - Semester 1')">
+                        🎒 Kelas 1
+                    </div>
+                    <div class="class-item" onclick="showMessage('Kelas 2 - Semester 1')">
+                        📖 Kelas 2
+                    </div>
+                    <div class="class-item" onclick="showMessage('Kelas 3 - Semester 1')">
+                        ✏️ Kelas 3
+                    </div>
+                    <div class="class-item" onclick="showMessage('Kelas 4 - Semester 1')">
+                        📝 Kelas 4
+                    </div>
+                    <div class="class-item" onclick="showMessage('Kelas 5 - Semester 1')">
+                        📊 Kelas 5
+                    </div>
+                    <div class="class-item" onclick="showMessage('Kelas 6 - Semester 1')">
+                        🎓 Kelas 6
+                    </div>
+                </div>
+            </div>
+
+            <div class="semester-card">
+                <div class="semester-title">📚 SEMESTER 2</div>
+                <div class="divider"></div>
+                <div class="class-grid">
+                    <div class="class-item" onclick="showMessage('Kelas 1 - Semester 2')">
+                        🎒 Kelas 1
+                    </div>
+                    <div class="class-item" onclick="showMessage('Kelas 2 - Semester 2')">
+                        📖 Kelas 2
+                    </div>
+                    <div class="class-item" onclick="showMessage('Kelas 3 - Semester 2')">
+                        ✏️ Kelas 3
+                    </div>
+                    <div class="class-item" onclick="showMessage('Kelas 4 - Semester 2')">
+                        📝 Kelas 4
+                    </div>
+                    <div class="class-item" onclick="showMessage('Kelas 5 - Semester 2')">
+                        📊 Kelas 5
+                    </div>
+                    <div class="class-item" onclick="showMessage('Kelas 6 - Semester 2')">
+                        🎓 Kelas 6
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>🌟By: Val_Ky🌟</h3>
+            <p>Semoga ilmu yang dipelajari bermanfaat dan berkah</p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">
+                "Dan Allah akan meninggikan orang-orang yang beriman di antaramu dan orang-orang yang diberi ilmu pengetahuan beberapa derajat" - QS. Al-Mujadilah: 11
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Data batas materi per kelas, kategori, dan semester
+        const batasMateri = {
+            "Kelas 1": {
+                "Semester 1": {
+                    "Hadits": [
+                        "Hadits tentang adab kepada orang tua",
+                        "Hadits tentang kejujuran"
+                    ],
+                    "Fiqih": [
+                        "Pengenalan wudhu",
+                        "Tata cara sholat"
+                    ],
+                    "Siroh Nabawiyyah": [
+                        "Kisah Nabi Muhammad masa kecil",
+                        "Kisah Nabi Adam"
+                    ],
+                    "B.arab": [
+                        "Mengenal huruf hijaiyah",
+                        "Kosakata benda di kelas"
+                    ]
+                },
+                "Semester 2": {
+                    "Hadits": [
+                        "Hadits tentang tolong-menolong",
+                        "Hadits tentang kebersihan"
+                    ],
+                    "Fiqih": [
+                        "Pengenalan zakat",
+                        "Tata cara puasa"
+                    ],
+                    "Siroh Nabawiyyah": [
+                        "Kisah Nabi Ibrahim",
+                        "Kisah Nabi Nuh"
+                    ],
+                    "B.arab": [
+                        "Anggota tubuh",
+                        "Nama-nama hewan"
+                    ]
+                }
+            },
+            "Kelas 2": {
+                "Semester 1": {
+                    "Hadits": [
+                        "Hadits tentang persaudaraan",
+                        "Hadits tentang kebersihan"
+                    ],
+                    "Fiqih": [
+                        "Bacaan sholat",
+                        "Rukun Islam & Iman"
+                    ],
+                    "Siroh Nabawiyyah": [
+                        "Kisah Nabi Musa",
+                        "Kisah Nabi Sulaiman"
+                    ],
+                    "B.arab": [
+                        "Nama-nama warna",
+                        "Nama-nama buah"
+                    ]
+                },
+                "Semester 2": {
+                    "Hadits": [
+                        "Hadits tentang sabar",
+                        "Hadits tentang syukur"
+                    ],
+                    "Fiqih": [
+                        "Tata cara tayammum",
+                        "Shalat berjamaah"
+                    ],
+                    "Siroh Nabawiyyah": [
+                        "Kisah Nabi Daud",
+                        "Kisah Nabi Yunus"
+                    ],
+                    "B.arab": [
+                        "Nama-nama anggota keluarga",
+                        "Nama-nama alat sekolah"
+                    ]
+                }
+            },
+            "Kelas 3": {
+                "Semester 1": {
+                    "Hadits": [
+                        "Niat Penentu Amal Perbuatan",
+                        "Islam, Iman dan Ihsan",
+                        "Rukun Islam dibagun atas lima dasar",
+                        "Takdir Manusia sudah tertulis",
+                        "Larangan membuat sesuatu yang baru dalam agama",
+                        "Segala yang Halal dan Haram telah Jelas",
+                        "Materi Pengertian Hadits adalah",
+                        "Membaca Baslamah",
+                        "membaca salam dan menebar salam",
+                        "Tersenyum",
+                        "Berkata Jujur",
+                        "Hadits menjelang tidur dan",
+                        "Pengertian Sanad, Rowi dan Matan",
+                        "Waktu Hafalan dan Setor Hafalan (Ujian)"
+
+
+                    ],
+                    "Fiqih": [
+                        "Rukun Islam",
+                        "Rukun Iman",
+                        "Makna Kalimat Tauhid",
+                        "Takdir Manusia sudah tertulis",
+                        "Tanda Baligh",
+                        "Syarat Istinja",
+                        "Rukun Wudhu",
+                        "Arti Niat dan Tertib",
+                        "Hukum Air",
+                        "Yang Mewajibkan Mandi Wajib",
+                        "Praktek 1",
+                        "Praktek 2",
+                        "Hafalan dan Setor Materi",
+                        "Ujian (Ulangan)"
+                    ],
+                    "Siroh Nabawiyyah": [
+                        "Kehidupan Rasulullah SAW",
+                        "Nasab Rasulullah SAW",
+                        "Kelahiran dan Penyusuan Nabi",
+                        "Wafatnya ibunda Nabi Muhammad SAW",
+                        "Pendidikan Nabi dan Wafatnya Kakek",
+                        "Nabi Mengembala Kambing dan Perjalanannya yang Pertama",
+                        "Perjalanan Nabi yang Kedua ke Syam",
+                        "Pernikahan Nabi dengan Sayyidah Khadijah",
+                        "Keputusan Nabi di antara Kaum Quraisy",
+                        "Nonton Kisah Kelahiran Nabi dengan Multimedia",
+                        "10 Nama Sahabat Nabi beserta Gelar dan Julukan (disetor jika hafal) Bagian 1",
+                        "Proyek Kelas (Menulis Rangkuman)",
+                        "Diskusi dan Presentasi Proyek Kisah Nabi (Bercerita)",
+                        "Kuis dan Game",
+                        "Ujian (Ulangan)"
+                    ],
+                    "B.arab": [
+                        "Kosakata sehari-hari",
+                        "Nama-nama profesi"
+                    ]
+                },
+                "Semester 2": {
+                    "Hadits": [
+                        "Agama ini adalah Nasehat",
+                        "Terjaganya darah dan Harta seorang muslim",
+                        "Kerjakanlah Perintah yang Kamu Mampu",
+                        "Allah Maha Baik dan Hanya menerima yang baik",
+                        "Tinggalkanlah Sesuatu yang Membuatmu Ragu",
+                        "Meninggalkan Perkara yang tidak bermanfaat",
+                        "hadits bangun tidur",
+                        "hadits berwudhu",
+                        "Hadits kebersihan",
+                        "Hadits menuntut Ilmu",
+                        "Hadits menghafal Al-Quran",
+                        "Sepuluh Nama Rowi yang Masyhur dan Shahih",
+                        "Waktu Setor Dan Hafalan Hadits"
+                    ],
+                    "Fiqih": [
+                        "Rukun mandi Besar",
+                        "Syarat Whudu",
+                        "Pembatalan Wudhu",
+                        "Yang diharamkan bagi yang berhadats",
+                        "yang diharamkan bagi yang Junub",
+                        "yang diharamkan bagi wanita Haid",
+                        "Sebab tayamum",
+                        "Syarat tayamum",
+                        "Rukun Tayamum",
+                        "Pembatalan Tayamum",
+                        "Praktek 1",
+                        "Praktek 2",
+                        "Hafalan dan Setor Materi",
+                        "Ujian (Ulangan)"
+                    ],
+                    "Siroh Nabawiyyah": [
+                        "Perjalanan Hidup Nabi",
+                        "Kehidupan Nabi sebelum Menjadi Rasul SAW",
+                        "Kesimpulan Masa Pertama (Periode 1 dihafal)",
+                        "Menceritakan Ulang Kisah Periode Pertama Bagian 1 (Praktek Individu) Maju ke Depan",
+                        "Menceritakan Ulang Kisah Periode Pertama Bagian 2 (Praktek Individu) Maju ke Depan",
+                        "Periode ke-2 Permulaan Turunnya Wahyu",
+                        "Keadaan Bangsa Arab",
+                        "Dakwah Sembunyi-sembunyi",
+                        "Orang yang Pertama Kali Beriman",
+                        "Ajakan Secara Terang-terangan",
+                        "Nabi Mengumpulkan Keluarganya",
+                        "Marahnya Kaum Quraisy pada Nabi",
+                        "Nonton Kisah Nabi Mendapat Wahyu Pertama",
+                        "Kuis dan Game",
+                        "Ujian (Ulangan)"
+                    ],
+                    "B.arab": [
+                        "Nama-nama alat transportasi",
+                        "Kosakata di pasar"
+                    ]
+                }
+            },
+            "Kelas 4": {
+                "Semester 1": {
+                    "Hadits": [
+                        "Mencintai sesama Muslim",
+                        "Tidak Halal darah seorang muslim kecuali karena 3 hal",
+                        "Mengala lisan, memuliakan Tamu dan Tetangga",
+                        "Menahan Amarah dan Marah",
+                        "Kewajiban berlaku Ihsan pada segaa sesuatu",
+                        "Bertakwalah dimanapun enggaku berada",
+                        "Makan dan Minum sambil duduk",
+                        "Jangan mencela makanan",
+                        "Hadits berkata yang baik",
+                        "teman yang baik mengajak pada kebaikan",
+                        "sesama muslim adalah saudara",
+                        "Pembagian Hadits Berdasarkan Subermunculnya Hadits: Qouli, Fi'li dan Takriri",
+                        "Waktu setor dan hafalan Hadits",
+                        "Ualngan (ujian)"
+                    ],
+                    "Fiqih": [
+                       "Najis yang bisa Suci",
+                        "Pembagian najis",
+                        "cara menghilangkan najis",
+                        "Haid dan Nifas",
+                        "Udzur Shalat",
+                        "Syarat sah Shalat",
+                        "Pembagian Hadats",
+                        "Pembagian Aurat",
+                        "Rukun Shalat",
+                        "Praktek 1",
+                        "Praktek 2",
+                        "Hafalan dan Setor Materi",
+                        "Ujian (Ulangan)"
+                    ],
+                    "Siroh Nabawiyyah": [
+                        "Kedatangan Kaum Quraisy yang Kedua",
+                        "Kedatangan Kaum Quraisy yang Ketiga",
+                        "Gangguan Kaum Quraisy pada Rasul",
+                        "Gangguan Kaum Quraisy pada Sahabat Rasul",
+                        "Tuntutan Kaum Quraisy pada Nabi",
+                        "Hijrah ke Habsyah yang Pertama",
+                        "Hamzah dan Umar Masuk Islam",
+                        "(Boikot) Pengepungan Nabi dan Keluarganya",
+                        "Hijrah ke Habsyah yang Kedua Kalinya",
+                        "10 Nama Sahabat Nabi beserta Gelar dan Julukan (Disetor jika Hafal) Bagian 2; Mengulang Materi Kelas 3",
+                        "Praktek 2",
+                        "Nonton Kisah Masuk Islamnya Umar dan Hamzah",
+                        "Kuis dan Game",
+                        "Ujian (Ulangan)"
+                    ],
+                    "B.arab": [
+                        "Kosakata di rumah",
+                        "Nama-nama benda di dapur"
+                    ]
+                },
+                "Semester 2": {
+                    "Hadits": [
+                       "Jagalah Allah niscaya Allah akan menjagamu",
+                        "Memiliki Rasa malu",
+                        "Beriman kedapa Allah dan Istiqamahlah",
+                        "4 Jalan menuju Surga",
+                        "Kebersihan itu sebagia dari Iman",
+                        "Jangan saling mendzalimi",
+                        "Menghormati guru",
+                        "mencintai yang lebih muda dan menghormati yang lebih tua",
+                        "Keutamaan tangan Kanan",
+                        "Mahfudzot: Bersungguh-sungguh",
+                        "hadits jangan berbohong",
+                        "3 Macam Kalam Allah SWT: AlQuran, Hadits Nabawi dan Hadits Qudsi",
+                        "Waktu setor Dan Hafalan Hadits",
+                        "Ulangan (ujian)"
+                    ],
+                    "Fiqih": [
+                        "Niat Shalat",
+                        "Syarat Takbiratul ihram",
+                        "Syarat Al-Fatihah",
+                        "Tasydid Al-Fatihah",
+                        "Waktu mengangkat tangan",
+                        "Syarat sujud",
+                        "Tasydid Tasyahud",
+                        "Tasydid Shalawat",
+                        "Pembagian Waktu Shalat",
+                        "Pembagian Mega"
+                    ],
+                    "Siroh Nabawiyyah": [
+                        "Raja Habsyah Masuk Islam",
+                        "Nabi Keluar dari Kepungan (Boikot)",
+                        "Utusan Najran 1",
+                        "Wafatnya Sayyidah Khadijah dan Pernikahan dengan Saudah",
+                        "Wafatnya Paman Nabi Abu Thalib",
+                        "Gangguan Kaum Quraisy pada Nabi",
+                        "Hijrah ke Thaif",
+                        "Isra dan Mi'raj Nabi SAW",
+                        "Ajakan Islam pada Kabilah-Kabilah",
+                        "Proyek Kelas (Menulis Rangkuman)",
+                        "Diskusi dan Presentasi Proyek Kisah Nabi (Bercerita)",
+                        "Mendengar Kisah Isra dan Mi'raj Nabi (Nonton dengan Multimedia)"
+                    ],
+                    "B.arab": [
+                        "Nama-nama alat musik",
+                        "Kosakata di taman"
+                    ]
+                }
+            },
+            "Kelas 5": {
+                "Semester 1": {
+                    "Hadits": [
+                        "Bersedekah tidak harus dengan Harta",
+                        "Sedekah: 2; Setiap Persendiaan Patut kita sedekahi",
+                        "Kebaikan dan Dosa",
+                        "Mendengarkan dan Taat pada Pemimpin",
+                        "Pintu-pintu Kebaikan",
+                        "Allah Telah Menetapkan Kewajiban-Kewajiban",
+                        "hadits menutup Aurat",
+                        "Jangan ragu-ragu",
+                        "Hadits Jangan Marah dan menahan amarah",
+                        "hadits jujur bagian 2",
+                        "menyayangi maka akan disayangi",
+                        "Macam-macam Tingkatan Hadits; Shahih, Hasan, Dhaif,..",
+                        "Waktu setor dan Hafalan Hadits",
+                        "Ulangan (ujian)"
+                    ],
+                    "Fiqih": [
+                       "Waktu Larangan Shalat",
+                        "Saktah Shalat",
+                        "Rukun Tumaninah",
+                        "Sebab Sujud sahwi",
+                        "Adab Shalat",
+                        "Niat Imam dan Sunnahnya berinat bagi Imam",
+                        "Syarat Menjadi makmum (berjamaah)",
+                        "Gambaran berjamaah (pembagian Makmum)",
+                        "Syarat jamak Takdim",
+                        "Syarat Jamak Takhir",
+                        "Praktek 1",
+                        "Praktek 2",
+                        "Waktu Setor dan Hafalan Materi",
+                        "Ujian (Ulangan)"
+                    ],
+                    "Siroh Nabawiyyah": [
+                        "Permulaan Islam Kaum Anshar",
+                        "Baiat Aqabah yang Pertama",
+                        "Baiat Aqabah yang Kedua",
+                        "Hijrahnya Kaum Muslimin ke Madinah",
+                        "Orang Kafir Quraisy Sepakat Membunuh Nabi",
+                        "Hijrahnya Rasulullah SAW",
+                        "Proyek Kelas (Menulis Rangkuman) 1",
+                        "Diskusi dan Presentasi Proyek Kisah Nabi (Bercerita) 1",
+                        "Wanita-Wanita Mulia dan Gelarnya",
+                        "Nonton dan Melihat Peta Geografis Quba",
+                        "Kuis dan Game",
+                        "Proyek Kelas (Menulis Rangkuman) 2",
+                        "Diskusi dan Presentasi Proyek Kisah Nabi (Bercerita) 2",
+                        "Kuis dan Game",
+                        "Ujian (Ulangan)"
+                    ],
+                    "B.arab": [
+                        "Kosakata di sekolah",
+                        "Nama-nama alat olahraga"
+                    ]
+                },
+                "Semester 2": {
+                    "Hadits": [
+                        "Perintah untuk bersifat Zuhud",
+                        "Larangan membahayakan diri dan orang lain",
+                        "Penuntut Harus mendatangkan Bukti",
+                        "Kewajiban Melawan Kemunkaran",
+                        "Sesama Muslim adalah Saudara",
+                        "Balasan itu setimpal dengan Amal Perbuatan",
+                        "Jangan Berbuat Dzalim (jahat)",
+                        "hadits mencintai keindahan karena Allah",
+                        "hadits mempelajari Alquran dan mengamalkannya",
+                        "hadits berterimakasih",
+                        "hadits meminta maaf",
+                        "Kedudukan dan Fungsi Hadits",
+                        "Waktu setor Dan Hafalan Hadits",
+                        "Ujian (ulangan)"
+                    ],
+                    "Fiqih": [
+                       "Syarat Qoshor",
+                        "Syarat Shalat Jum'at",
+                        "Rukun Khutbah",
+                        "Syarat dua Khutbah",
+                        "mengurus Jenazah",
+                        "Mengkafani",
+                        "Rukun Shalat Jenazah",
+                        "Menguburkan Jenazah",
+                        "Pembongkaran mayat",
+                        "Istianah berwudhu",
+                        "Praktek 1",
+                        "Praktek 2",
+                        "Waktu Setor dan Hafalan Materi",
+                        "Ujian (Ulangan)"
+                    ],
+                    "Siroh Nabawiyyah": [
+                       "Kaum Quraisy Mencari Nabi",
+                        "Nabi Keluar dari Gua",
+                        "Singgah di Quba dan Mendirikan Masjid Pertama",
+                        "Sampai ke Madinah",
+                        "Masuk dan Singgahnya Nabi di Madinah",
+                        "Hijrahnya Keluarga Nabi dan Asal Mula Qunut Nazilah",
+                        "Pengertian, Doa dan Praktek Qunut Nazilah serta Artinya",
+                        "Proyek Kelas (Menggambar Peta Madinah Berkelompok)",
+                        "Tokoh-Tokoh Islam di Dunia",
+                        "Proyek Kelas Membuat Soal untuk Kuis Mandiri dan Rangkuman Khulashon Jilid 1",
+                        "Nonton Kisah Hijrahnya Nabi ke Madinah",
+                        "Praktek 2",
+                        "Kuis dan Game",
+                        "Ujian (Ulangan)"
+                    ],
+                    "B.arab": [
+                        "Nama-nama makanan khas Arab",
+                        "Kosakata di restoran"
+                    ]
+                }
+            },
+            "Kelas 6": {
+                "Semester 1": {
+                    "Hadits": [
+                        "Amalan kebaikan akan dilipat gandakan",
+                        "Cara mendapatkan Cinta Allah SWT",
+                        "Allah SWT mengampuni siapaun yang salah dan lupa",
+                        "Jadilah engkau di Dunia ini sepeti Orang Asing",
+                        "Jangan mengikuti Hawa Nafsu",
+                        "Allah SWT maha Pengampun",
+                        "Mahfudzot: Bersabar mendapat Keberuntungan",
+                        "berdzikir dijaukan dari Syaithon",
+                        "hadits jangan berbohong",
+                        "Hubungan Hadits dengan Al-Quran",
+                        "Waktu setor Dan Hafalan Hadits",
+                        "Ulangan (ujian)"
+                    ],
+                    "Fiqih": [
+                       "Harta yang dizakati",
+                        "kapan wajib berpuasa",
+                        "syarat sah puasa",
+                        "syarat wajib puasa",
+                        "rukun puasa",
+                        "Qadho dan Kafarat",
+                        "pembatalan puasa",
+                        "Pembagian Puasa",
+                        "Bukan Pembatalan Puasa",
+                        "Praktek 1",
+                        "Praktek 2",
+                        "Waktu Setor dan Hafalan Materi",
+                        "Ujian (Ulangan)"
+                    ],
+                    "Siroh Nabawiyyah": [
+                        "Tahun Pertama (Pembangunan Masjid, Adzan dan Adzan Subuh)",
+                        "Yahudi Madinah",
+                        "Peperangan",
+                        "Ringkasan Tahun Pertama",
+                        "Tahun Kedua (Perang Qainuqa)",
+                        "Perang Badar Besar",
+                        "Rasulullah Diutus dengan Membawa Kebenaran dan Keadilan",
+                        "Beberapa Syariat (Aturan Islam)",
+                        "Ringkasan Tahun Kedua",
+                        "Nonton Film Perang Badar",
+                        "Proyek Kelas Membuat Rangkuman",
+                        "Membacakan Hasil Rangkuman di Depan Teman Sekelas",
+                        "Kuis dan Game",
+                        "Ujian (Ulangan)",
+                        "Tahun Ketiga (Peperangan, Cerita Da’tsur dan Islamnya — Perang Ghathafan)",
+                        "Perang Uhud",
+                        "Rasulullah Tetap di Perang Uhud",
+                        "Korban dalam Perang Uhud",
+                        "Beberapa Kejadian Peristiwa",
+                        "Ringkasan Tahun Ketiga",
+                        "Nonton Film Perang Ghathafan",
+                        "Nonton Film Perang Uhud",
+                        "Proyek Membuat Rangkuman",
+                        "Membacakan Hasil Rangkuman di Depan Teman Sekelas",
+                        "Kuis dan Game",
+                        "Ujian (Ulangan)"
+                    ],
+                    "B.arab": [
+                        "Kosakata di pasar tradisional",
+                        "Nama-nama alat elektronik"
+                    ]
+                },
+                "Semester 2": {
+                    "Hadits": [
+                        "Hadits tentang pentingnya ukhuwah Islamiyah",
+                        "Hadits tentang adab berpakaian"
+                    ],
+                    "Fiqih": [
+                        "Tata cara sholat Idul Adha",
+                        "Hukum-hukum aqiqah"
+                    ],
+                    "Siroh Nabawiyyah": [
+                        "Kisah Perjanjian Hudaibiyah",
+                        "Kisah Fathu Mekkah"
+                    ],
+                    "B.arab": [
+                        "Nama-nama tempat wisata di Arab",
+                        "Kosakata di bandara"
+                    ]
+                }
+            }
+            // ...tambahkan kelas 3-6 jika diperlukan...
+        };
+
+        // Fungsi utama: tampilkan pilihan kategori lalu tampilkan batas materi sesuai semester & kategori
+        function showMessage(classInfo) {
+            // Ambil kelas dan semester dari classInfo
+            const match = classInfo.match(/Kelas (\d) - Semester (\d)/);
+            if (!match) return;
+            const kelas = `Kelas ${match[1]}`;
+            const semester = `Semester ${match[2]}`;
+
+            // Tampilkan pilihan kategori
+            showKategoriMateri(kelas, semester);
+        }
+
+        function showKategoriMateri(kelas, semester) {
+            const kategoriList = batasMateri[kelas] && batasMateri[kelas][semester] ? Object.keys(batasMateri[kelas][semester]) : [];
+            if (!kategoriList.length) return;
+
+            // Buat popup kategori
+            const html = `
+                <div style="
+                    position: fixed;
+                    top: 50%; left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(255,255,255,0.98);
+                    border-radius: 18px;
+                    box-shadow: 0 10px 40px #0003;
+                    padding: 32px 22px 22px 22px;
+                    z-index: 2000;
+                    max-width: 95vw;
+                    width: 350px;
+                    text-align: center;
+                    font-size: 1.08em;
+                    animation: fadeIn 0.4s;
+                ">
+                    <div style="font-weight:bold;font-size:1.2em;margin-bottom:18px;">
+                        Pilih Materi ${kelas} - ${semester}
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:14px;">
+                        ${kategoriList.map(kat => `
+                            <button class="btn-kategori-materi" data-kelas="${kelas}" data-semester="${semester}" data-kategori="${kat}" style="padding:10px 0;border-radius:8px;border:none;background:#764ba2;color:#fff;font-weight:bold;font-size:1.08em;cursor:pointer;">
+                                ${kat}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <button onclick="this.parentNode.remove()" style="margin:18px auto 0 auto;display:block;padding:7px 22px;border-radius:8px;border:none;background:#aaa;color:#fff;font-weight:bold;cursor:pointer;">Tutup</button>
+                </div>
+            `;
+            document.querySelectorAll('.popup-materi').forEach(e => e.remove());
+            const div = document.createElement('div');
+            div.className = 'popup-materi';
+            div.innerHTML = html;
+            document.body.appendChild(div);
+
+            // Event listener untuk tombol kategori
+            div.querySelectorAll('.btn-kategori-materi').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const kelas = this.getAttribute('data-kelas');
+                    const semester = this.getAttribute('data-semester');
+                    const kategori = this.getAttribute('data-kategori');
+                    showBatasMateriPerKategoriSemester(kelas, semester, kategori);
+                    div.remove();
+                });
+            });
+        }
+
+        function showBatasMateriPerKategoriSemester(kelas, semester, kategori) {
+            const materi = batasMateri[kelas] && batasMateri[kelas][semester] && batasMateri[kelas][semester][kategori];
+            if (!materi) return;
+
+            const html = `
+                <div style="
+                    position: fixed;
+                    top: 50%; left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(255,255,255,0.98);
+                    border-radius: 18px;
+                    box-shadow: 0 10px 40px #0003;
+                    padding: 32px 22px 22px 22px;
+                    z-index: 2000;
+                    max-width: 95vw;
+                    width: 350px;
+                    max-height: 80vh;
+                    display: flex;
+                    flex-direction: column;
+                    animation: fadeIn 0.4s;
+                ">
+                    <div style="font-weight:bold;font-size:1.2em;margin-bottom:10px;text-align:center;">
+                        ${kategori} - ${kelas} <br><span style="font-size:1em;color:#45b7d1;">${semester}</span>
+                    </div>
+                    <div style="flex: 1; overflow-y: auto; margin: 0 -10px; padding: 0 10px;">
+                        <ol style="margin:0 0 10px 18px;padding:0;">
+                            ${materi.map(m => `<li style="margin-bottom: 8px;">${m}</li>`).join('')}
+                        </ol>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <button onclick="this.parentNode.parentNode.remove()" style="margin:10px auto 10px auto;display:block;padding:7px 22px;border-radius:8px;border:none;background:#764ba2;color:#fff;font-weight:bold;cursor:pointer;">Tutup</button>
+                        <div style="text-align:center;margin-bottom:10px;">
+                            <a href="rpp otomatis.html" target="_blank" style="
+                                display: block;
+                                margin: 2px 0;
+                                padding: 6px 0 6px 32px;
+                                width: 100%;
+                                background: none;
+                                border: none;
+                                text-align: left;
+                                font-size: 1em;
+                                cursor: pointer;
+                                transition: background 0.2s;
+                                text-decoration: none;
+                                color: #333;
+                            ">
+                                📋 RPP
+                            </a>
+                            <a href="Kumpulan materi PAI.html" target="_blank" style="
+                                display: block;
+                                margin: 2px 0;
+                                padding: 6px 0 6px 32px;
+                                width: 100%;
+                                background: none;
+                                border: none;
+                                text-align: left;
+                                font-size: 1em;
+                                cursor: pointer;
+                                transition: background 0.2s;
+                                text-decoration: none;
+                                color: #333;
+                            ">
+                                📖 Materi Detail
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.querySelectorAll('.popup-materi').forEach(e => e.remove());
+            const div = document.createElement('div');
+            div.className = 'popup-materi';
+            div.innerHTML = html;
+            document.body.appendChild(div);
+
+            // Tambahkan custom scrollbar style
+            const style = document.createElement('style');
+            style.textContent = `
+                .popup-materi ol::-webkit-scrollbar {
+                    width: 8px;
+                }
+                .popup-materi ol::-webkit-scrollbar-track {
+                    background: #f1f1f1;
+                    border-radius: 4px;
+                }
+                .popup-materi ol::-webkit-scrollbar-thumb {
+                    background: #888;
+                    border-radius: 4px;
+                }
+                .popup-materi ol::-webkit-scrollbar-thumb:hover {
+                    background: #555;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && window.currentModal) {
+                closeModal();
+            }
+        });
+
+        // Function to handle link clicks
+        function openLink(linkType) {
+            const linkUrls = {
+                'materi-detail': 'materi-detail.html',
+                'evaluasi': 'evaluasi.html',
+                'rpp': 'rpp.html',
+                'media-pembelajaran': 'media-pembelajaran.html',
+                'silabus': 'silabus.html',
+                'bank-soal': 'bank-soal.html'
+            };
+            
+            const linkNames = {
+                'materi-detail': '📖 Materi Detail',
+                'evaluasi': '📝 Evaluasi',
+                'rpp': '📋 RPP (Rencana Pelaksanaan Pembelajaran)',
+                'media-pembelajaran': '🎮 Media Pembelajaran',
+                'silabus': '📚 Silabus',
+                'bank-soal': '🏦 Bank Soal'
+            };
+            
+            if (linkUrls[linkType]) {
+                // Show confirmation toast
+                showToast(`Membuka halaman ${linkNames[linkType]}...`);
+                
+                // Simulate opening link (you can replace with actual navigation)
+                setTimeout(() => {
+                    // For demo purposes, show alert. Replace with actual navigation:
+                    // window.location.href = linkUrls[linkType];
+                    // or window.open(linkUrls[linkType], '_blank');
+                    
+                    alert(`Halaman ${linkNames[linkType]} akan dibuka.\n\nFile: ${linkUrls[linkType]}\n\nGanti alert ini dengan:\nwindow.location.href = '${linkUrls[linkType]}'\natau\nwindow.open('${linkUrls[linkType]}', '_blank')`);
+                }, 500);
+            }
+        }
+
+        // Add sparkle effect
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.style.cssText = `
+                position: fixed;
+                width: 4px;
+                height: 4px;
+                background: white;
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: 1000;
+                animation: sparkleAnimation 1s linear forwards;
+            `;
+            
+            sparkle.style.left = Math.random() * window.innerWidth + 'px';
+            sparkle.style.top = Math.random() * window.innerHeight + 'px';
+            
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                document.body.removeChild(sparkle);
+            }, 1000);
+        }
+
+        // Add sparkle animation
+        const sparkleStyle = document.createElement('style');
+        sparkleStyle.textContent = `
+            @keyframes sparkleAnimation {
+                0% {
+                    opacity: 1;
+                    transform: scale(0);
+                }
+                50% {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+                100% {
+                    opacity: 0;
+                    transform: scale(0);
+                }
+            }
+        `;
+        document.head.appendChild(sparkleStyle);
+
+        // Create sparkles periodically
+        setInterval(createSparkle, 2000);
+
+        // Add smooth scrolling
+        document.documentElement.style.scrollBehavior = 'smooth';
+    </script>
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeri Buku Interaktif</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8e44ad;
+            --secondary: #3498db;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 40px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--dark);
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .book-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 350px;
+        }
+        
+        .book-item:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+        
+        .book-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        
+        .book-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: all 0.5s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .book-item.active .book-info {
+            transform: translateY(0);
+        }
+        
+        .book-item.active .book-cover {
+            filter: brightness(0.5);
+        }
+        
+        .book-title {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        
+        .book-author {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+        
+        .book-desc {
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .action-btns {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-pdf {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-pdf:hover {
+            background-color: #7d3c98;
+            transform: translateY(-2px);
+        }
+        
+        .btn-close {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-close:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+        
+        .pdf-viewer-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.5s ease;
+        }
+        
+        .pdf-viewer-container.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .pdf-viewer {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(255,255,255,0.2);
+            transform: scale(0.8);
+            transition: all 0.5s ease;
+        }
+        
+        .pdf-viewer-container.active .pdf-viewer {
+            transform: scale(1);
+        }
+        
+        .close-pdf {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-pdf:hover {
+            transform: rotate(90deg);
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-book-open"></i> منهج مادة اللغة العربية للصفوف من الأول إلى السادس في المدرسة الابتدائية القرآنية</h1>
+        
+        <div class="gallery">
+            <!-- Buku 1 -->
+            <div class="book-item floating" onclick="toggleBook(this)">
+                <img src="media gambar/Arabic 2.png" alt="Bahasa Arab 2" class="book-cover">
+                <div class="book-info">
+                    <h3 class="book-title">Bahsa Arab 2</h3>
+                    <p class="book-author">Karya: Hamba Allah</p>
+                    <p class="book-desc">Kumpulan Materi bahsa arab kelas 2 SDQ</p>
+                    <div class="action-btns">
+                        <button class="btn btn-pdf" onclick="showPdf('media pdf/Arabic 2.pdf', event)">
+                            <i class="fas fa-file-pdf"></i> Buka PDF
+                        </button>
+                        <button class="btn btn-close" onclick="closeBook(event)">
+                            <i class="fas fa-times"></i> Tutup
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Buku 2 -->
+            <div class="book-item floating" onclick="toggleBook(this)">
+                <img src="media gambar/Arabic 3.png" alt="Bahasa Arab 3" class="book-cover">
+                <div class="book-info">
+                    <h3 class="book-title">Bahasa Arab 3</h3>
+                    <p class="book-author">Karya: Hamba Allah</p>
+                    <p class="book-desc">Kumpulan Materi bahasa arab kelas 3 SDQ</p>
+                    <div class="action-btns">
+                        <button class="btn btn-pdf" onclick="showPdf('media pdf/Arabic 3.pdf', event)">
+                            <i class="fas fa-file-pdf"></i> Buka PDF
+                        </button>
+                        <button class="btn btn-close" onclick="closeBook(event)">
+                            <i class="fas fa-times"></i> Tutup
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Buku 3 -->
+            <div class="book-item floating" onclick="toggleBook(this)">
+                <img src="media gambar/Arabic 4.png" alt="Bahasa Arab 4" class="book-cover">
+                <div class="book-info">
+                    <h3 class="book-title">Bahasa Arab 4</h3>
+                    <p class="book-author">Karya: Hamba Allah</p>
+                    <p class="book-desc">Kumpulan Materi bahasa arab kelas 4 SDQ</p>
+                    <div class="action-btns">
+                        <button class="btn btn-pdf" onclick="showPdf('media pdf/Arabic 4.pdf', event)">
+                            <i class="fas fa-file-pdf"></i> Buka PDF
+                        </button>
+                        <button class="btn btn-close" onclick="closeBook(event)">
+                            <i class="fas fa-times"></i> Tutup
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buku 4 -->
+            <div class="book-item floating" onclick="toggleBook(this)">
+                <img src="media gambar/Arabic 5.png" alt="Bahasa Arab 5" class="book-cover">
+                <div class="book-info">
+                    <h3 class="book-title">Bahasa Arab 5</h3>
+                    <p class="book-author">Karya: Hamba Allah</p>
+                    <p class="book-desc">Kumpulan Materi bahasa arab kelas 5 SDQ</p>
+                    <div class="action-btns">
+                        <button class="btn btn-pdf" onclick="showPdf('media pdf/Arabic 5.pdf', event)">
+                            <i class="fas fa-file-pdf"></i> Buka PDF
+                        </button>
+                        <button class="btn btn-close" onclick="closeBook(event)">
+                            <i class="fas fa-times"></i> Tutup
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buku 5 -->
+            <div class="book-item floating" onclick="toggleBook(this)">
+                <img src="media gambar/Arabic 6.png" alt="Bahasa Arab 6" class="book-cover">
+                <div class="book-info">
+                    <h3 class="book-title">Bahasa Arab 6</h3>
+                    <p class="book-author">Karya: Hamba Allah</p>
+                    <p class="book-desc">Kumpulan Materi bahasa arab kelas 6 SDQ</p>
+                    <div class="action-btns">
+                        <button class="btn btn-pdf" onclick="showPdf('media pdf/Arabic 6.pdf', event)">
+                            <i class="fas fa-file-pdf"></i> Buka PDF
+                        </button>
+                        <button class="btn btn-close" onclick="closeBook(event)">
+                            <i class="fas fa-times"></i> Tutup
+                        </button>   
+                    </div>  
+                </div>
+            </div>
+
+            <!-- Buku 6 -->
+            <div class="book-item floating" onclick="toggleBook(this)">
+                <img src="media gambar/a.png" alt="Hadits" class="book-cover">
+                <div class="book-info">
+                    <h3 class="book-title">Hadits</h3>
+                    <p class="book-author">Karya: Hamba Allah</p>
+                    <p class="book-desc">Kumpulan Materi hadits SDQ</p>
+                    <div class="action-btns">
+                        <button class="btn btn-pdf" onclick="showPdf('media pdf/hadits.pdf', event)">
+                            <i class="fas fa-file-pdf"></i> Buka PDF
+                        </button>
+                        <button class="btn btn-close" onclick="closeBook(event)">
+                            <i class="fas fa-times"></i> Tutup
+                    </button>
+                </div>
+            </div>
+
+            <!-- Buku 7 -->
+            <div class="book-item floating" onclick="toggleBook(this)">
+                <img src="media gambar/b.png" alt="Fiqih" class="book-cover">
+                <div class="book-info">
+                    <h3 class="book-title">Fiqih</h3>
+                    <p class="book-author">Karya: Hamba Allah</p>
+                    <p class="book-desc">Kumpulan Materi fiqih 3 SDQ</p>
+                    <div class="action-btns">
+                        <button class="btn btn-pdf" onclick="showPdf('media pdf/fiqih.pdf', event)">
+                            <i class="fas fa-file-pdf"></i> Buka PDF
+                        </button>
+                        <button class="btn btn-close" onclick="closeBook(event)">
+                            <i class="fas fa-times"></i> Tutup
+                        </button>
+                        </div>  
+                        </div>   
+    </div>
+    
+    <!-- PDF Viewer -->
+    <div class="pdf-viewer-container" id="pdfViewerContainer">
+        <span class="close-pdf" onclick="hidePdf()">&times;</span>
+        <embed id="pdfViewer" class="pdf-viewer" type="application/pdf">
+    </div>
+    
+    <script>
+        // Toggle book info
+        function toggleBook(element) {
+            element.classList.toggle('active');
+        }
+        
+        // Close book info
+        function closeBook(event) {
+            event.stopPropagation();
+            event.target.closest('.book-item').classList.remove('active');
+        }
+        
+        // Show PDF
+        function showPdf(pdfFile, event) {
+            event.stopPropagation();
+            const container = document.getElementById('pdfViewerContainer');
+            const viewer = document.getElementById('pdfViewer');
+            
+            viewer.src = pdfFile;
+            container.classList.add('active');
+            
+            // Close all book info
+            document.querySelectorAll('.book-item').forEach(item => {
+                item.classList.remove('active');
+            });
+        }
+        
+        // Hide PDF
+        function hidePdf() {
+            document.getElementById('pdfViewerContainer').classList.remove('active');
+        }
+        
+        // Close when click outside
+        window.addEventListener('click', function(e) {
+            if (e.target === document.getElementById('pdfViewerContainer')) {
+                hidePdf();
+            }
+        });
+    </script>
+</body>
+</html>

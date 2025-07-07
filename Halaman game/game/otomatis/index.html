@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoEdu - Pembuat PROMES & PROTA Otomatis</title>
+    <style>
+        :root {
+            --primary: #4e73df;
+            --secondary: #f8f9fc;
+            --accent: #1cc88a;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary);
+        }
+        .navbar {
+            background: linear-gradient(135deg, var(--primary) 0%, #224abe 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .card {
+            background: white;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.35rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background-color: #2e59d9;
+            transform: translateY(-2px);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        select, input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d3e2;
+            border-radius: 0.35rem;
+        }
+        .preview-area {
+            border: 2px dashed #d1d3e2;
+            padding: 2rem;
+            text-align: center;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fc;
+            border-radius: 0.35rem;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+        }
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background-color: #e3e6f0;
+            margin-right: 0.5rem;
+            border-radius: 0.35rem 0.35rem 0 0;
+            cursor: pointer;
+        }
+        .tab.active {
+            background-color: white;
+            font-weight: 600;
+        }
+        .form-grid {
+            display: flex;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+        .form-column {
+            flex: 1;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+        .input-separator {
+            margin: 0 0.5rem;
+        }
+        .kd-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .kd-item {
+            flex: 1 1 calc(50% - 1rem);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .jp-input {
+            width: 60px;
+            text-align: center;
+        }
+        .btn-outline {
+            background: none;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 0.35rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-outline:hover {
+            background-color: rgba(78, 115, 223, 0.1);
+        }
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>AutoEdu</h1>
+        <p>Pembuat PROMES & PROTA Otomatis</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>Konfigurasi Dokumen</h2>
+            
+            <!-- Tab Pilihan -->
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('prota')">PROTA</div>
+                <div class="tab" onclick="switchTab('promes')">PROMES</div>
+            </div>
+
+            <!-- Form PROTA -->
+            <div id="prota-form" class="tab-content">
+                <div class="form-grid">
+                    <!-- Kolom Kiri -->
+                    <div class="form-column">
+                        <div class="form-group">
+                            <label for="sekolah">Nama Sekolah</label>
+                            <input type="text" id="sekolah" placeholder="SD Negeri Contoh" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tingkat">Tingkat/Kelas</label>
+                            <select id="tingkat" required>
+                                <option value="">Pilih Kelas</option>
+                                <option value="1">Kelas 1</option>
+                                <option value="2">Kelas 2</option>
+                                <option value="3">Kelas 3</option>
+                                <option value="4">Kelas 4</option>
+                                <option value="5">Kelas 5</option>
+                                <option value="6">Kelas 6</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="semester">Semester</label>
+                            <select id="semester" required>
+                                <option value="1">Semester 1 (Ganjil)</option>
+                                <option value="2">Semester 2 (Genap)</option>
+                            </select>
+                        </div>
+                    </div
+                    

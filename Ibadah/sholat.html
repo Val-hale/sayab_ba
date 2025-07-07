@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Sholat Lengkap dengan Gambar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --primary: #2c786c;
+            --secondary: #004445;
+            --accent: #f8b400;
+            --light: #faf5e4;
+            --dark: #1a1a2e;
+            --text: #333333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+        
+        body, h1, h2, h3, h4, h5, h6, .step-title, .section-title, .section-content, .subtitle, .arabic, .prayer-content, .prayer-step, .prayer-container, .footer-links, .highlight, .step-number, .step-header, .arrow, .section, .container, .footer {
+    font-family: 'Garamond', 'Times New Roman', Times, serif !important;
+}
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 68, 69, 0.2);
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://i.pinimg.com/736x/29/93/03/2993038941638aa2a7b10dea77b22401.jpg') center/cover;
+            opacity: 0.15;
+            z-index: 0;
+        }
+        
+        header * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-family: 'Amiri', serif;
+            margin-bottom: 10px;
+            font-size: 2rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);    
+        }
+        
+        .subtitle {
+            font-weight: 300;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .prayer-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        
+        .prayer-step {
+            padding: 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+        
+        .prayer-step:last-child {
+            border-bottom: none;
+        }
+        
+        .step-header {
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .prayer-step:hover .step-header {
+            background-color: rgba(44, 120, 108, 0.05);
+        }
+        
+        .prayer-step.active .step-header {
+            background-color: rgba(44, 120, 108, 0.1);
+        }
+        
+        .step-title {
+            display: flex;
+            align-items: center;
+            font-family: 'Amiri', serif;
+            color: var(--secondary);
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        
+        .step-number {
+            background-color: var(--accent);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            margin-right: 20px;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 4px 8px rgba(248, 180, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .prayer-step.active .step-number {
+            transform: scale(1.1);
+            background-color: var(--primary);
+        }
+        
+        .arrow {
+            transition: all 0.4s ease;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .prayer-step.active .arrow {
+            transform: rotate(180deg);
+            color: var(--accent);
+        }
+        
+        .prayer-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s ease, padding 0.4s ease;
+            background-color: rgba(250, 245, 228, 0.5);
+        }
+        
+        .prayer-step.active .prayer-content {
+            max-height: 2000px;
+            padding: 0 25px 25px;
+        }
+        
+        .step-image {
+            max-width: 340px;
+            width: 100%;
+            height: auto;
+            margin: 20px auto;
+            display: block;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transform: scale(0.98);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+        
+        .prayer-step.active .step-image {
+            transform: scale(1);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .arabic {
+            font-family: 'Amiri', serif !important;
+            font-size: 1.3rem;
+            text-align: right;
+            line-height: 2.1;
+            color: var(--dark);
+            margin: 25px 0;
+            direction: rtl;
+            font-weight: 700;
+            position: relative;
+            padding: 0 15px;
+        }
+        
+        .arabic::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background: linear-gradient(to bottom, var(--accent), var(--primary));
+            border-radius: 5px;
+        }
+        
+        .section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .section-title i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .section-content {
+            line-height: 1.8;
+        }
+        
+        .section-content p {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+        
+        .section-content ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+        
+        .section-content li {
+            margin-bottom: 8px;
+        }
+        
+        .highlight {
+            background-color: rgba(248, 180, 0, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--primary);
+            font-size: 0.95rem;
+            padding: 20px;
+            animation: fadeIn 1s ease;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .step-header {
+                padding: 18px;
+            }
+            
+            .step-title {
+                font-size: 1.4rem;
+            }
+            
+            .arabic {
+                font-size: 1.8rem;
+                line-height: 2.4;
+            }
+            
+            .prayer-step.active .prayer-content {
+                padding: 0 18px 18px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .step-title {
+                font-size: 1.2rem;
+            }
+            
+            .step-number {
+                width: 30px;
+                height: 30px;
+                margin-right: 15px;
+                font-size: 0.9rem;
+            }
+            
+            .arabic {
+                font-size: 1.5rem;
+                line-height: 2.2;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="pulse-animation">
+            <h1>صَلُّوا كَمَا رَأَيْتُمُونِي أُصَلِّي</h1>
+            <p class="subtitle">“Sholatlah kalian sebagaimana kalian melihat aku sholat”</p>
+        </header>
+        
+        <div class="prayer-container">
+            <!-- Takbiratul Ihram -->
+            <div class="prayer-step" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-title">
+                        <div class="step-number">1</div>
+                        <h2>Takbiratul Ihram</h2>
+                    </div>
+                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="prayer-content">
+                    <img src="https://i.pinimg.com/736x/ea/4d/53/ea4d5366cba73571060881dd1da259fc.jpg" alt="Takbiratul Ihram" class="step-image">
+                    
+                    <div class="arabic">
+                        اَللهُ أَكْبَرُ
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-language"></i> Terjemahan
+                        </div>
+                        <div class="section-content">
+                            <p><strong>"Allah Maha Besar"</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-book-open"></i> Tata Cara
+                        </div>
+                        <div class="section-content">
+                            <ul>
+                                <li>Angkat kedua tangan sejajar dengan bahu atau telinga dengan telapak tangan menghadap kiblat</li>
+                                <li>Ucapkan "Allahu Akbar" sambil meniatkan sholat dalam hati</li>
+                                <li>Turunkan tangan dan letakkan di atas perut (tangan kanan di atas tangan kiri)</li>
+                                <li>Pandangan mata fokus ke tempat sujud</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-lightbulb"></i> Penjelasan
+                        </div>
+                        <div class="section-content">
+                            <p>Takbiratul ihram adalah <span class="highlight">rukun sholat</span> yang menandai dimulainya sholat. Disebut "ihram" karena setelah takbir ini diharamkan (dilarang) melakukan hal-hal yang membatalkan sholat seperti makan, minum, atau berbicara.</p>
+                            <p>Makna "Allahu Akbar" adalah pengakuan bahwa Allah Maha Besar dan tidak ada yang lebih besar dari-Nya. Dengan mengucapkannya, kita melepaskan semua kesibukan dunia dan fokus hanya kepada Allah.</p>
+                            <p>Mengangkat tangan saat takbir merupakan <span class="highlight">sunnah</span> yang diajarkan Nabi Muhammad SAW. Jari-jari tangan direnggangkan sedang (tidak terlalu rapat maupun terlalu lebar).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Doa Iftitah -->
+            <div class="prayer-step" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-title">
+                        <div class="step-number">2</div>
+                        <h2>Doa Iftitah</h2>
+                    </div>
+                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="prayer-content">
+                    <img src="https://i.pinimg.com/736x/b5/16/42/b51642a1fcc4e76464812c744ef1b58a.jpg" alt="Doa Iftitah" class="step-image">
+                    
+                    <div class="arabic">
+                        اَللهُ أَكْبَرُ كَبِيْرًا وَالْحَمْدُ لِلّٰهِ كَثِيْرًا وَسُبْحَانَ اللهِ بُكْرَةً وَأَصِيْلًا
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-language"></i> Terjemahan
+                        </div>
+                        <div class="section-content">
+                            <p><strong>"Allah Maha Besar dengan segala kebesaran, segala puji bagi Allah dengan pujian yang banyak. Maha suci Allah, baik waktu pagi dan petang."</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-book-open"></i> Tata Cara
+                        </div>
+                        <div class="section-content">
+                            <ul>
+                                <li>Dibaca setelah takbiratul ihram sebelum membaca Al-Fatihah</li>
+                                <li>Bacaan pelan (sirr) baik untuk imam maupun makmum</li>
+                                <li>Tangan dalam keadaan bersedekap (tangan kanan di atas tangan kiri di dada)</li>
+                                <li>Pandangan tetap fokus ke tempat sujud</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-lightbulb"></i> Penjelasan
+                        </div>
+                        <div class="section-content">
+                            <p>Doa iftitah adalah <span class="highlight">sunnah sholat</span> yang sangat dianjurkan. Ada beberapa versi doa iftitah yang diajarkan Nabi Muhammad SAW, dan bacaan di atas adalah salah satu yang paling populer.</p>
+                            <p>Makna doa ini adalah pengagungan kepada Allah (takbir), pujian (tahmid), dan pensucian (tasbih). Doa ini mengingatkan kita akan kebesaran Allah di setiap waktu (pagi dan petang).</p>
+                            <p>Para ulama menganjurkan untuk <span class="highlight">berganti-ganti bacaan iftitah</span> pada waktu sholat yang berbeda untuk mengikuti sunnah Nabi yang beragam dalam hal ini.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Al-Fatihah -->
+            <div class="prayer-step" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-title">
+                        <div class="step-number">3</div>
+                        <h2>Surat Al-Fatihah</h2>
+                    </div>
+                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="prayer-content">
+                    <img src="https://i.pinimg.com/736x/ca/c5/a7/cac5a75f5e7c3471b4e7f4113cccc155.jpg" alt="Surat Al-Fatihah" class="step-image">
+                    
+                    <div class="arabic">
+                        بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ﴿١﴾ الْحَمْدُ لِلّٰهِ رَبِّ الْعٰلَمِيْنَ ﴿٢﴾ الرَّحْمٰنِ الرَّحِيْمِ ﴿٣﴾ مٰلِكِ يَوْمِ الدِّيْنِ ﴿٤﴾ اِيَّاكَ نَعْبُدُ وَاِيَّاكَ نَسْتَعِيْنُ ﴿٥﴾ اِهْدِنَا الصِّرَاطَ الْمُسْتَقِيْمَ ﴿٦﴾ صِرَاطَ الَّذِيْنَ اَنْعَمْتَ عَلَيْهِمْ ەۙ غَيْرِ الْمَغْضُوْبِ عَلَيْهِمْ وَلَا الضَّاۤلِّيْنَ ﴿٧﴾
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-language"></i> Terjemahan
+                        </div>
+                        <div class="section-content">
+                            <p><strong>1. Dengan nama Allah Yang Maha Pengasih, Maha Penyayang.</strong></p>
+                            <p><strong>2. Segala puji bagi Allah, Tuhan seluruh alam,</strong></p>
+                            <p><strong>3. Yang Maha Pengasih, Maha Penyayang,</strong></p>
+                            <p><strong>4. Pemilik hari pembalasan.</strong></p>
+                            <p><strong>5. Hanya kepada Engkaulah kami menyembah dan hanya kepada Engkaulah kami mohon pertolongan.</strong></p>
+                            <p><strong>6. Tunjukilah kami jalan yang lurus,</strong></p>
+                            <p><strong>7. (yaitu) jalan orang-orang yang telah Engkau beri nikmat kepadanya; bukan (jalan) mereka yang dimurkai, dan bukan (pula jalan) mereka yang sesat.</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-book-open"></i> Tata Cara
+                        </div>
+                        <div class="section-content">
+                            <ul>
+                                <li>Wajib dibaca pada setiap rakaat sholat</li>
+                                <li>Diawali dengan ta'awudz (A'udzu billahi minasy syaithanir rajim) dan basmalah</li>
+                                <li>Dibaca dengan tartil (perlahan dan jelas)</li>
+                                <li>Untuk makmum, diam ketika imam membaca keras (sholat jahr)</li>
+                                <li>Disunnahkan membaca "Amin" setelah selesai membaca Al-Fatihah</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-lightbulb"></i> Penjelasan
+                        </div>
+                        <div class="section-content">
+                            <p>Al-Fatihah adalah <span class="highlight">rukun sholat</span> yang harus dibaca dalam setiap rakaat. Nabi Muhammad SAW bersabda: "Tidak ada sholat bagi orang yang tidak membaca Al-Fatihah" (HR. Bukhari-Muslim).</p>
+                            <p>Surat ini disebut <span class="highlight">Ummul Qur'an</span> (induk Al-Qur'an) karena mengandung intisari seluruh ajaran Islam: tauhid, ibadah, janji dan ancaman, serta kisah-kisah umat terdahulu.</p>
+                            <p>Setiap ayat Al-Fatihah memiliki makna mendalam:
+                                <ul>
+                                    <li>Ayat 1-4: Mengandung pujian kepada Allah</li>
+                                    <li>Ayat 5: Mengandung pengakuan tauhid dan permohonan pertolongan</li>
+                                    <li>Ayat 6-7: Mengandung permohonan hidayah</li>
+                                </ul>
+                            </p>
+                            <p>Membaca "Amin" setelah Al-Fatihah disunnahkan dengan suara keras pada sholat jahriyah dan pelan pada sholat sirriyah.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ruku -->
+            <div class="prayer-step" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-title">
+                        <div class="step-number">4</div>
+                        <h2>Ruku'</h2>
+                    </div>
+                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="prayer-content">
+                    <img src="https://i.pinimg.com/736x/e0/fb/29/e0fb297f6a8d2b8c851e68c67096d1f7.jpg" alt="Ruku" class="step-image">
+                    
+                    <div class="arabic">
+                        سُبْحَانَ رَبِّيَ الْعَظِيْمِ وَبِحَمْدِهِ
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-language"></i> Terjemahan
+                        </div>
+                        <div class="section-content">
+                            <p><strong>"Mahasuci Tuhanku Yang Mahaagung dan dengan memuji-Nya"</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-book-open"></i> Tata Cara
+                        </div>
+                        <div class="section-content">
+                            <ul>
+                                <li>Angkat tangan sambil mengucapkan "Allahu Akbar" ketika akan ruku'</li>
+                                <li>Punggung harus rata dan kepala sejajar dengan punggung (tidak terlalu menunduk atau mendongak)</li>
+                                <li>Letakkan telapak tangan di lutut dengan jari-jari direnggangkan</li>
+                                <li>Kaki tegak dengan lutut tidak ditekuk terlalu dalam</li>
+                                <li>Bacaan diucapkan minimal 3 kali</li>
+                                <li>Ketika bangkit dari ruku', angkat tangan sambil mengucapkan "Sami'allahu liman hamidah"</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-lightbulb"></i> Penjelasan
+                        </div>
+                        <div class="section-content">
+                            <p>Ruku' adalah <span class="highlight">rukun sholat</span> yang harus dilakukan dengan tuma'ninah (tenang sejenak). Nabi SAW bersabda: "Seburuk-buruk pencuri adalah orang yang mencuri dalam sholatnya... yaitu yang tidak menyempurnakan ruku' dan sujudnya" (HR. Ahmad).</p>
+                            <p>Makna bacaan ruku' adalah mengagungkan Allah dan menyucikan-Nya dari segala kekurangan. Ulama menganjurkan untuk <span class="highlight">memperbanyak bacaan tasbih</span> dalam ruku' dan sujud karena saat itulah seorang hamba paling dekat dengan Tuhannya.</p>
+                            <p>Posisi ruku' yang benar:
+                                <ul>
+                                    <li>Tulang belakang lurus horizontal</li>
+                                    <li>Kepala sejajar dengan punggung (tidak terlalu menunduk atau mendongak)</li>
+                                    <li>Pandangan ke tempat sujud</li>
+                                    <li>Kaki tegak dengan lutut tidak terlalu ditekuk</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- I'tidal -->
+            <div class="prayer-step" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-title">
+                        <div class="step-number">5</div>
+                        <h2>I'tidal</h2>
+                    </div>
+                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="prayer-content">
+                    <img src="https://i.pinimg.com/736x/fd/93/5b/fd935b48e7f4a795c00fe0374c7f328a.jpg" alt="I'tidal" class="step-image">
+                    
+                    <div class="arabic">
+                        سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ
+                    </div>
+                    <div class="arabic">
+                        رَبَّنَا وَلَكَ الْحَمْدُ
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-language"></i> Terjemahan
+                        </div>
+                        <div class="section-content">
+                            <p><strong>"Allah mendengar orang yang memuji-Nya"</strong></p>
+                            <p><strong>"Wahai Tuhan kami, bagi-Mu segala puji"</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-book-open"></i> Tata Cara
+                        </div>
+                        <div class="section-content">
+                            <ul>
+                                <li>Bangkit dari ruku' sambil mengangkat tangan dan mengucapkan "Sami'allahu liman hamidah"</li>
+                                <li>Berdiri tegak sampai tulang punggung lurus</li>
+                                <li>Ketika sudah berdiri tegak, ucapkan "Rabbana wa lakal hamd"</li>
+                                <li>Posisi tangan bisa diangkat atau dibiarkan di samping tubuh</li>
+                                <li>Diam sejenak dalam keadaan tegak (tuma'ninah)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-lightbulb"></i> Penjelasan
+                        </div>
+                        <div class="section-content">
+                            <p>I'tidal adalah <span class="highlight">rukun sholat</span> yang sering dilalaikan. Nabi SAW bersabda: "Allah tidak akan melihat sholat seseorang yang tidak menegakkan tulang punggungnya di antara ruku' dan sujudnya" (HR. Ahmad).</p>
+                            <p>Makna bacaan i'tidal adalah pengakuan bahwa Allah Maha Mendengar segala pujian hamba-Nya. Bacaan "Rabbana wa lakal hamd" adalah pujian yang diajarkan Nabi SAW untuk diucapkan oleh makmum setelah imam mengucapkan "Sami'allahu liman hamidah".</p>
+                            <p>Beberapa kesalahan yang sering terjadi:
+                                <ul>
+                                    <li>Tidak tuma'ninah (terlalu cepat turun sujud)</li>
+                                    <li>Punggung tidak benar-benar tegak</li>
+                                    <li>Tidak mengangkat tangan saat bangkit dari ruku'</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sujud -->
+            <div class="prayer-step" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-title">
+                        <div class="step-number">6</div>
+                        <h2>Sujud</h2>
+                    </div>
+                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="prayer-content">
+                    <img src="https://i.pinimg.com/736x/c4/19/d5/c419d590f398264947dc3e248b3268cc.jpg" alt="Sujud" class="step-image">
+                    
+                    <div class="arabic">
+                        سُبْحَانَ رَبِّيَ الْأَعْلَى وَبِحَمْدِهِ
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-language"></i> Terjemahan
+                        </div>
+                        <div class="section-content">
+                            <p><strong>"Mahasuci Tuhanku Yang Mahatinggi dan dengan memuji-Nya"</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-book-open"></i> Tata Cara
+                        </div>
+                        <div class="section-content">
+                            <ul>
+                                <li>Turun sujud sambil mengucapkan "Allahu Akbar"</li>
+                                <li>7 anggota sujud harus menempel ke lantai: dahi, hidung, kedua telapak tangan, kedua lutut, dan kedua ujung kaki</li>
+                                <li>Jari-jari tangan dan kaki menghadap kiblat</li>
+                                <li>Siku diangkat (tidak menempel ke lantai)</li>
+                                <li>Bacaan diucapkan minimal 3 kali</li>
+                                <li>Paha tidak boleh menempel ke perut</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-lightbulb"></i> Penjelasan
+                        </div>
+                        <div class="section-content">
+                            <p>Sujud adalah <span class="highlight">rukun sholat</span> yang merupakan puncak penghambaan. Nabi SAW bersabda: "Keadaan paling dekat seorang hamba dengan Tuhannya adalah ketika ia sedang sujud, maka perbanyaklah doa" (HR. Muslim).</p>
+                            <p>Makna bacaan sujud adalah pengakuan bahwa Allah Maha Tinggi dan Maha Suci dari segala kekurangan. Dalam sujud dianjurkan untuk <span class="highlight">memperbanyak doa</span> karena merupakan waktu mustajab.</p>
+                            <p>Keutamaan sujud:
+                                <ul>
+                                    <li>Menghapus dosa-dosa</li>
+                                    <li>Mengangkat derajat</li>
+                                    <li>Mendekatkan hamba kepada Allah</li>
+                                    <li>Menjadi sebab dikabulkannya doa</li>
+                                </ul>
+                            </p>
+                            <p>Sujud harus dilakukan dengan tenang dan khusyuk, tidak terburu-buru.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Duduk di Antara Dua Sujud -->
+            <div class="prayer-step" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-title">
+                        <div class="step-number">7</div>
+                        <h2>Duduk di Antara Dua Sujud</h2>
+                    </div>
+                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="prayer-content">
+                    <img src="https://i.pinimg.com/736x/2b/61/a8/2b61a8749f48a6eaa85cb669d35f427c.jpg" alt="Duduk di Antara Dua Sujud" class="step-image">
+                    
+                    <div class="arabic">
+                        رَبِّ اغْفِرْ لِيْ وَارْحَمْنِيْ وَاجْبُرْنِيْ وَارْفَعْنِيْ وَارْزُقْنِيْ وَاهْدِنِيْ وَعَافِنِيْ وَاعْفُ عَنِّيْ
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-language"></i> Terjemahan
+                        </div>
+                        <div class="section-content">
+                            <p><strong>"Ya Allah, ampunilah aku, rahmatilah aku, cukupkanlah aku, angkatlah derajatku, berilah aku rezeki, berilah aku petunjuk, berilah kesehatan kepadaku dan ampunilah aku"</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-book-open"></i> Tata Cara
+                        </div>
+                        <div class="section-content">
+                            <ul>
+                                <li>Duduk iftirasy (duduk dengan kaki kiri diduduki dan kaki kanan tegak)</li>
+                                <li>Jari-jari kaki kanan menghadap kiblat</li>
+                                <li>Tangan di atas paha, mendekati lutut</li>
+                                <li>Pandangan ke tempat sujud</li>
+                                <li>Bacaan doa diucapkan satu kali</li>
+                                <li>Diam sejenak sebelum sujud kedua</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-lightbulb"></i> Penjelasan
+                        </div>
+                        <div class="section-content">
+                            <p>Duduk antara dua sujud adalah <span class="highlight">rukun sholat</span> yang harus dilakukan dengan tuma'ninah. Doa ini mencakup permohonan ampunan, rahmat, rezeki, petunjuk, dan kesehatan.</p>
+                            <p>Makna doa ini adalah permohonan menyeluruh untuk kebutuhan dunia dan akhirat:
+                                <ul>
+                                    <li><strong>Ghfirli</strong>: Ampunan dosa</li>
+                                    <li><strong>Warhamni</strong>: Rahmat Allah</li>
+                                    <li><strong>Wajburni</strong>: Penutup kekurangan</li>
+                                    <li><strong>Warfa'ni</strong>: Peningkatan derajat</li>
+                                    <li><strong>Warzuqni</strong>: Rezeki yang halal</li>
+                                    <li><strong>Wahdini</strong>: Petunjuk jalan lurus</li>
+                                    <li><strong>Wa'afini</strong>: Kesehatan jasmani-rohani</li>
+                                    <li><strong>Wa'fu 'anni</strong>: Ampunan dan maaf</li>
+                                </ul>
+                            </p>
+                            <p>Posisi duduk ini disebut iftirasy, berbeda dengan duduk tawarruk pada tasyahud akhir.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tasyahud Awal -->
+            <div class="prayer-step" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-title">
+                        <div class="step-number">8</div>
+                        <h2>Tasyahud Awal</h2>
+                    </div>
+                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="prayer-content">
+                    <img src="https://i.pinimg.com/736x/e9/00/ea/e900eac6c55470788a40b9e3edee2224.jpg" alt="Tasyahud Awal" class="step-image">
+                    
+                    <div class="arabic">
+                        التَّحِيَّاتُ لِلَّهِ وَالصَّلَوَاتُ وَالطَّيِّبَاتُ، السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ، السَّلَامُ عَلَيْنَا وَعَلَى عِبَادِ اللَّهِ الصَّالِحِينَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-language"></i> Terjemahan
+                        </div>
+                        <div class="section-content">
+                            <p><strong>"Segala penghormatan, sholat dan kebaikan adalah milik Allah. Semoga keselamatan tercurah kepadamu wahai Nabi, beserta rahmat Allah dan berkah-Nya. Semoga keselamatan tercurah kepada kami dan kepada hamba-hamba Allah yang shaleh. Aku bersaksi bahwa tiada Tuhan selain Allah dan aku bersaksi bahwa Muhammad adalah hamba dan utusan-Nya."</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-book-open"></i> Tata Cara
+                        </div>
+                        <div class="section-content">
+                            <ul>
+                                <li>Duduk iftirasy (sama seperti duduk antara dua sujud)</li>
+                                <li>Tangan kanan di atas paha kanan dengan jari menggenggam kecuali telunjuk</li>
+                                <li>Telunjuk digerakkan saat mengucapkan "Asyhadu an laa ilaaha illallah"</li>
+                                <li>Pandangan ke arah jari telunjuk yang digerakkan</li>
+                                <li>Dibaca pada rakaat kedua dalam sholat yang lebih dari dua rakaat</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-lightbulb"></i> Penjelasan
+                        </div>
+                        <div class="section-content">
+                            <p>Tasyahud awal adalah <span class="highlight">sunnah sholat</span> yang sangat dianjurkan. Bacaan ini mengandung:
+                                <ul>
+                                    <li>Pengakuan bahwa segala bentuk ibadah hanya untuk Allah</li>
+                                    <li>Sholawat kepada Nabi Muhammad SAW</li>
+                                    <li>Doa keselamatan untuk semua hamba Allah yang shaleh</li>
+                                    <li>Pengakuan tauhid dan kerasulan</li>
+                                </ul>
+                            </p>
+                            <p>Menggerakkan jari telunjuk saat tasyahud adalah <span class="highlight">sunnah</span> yang diajarkan Nabi SAW. Gerakan ini sebagai simbol pengesaan Allah (tauhid).</p>
+                            <p>Perbedaan tasyahud awal dan akhir:
+                                <ul>
+                                    <li>Posisi duduk: iftirasy (awal) vs tawarruk (akhir)</li>
+                                    <li>Tambahan sholawat ibrahimiyah pada tasyahud akhir</li>
+                                    <li>Doa setelah tasyahud akhir sebelum salam</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tasyahud Akhir -->
+            <div class="prayer-step" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-title">
+                        <div class="step-number">9</div>
+                        <h2>Tasyahud Akhir</h2>
+                    </div>
+                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="prayer-content">
+                    <img src="https://i.pinimg.com/736x/e9/0a/30/e90a307574e5074a922bbc1b93810994.jpg" alt="Tasyahud Akhir" class="step-image">
+                    
+                    <div class="arabic">
+                        التَّحِيَّاتُ لِلَّهِ وَالصَّلَوَاتُ وَالطَّيِّبَاتُ، السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ، السَّلَامُ عَلَيْنَا وَعَلَى عِبَادِ اللَّهِ الصَّالِحِينَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ
+                    </div>
+                    <div class="arabic">
+                        اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ، اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ، إِنَّكَ حَمِيدٌ مَجِيدٌ
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-language"></i> Terjemahan
+                        </div>
+                        <div class="section-content">
+                            <p><strong>(Bacaan tasyahud sama dengan tasyahud awal)</strong></p>
+                            <p><strong>"Ya Allah, limpahkanlah rahmat kepada Muhammad dan keluarga Muhammad, sebagaimana Engkau telah melimpahkan rahmat kepada Ibrahim dan keluarga Ibrahim. Sesungguhnya Engkau Maha Terpuji lagi Maha Mulia. Ya Allah, limpahkanlah berkah kepada Muhammad dan keluarga Muhammad, sebagaimana Engkau telah melimpahkan berkah kepada Ibrahim dan keluarga Ibrahim. Sesungguhnya Engkau Maha Terpuji lagi Maha Mulia."</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-book-open"></i> Tata Cara
+                        </div>
+                        <div class="section-content">
+                            <ul>
+                                <li>Duduk tawarruk (kaki kiri keluar di bawah kaki kanan yang tegak)</li>
+                                <li>Tangan kanan di atas paha kanan dengan jari menggenggam kecuali telunjuk</li>
+                                <li>Telunjuk digerakkan saat mengucapkan kalimat tauhid</li>
+                                <li>Setelah sholawat, dianjurkan membaca doa sebelum salam</li>
+                                <li>Dibaca pada rakaat terakhir sholat</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-lightbulb"></i> Penjelasan
+                        </div>
+                        <div class="section-content">
+                            <p>Tasyahud akhir adalah <span class="highlight">rukun sholat</span> yang harus dibaca sebelum salam. Sholawat kepada Nabi SAW dalam tasyahud akhir hukumnya <span class="highlight">wajib</span> menurut pendapat yang kuat.</p>
+                            <p>Keutamaan sholawat:
+                                <ul>
+                                    <li>Mendapatkan 10 rahmat Allah untuk setiap sholawat</li>
+                                    <li>Ditinggikan 10 derajat</li>
+                                    <li>Dihapuskan 10 kesalahan</li>
+                                    <li>Merupakan sebab dikabulkannya doa</li>
+                                </ul>
+                            </p>
+                            <p>Setelah tasyahud akhir, dianjurkan membaca doa sebelum salam seperti:
+                                <ul>
+                                    <li>Memohon perlindungan dari 4 hal (siksa kubur, siksa neraka, fitnah hidup dan mati, kejahatan Dajjal)</li>
+                                    <li>Memohon kebaikan dunia akhirat</li>
+                                    <li>Memohon ampunan dan rahmat</li>
+                                </ul>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Salam -->
+            <div class="prayer-step" onclick="toggleStep(this)">
+                <div class="step-header">
+                    <div class="step-title">
+                        <div class="step-number">10</div>
+                        <h2>Salam</h2>
+                    </div>
+                    <span class="arrow"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="prayer-content">
+                    <img src="https://i.pinimg.com/736x/97/b0/b4/97b0b47affd5d3357448fed8f375d57a.jpg" alt="Salam" class="step-image">
+                    
+                    <div class="arabic">
+                        السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-language"></i> Terjemahan
+                        </div>
+                        <div class="section-content">
+                            <p><strong>"Semoga keselamatan dan rahmat Allah tercurah kepadamu"</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-book-open"></i> Tata Cara
+                        </div>
+                        <div class="section-content">
+                            <ul>
+                                <li>Dilakukan dengan menengok ke kanan dan ke kiri</li>
+                                <li>Salam pertama (ke kanan) wajib, salam kedua (ke kiri) sunnah</li>
+                                <li>Pandangan mengikuti arah salam</li>
+                                <li>Disunnahkan menambahkan "wa barakatuh" pada salam kedua</li>
+                                <li>Setelah salam, dianjurkan beristighfar 3 kali dan berdzikir</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-lightbulb"></i> Penjelasan
+                        </div>
+                        <div class="section-content">
+                            <p>Salam adalah <span class="highlight">rukun sholat</span> yang menandai berakhirnya sholat. Nabi SAW bersabda: "Kunci sholat adalah bersuci, pembukanya takbir, dan penutupnya salam" (HR. Abu Daud).</p>
+                            <p>Makna salam adalah:
+                                <ul>
+                                    <li>Doa keselamatan untuk diri sendiri dan makhluk lain</li>
+                                    <li>Tanda telah selesainya ibadah sholat</li>
+                                    <li>Izin untuk berbicara dan melakukan aktivitas lainnya</li>
+                                </ul>
+                            </p>
+                            <p>Setelah salam dianjurkan:
+                                <ul>
+                                    <li>Beristighfar 3 kali</li>
+                                    <li>Membaca dzikir pagi/sore jika sholat subuh atau ashar</li>
+                                    <li>Membaca ayat kursi dan surat Al-Ikhlas, Al-Falaq, An-Nas</li>
+                                    <li>Berdoa sesuai kebutuhan</li>
+                                </ul>
+                            </p>
+                            <p>Sholat diakhiri dengan salam dua kali sebagai bentuk kesempurnaan dan kelengkapan ibadah.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2025 Panduan Sholat | By Val_Ky</p>
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-book"></i> Referensi</a>
+                <a href="#"><i class="fas fa-info-circle"></i> Tentang</a>
+                <a href="#"><i class="fas fa-envelope"></i> Kontak</a>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        function toggleStep(element) {
+            // Toggle active class on clicked element
+            element.classList.toggle('active');
+            
+            // Close other open steps
+            const allSteps = document.querySelectorAll('.prayer-step');
+            allSteps.forEach(step => {
+                if (step !== element && step.classList.contains('active')) {
+                    step.classList.remove('active');
+                }
+            });
+            
+            // Smooth scroll to the step if opening
+            if (element.classList.contains('active')) {
+                setTimeout(() => {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            }
+        }
+        
+        // Optional: Open first step by default
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstStep = document.querySelector('.prayer-step');
+            firstStep.classList.add('active');
+        });
+    </script>
+</body>
+</html>

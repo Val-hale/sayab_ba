@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لعبة الكتابة السريعة الإسلامية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c5e8a;
+            --secondary-color: #4a9d9c;
+            --accent-color: #e74c3c;
+            --light-color: #f8f1e5;
+            --dark-color: #1a1a1a;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: var(--dark-color);
+            text-align: center;
+            direction: rtl;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: var(--light-color);
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeInDown 1s ease;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--secondary-color);
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 20px auto;
+            display: none;
+            border: 2px solid var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode #game-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-color: var(--secondary-color);
+        }
+
+        .balloon {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 50%;
+            text-align: center;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease;
+            animation: float 3s ease-in-out infinite;
+            cursor: pointer;
+        }
+
+        .balloon:hover {
+            transform: scale(1.1);
+        }
+
+        .red { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .blue { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .green { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .yellow { background: linear-gradient(135deg, #f1c40f, #f39c12); color: #333; }
+        .purple { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+
+        #input {
+            font-size: 22px;
+            padding: 12px 20px;
+            margin: 20px auto;
+            width: 300px;
+            border: 2px solid var(--primary-color);
+            border-radius: 30px;
+            outline: none;
+            text-align: center;
+            display: none;
+            transition: all 0.3s ease;
+            font-family: 'Tajawal', sans-serif;
+            direction: rtl;
+        }
+
+        #input:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 10px rgba(74, 157, 156, 0.5);
+        }
+
+        .dark-mode #input {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 15px 25px;
+            min-width: 120px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .stat-box {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        #score { color: var(--primary-color); }
+        #timer { color: var(--secondary-color); }
+        #lives { color: var(--accent-color); }
+
+        .controls {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        select {
+            font-size: 18px;
+            padding: 10px 15px;
+            border-radius: 30px;
+            border: 2px solid var(--primary-color);
+            outline: none;
+            font-family: 'Tajawal', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode select {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Tajawal', sans-serif;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+
+        .mosque-icon {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            color: var(--primary-color);
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .cloud {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 60px;
+            z-index: 0;
+            animation: float 10s linear infinite;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes cloudMove {
+            0% {
+                transform: translateX(-100px);
+            }
+            100% {
+                transform: translateX(calc(100vw + 100px));
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            #input {
+                width: 80%;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    
+    <h1><i class="fas fa-book-quran"></i> لعبة الكتابة السريعة</h1>
+    <p>اختر مدة اللعب ثم اضغط بدء لاختبار سرعتك في الكتابة</p>
+    
+    <div class="controls">
+        <label for="time-select">مدة اللعب:</label>
+        <select id="time-select">
+            <option value="60">1 دقيقة</option>
+            <option value="120">2 دقائق</option>
+            <option value="180">3 دقائق</option>
+            <option value="240">4 دقائق</option>
+            <option value="300">5 دقائق</option>
+        </select>
+        <button onclick="startGame()"><i class="fas fa-play"></i> بدء اللعب</button>
+    </div>
+    
+    <div id="game-container">
+        <i class="fas fa-mosque mosque-icon"></i>
+        <div class="cloud" style="top: 20%; left: -100px; animation-delay: 0s;"><i class="fas fa-cloud"></i></div>
+        <div class="cloud" style="top: 30%; left: -200px; animation-delay: 3s;"><i class="fas fa-cloud"></i></div>
+        <div class="cloud" style="top: 15%; left: -300px; animation-delay: 6s;"><i class="fas fa-cloud"></i></div>
+    </div>
+    
+    <input type="text" id="input" autofocus placeholder="اكتب الكلمة هنا...">
+    
+    <div class="stats-container">
+        <div class="stat-box" id="score"><i class="fas fa-star"></i> النتيجة: 0</div>
+        <div class="stat-box" id="timer"><i class="fas fa-clock"></i> الوقت: <span id="time">0</span></div>
+        <div class="stat-box" id="lives"><i class="fas fa-heart"></i> الأرواح: <span id="hearts">❤️❤️❤️❤️❤️</span></div>
+    </div>
+
+<script>
+    const words = ["سلام", "مرحبا", "كتاب", "شمس", "قمر", "مدرسة", "حديقة", "طاولة", "كرسي", "سيارة", 
+                   "إسلام", "قرآن", "صلاة", "مسجد", "نبي", "رسول", "إيمان", "تقوى", "خير", "بركة"];
+    const colors = ["red", "blue", "green", "yellow", "purple"];
+    let score = 0;
+    let timeLeft;
+    let lives = 5;
+    let balloons = [];
+    let gameInterval, balloonInterval, moveInterval;
+
+    function createBalloon() {
+        let word = words[Math.floor(Math.random() * words.length)];
+        let balloon = document.createElement("div");
+        balloon.classList.add("balloon");
+        balloon.innerText = word;
+        
+        let color = colors[Math.floor(Math.random() * colors.length)];
+        balloon.classList.add(color);
+        balloon.dataset.word = word;
+        
+        // تحديد النقاط بناء على اللون
+        balloon.dataset.score = color === "red" ? 10 : 
+                               color === "blue" ? 7 : 
+                               color === "green" ? 5 : 
+                               color === "yellow" ? 3 : 2;
+        
+        balloon.style.left = Math.random() * 80 + "%";
+        balloon.style.top = "100%";
+        balloon.style.animationDelay = Math.random() * 2 + "s";
+        
+        document.getElementById("game-container").appendChild(balloon);
+        balloons.push(balloon);
+    }
+
+    function moveBalloons() {
+        balloons.forEach((balloon, index) => {
+            let top = parseInt(balloon.style.top);
+            if (top <= 0) {
+                balloon.remove();
+                balloons.splice(index, 1);
+                loseLife();
+            } else {
+                balloon.style.top = (top - 1) + "%";
+            }
+        });
+    }
+
+    function checkInput() {
+        let input = document.getElementById("input").value.trim();
+        balloons.forEach((balloon, index) => {
+            if (balloon.dataset.word === input) {
+                // تأثير عند النجاح
+                balloon.style.transform = "scale(1.5)";
+                balloon.style.opacity = "0";
+                balloon.style.transition = "all 0.5s ease";
+                
+                setTimeout(() => {
+                    balloon.remove();
+                    balloons.splice(index, 1);
+                }, 500);
+                
+                score += parseInt(balloon.dataset.score);
+                document.getElementById("score").innerHTML = `<i class="fas fa-star"></i> النتيجة: ${score}`;
+                document.getElementById("input").value = "";
+                
+                // تأثير صوتي (يمكن إضافة صوت حقيقي لاحقًا)
+                playSuccessSound();
+            }
+        });
+    }
+
+    function playSuccessSound() {
+        // يمكن استبدال هذا بصوت حقيقي
+        const audio = new Audio("data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...");
+        audio.volume = 0.2;
+        audio.play().catch(e => console.log("لا يمكن تشغيل الصوت: ", e));
+    }
+
+    function loseLife() {
+        lives--;
+        document.getElementById("hearts").textContent = "❤️".repeat(lives);
+        
+        // تأثير اهتزاز عند فقدان حياة
+        document.getElementById("game-container").style.animation = "shake 0.5s";
+        setTimeout(() => {
+            document.getElementById("game-container").style.animation = "";
+        }, 500);
+        
+        if (lives <= 0) {
+            endGame();
+        }
+    }
+
+    function startGame() {
+        // إعادة تعيين اللعبة
+        score = 0;
+        lives = 5;
+        balloons.forEach(b => b.remove());
+        balloons = [];
+        
+        timeLeft = parseInt(document.getElementById("time-select").value);
+        document.getElementById("time").textContent = timeLeft;
+        document.getElementById("score").innerHTML = `<i class="fas fa-star"></i> النتيجة: ${score}`;
+        document.getElementById("hearts").textContent = "❤️".repeat(lives);
+        
+        // إظهار العناصر
+        document.getElementById("game-container").style.display = "block";
+        document.getElementById("input").style.display = "block";
+        document.querySelector(".stats-container").style.display = "flex";
+        document.getElementById("input").focus();
+        
+        // بدء المؤقتات
+        balloonInterval = setInterval(createBalloon, 1500);
+        moveInterval = setInterval(moveBalloons, 50);
+        gameInterval = setInterval(() => {
+            timeLeft--;
+            document.getElementById("time").textContent = timeLeft;
+            if (timeLeft <= 0) {
+                endGame();
+            }
+        }, 1000);
+    }
+
+    function endGame() {
+        clearInterval(gameInterval);
+        clearInterval(balloonInterval);
+        clearInterval(moveInterval);
+        
+        // عرض النتيجة النهائية بتصميم جميل
+        const resultHTML = `
+            <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                        background: rgba(0,0,0,0.8); display: flex; justify-content: center; 
+                        align-items: center; z-index: 1000; animation: fadeIn 0.5s;">
+                <div style="background: white; padding: 30px; border-radius: 15px; 
+                            max-width: 500px; width: 90%; text-align: center;
+                            box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                    <h2 style="color: var(--primary-color); margin-top: 0;">
+                        <i class="fas fa-trophy"></i> النتيجة النهائية
+                    </h2>
+                    <p style="font-size: 1.5rem; margin: 20px 0;">
+                        لقد سجلت <span style="color: var(--accent-color); font-weight: bold;">${score}</span> نقطة!
+                    </p>
+                    <button onclick="location.reload()" 
+                            style="background: var(--primary-color); color: white; 
+                                   border: none; padding: 12px 30px; border-radius: 30px; 
+                                   font-size: 1.1rem; cursor: pointer; margin-top: 20px;">
+                        <i class="fas fa-redo"></i> لعب مرة أخرى
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.body.insertAdjacentHTML("beforeend", resultHTML);
+    }
+
+    // تبديل الوضع الليلي
+    document.getElementById("themeToggle").addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+        const icon = document.querySelector("#themeToggle i");
+        if (document.body.classList.contains("dark-mode")) {
+            icon.classList.remove("fa-moon");
+            icon.classList.add("fa-sun");
+        } else {
+            icon.classList.remove("fa-sun");
+            icon.classList.add("fa-moon");
+        }
+    });
+
+    // حدث الكتابة
+    document.getElementById("input").addEventListener("input", checkInput);
+    
+    // حدث الضغط على زر الإدخال
+    document.getElementById("input").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+            checkInput();
+        }
+    });
+</script>
+
+</body>
+</html>

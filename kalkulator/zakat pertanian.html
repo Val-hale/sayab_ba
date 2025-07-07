@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Zakat Pertanian</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+        
+        :root {
+            --primary: #2e7d32;
+            --secondary: #f5f5f5;
+            --accent: #fdd835;
+            --text: #333;
+            --light: #fff;
+        }
+        
+        body {
+            font-family: 'Amiri', serif;
+            background-color: var(--secondary);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            background-image: url('https://example.com/islamic-pattern.png');
+            background-size: 300px;
+            background-blend-mode: overlay;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+        
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+            position: relative;
+        }
+        
+        h1::after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: var(--accent);
+            margin: 10px auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Amiri', serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 5px rgba(46, 125, 50, 0.3);
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Amiri', serif;
+            font-size: 1.1rem;
+            display: block;
+            margin: 30px auto;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button:hover {
+            background-color: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        button::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        button:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+        
+        .result {
+            background-color: #f8f8f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border-left: 5px solid var(--primary);
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result h2 {
+            color: var(--primary);
+            margin-top: 0;
+            text-align: center;
+        }
+        
+        .result p {
+            line-height: 1.6;
+            text-align: justify;
+        }
+        
+        .ayat {
+            font-size: 1.2rem;
+            text-align: center;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 20px 0;
+            direction: rtl;
+        }
+        
+        .decoration {
+            text-align: center;
+            margin: 20px 0;
+            opacity: 0.7;
+        }
+        
+        .decoration span {
+            font-size: 2rem;
+            color: var(--primary);
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .decoration span:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+        
+        .decoration span:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kalkulator Zakat Pertanian</h1>
+        <div style="text-align:center; margin-bottom:18px; color:#2e7d32; font-size:1.05rem;">
+            Hasil perhitungan ini bersifat informatif. Untuk kepastian,Teman-teman konsultasikan dengan ahli zakat atau ustadz, Ok Gaesssss😊
+        </div>
+        <div class="decoration">
+            <span>🌾</span>
+            <span>🕌</span>
+            <span>🌱</span>
+        </div>
+        
+        <div class="form-group">
+            <label for="hasil-panen">Hasil Panen (kg)</label>
+            <input type="number" id="hasil-panen" placeholder="Masukkan jumlah hasil panen dalam kilogram">
+        </div>
+        
+        <div class="form-group">
+            <label for="jenis-pengairan">Jenis Pengairan</label>
+            <select id="jenis-pengairan">
+                <option value="irigasi">Irigasi (menggunakan biaya)</option>
+                <option value="alam">Air Hujan/Alam (tanpa biaya)</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="harga-beras">Harga Beras per kg (Rp)</label>
+            <input type="number" id="harga-beras" placeholder="Masukkan harga beras per kilogram">
+        </div>
+        
+        <button id="hitung">Hitung Zakat</button>
+        
+        <div class="ayat">
+            ﴿وَهُوَ الَّذِي أَنشَأَ جَنَّاتٍ مَّعْرُوشَاتٍ وَغَيْرَ مَعْرُوشَاتٍ وَالنَّخْلَ وَالزَّرْعَ مُخْتَلِفًا أُكُلُهُ وَالزَّيْتُونَ وَالرُّمَّانَ مُتَشَابِهًا وَغَيْرَ مُتَشَابِهٍ كُلُوا مِن ثَمَرِهِ إِذَا أَثْمَرَ وَآتُوا حَقَّهُ يَوْمَ حَصَادِهِ﴾
+        </div>
+        
+        <div id="result" class="result">
+            <h2>Hasil Perhitungan Zakat</h2>
+            <p id="hasil-text"></p>
+            <p id="nishab-text"></p>
+            <p id="keterangan"></p>
+        </div>
+    </div>
+    
+    <footer>
+        © 2023 By Val_Ky
+    </footer>
+    
+    <script>
+        document.getElementById('hitung').addEventListener('click', function() {
+            // Animasi tombol
+            this.classList.add('clicked');
+            setTimeout(() => this.classList.remove('clicked'), 300);
+            
+            // Ambil nilai input
+            const hasilPanen = parseFloat(document.getElementById('hasil-panen').value);
+            const jenisPengairan = document.getElementById('jenis-pengairan').value;
+            const hargaBeras = parseFloat(document.getElementById('harga-beras').value);
+            
+            // Validasi input
+            if (isNaN(hasilPanen) || isNaN(hargaBeras)) {
+                alert('Mohon lengkapi semua data dengan benar');
+                return;
+            }
+            
+            // Hitung nishab (653 kg gabah atau setara dengan 520 kg beras)
+            const nishabBeras = 520;
+            const nishabGabah = 653;
+            
+            // Konversi ke beras (asumsi 100 kg gabah = 62 kg beras)
+            const konversiBeras = hasilPanen * 0.62;
+            const nilaiPanen = konversiBeras * hargaBeras;
+            
+            // Tentukan persentase zakat
+            const persentase = jenisPengairan === 'irigasi' ? 0.05 : 0.1;
+            
+            // Hitung zakat
+            let zakatBeras = 0;
+            let zakatRupiah = 0;
+            let keterangan = '';
+            
+            if (konversiBeras >= nishabBeras) {
+                zakatBeras = hasilPanen * persentase;
+                zakatRupiah = zakatBeras * hargaBeras;
+                keterangan = 'Hasil panen Anda telah mencapai nishab, wajib mengeluarkan zakat.';
+            } else {
+                keterangan = 'Hasil panen Anda belum mencapai nishab (520 kg beras), tidak wajib zakat. Namun dianjurkan untuk bersedekah.';
+            }
+            
+            // Tampilkan hasil
+            document.getElementById('hasil-text').innerHTML = `
+                <strong>Total Hasil Panen:</strong> ${hasilPanen} kg gabah (setara dengan ${konversiBeras.toFixed(2)} kg beras)<br>
+                <strong>Jenis Pengairan:</strong> ${jenisPengairan === 'irigasi' ? 'Irigasi (5%)' : 'Air Hujan/Alam (10%)'}<br>
+                ${zakatBeras > 0 ? `<strong>Zakat yang harus dikeluarkan:</strong> ${zakatBeras.toFixed(2)} kg beras (Rp ${zakatRupiah.toFixed(2)})` : ''}
+            `;
+            
+            document.getElementById('nishab-text').innerHTML = `
+                <strong>Nishab zakat pertanian:</strong> 653 kg gabah atau setara dengan 520 kg beras
+            `;
+            
+            document.getElementById('keterangan').textContent = keterangan;
+            
+            // Tampilkan hasil dengan animasi
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>

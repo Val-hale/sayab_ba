@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pengacak Soal PAI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+  <style>
+    *  {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Amiri', serif;
+      background: linear-gradient(135deg, #1a3c34, #4CAF50);
+      min-height: 100vh;
+      /* Hapus display: flex dan align-items/justify-content agar scroll aktif */
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden; /* Hanya batasi scroll horizontal */
+      color: #333;
+    }
+
+    /* Background Animation */
+    .bg-animation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://www.transparenttextures.com/patterns/arabesque.png');
+      opacity: 0.1;
+      animation: moveBg 20s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes moveBg {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(50px, 50px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      max-width: 700px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      margin: 40px auto; /* Tambahkan agar container selalu di tengah dan ada jarak atas bawah */
+    }
+
+    /* Responsive: lebar container menyesuaikan layar */
+    @media (max-width: 800px) {
+      .container {
+        max-width: 98vw;
+        padding: 15px;
+        margin: 20px 1vw;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        max-width: 100vw;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+
+      textarea {
+        font-size: 14px;
+      }
+    }
+
+    .bismillah {
+      font-size: 24px;
+      color: #FFD700;
+      margin-bottom: 20px;
+      animation: fadeInBismillah 2s ease-in;
+      font-weight: bold;
+    }
+
+    @keyframes fadeInBismillah {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: #1a3c34;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 250px;
+      padding: 15px;
+      border: 2px solid #FFD700;
+      border-radius: 10px;
+      font-size: 16px;
+      resize: vertical;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    textarea:focus {
+      border-color: #1a3c34;
+      box-shadow: 0 0 10px rgba(26, 60, 52, 0.3);
+      outline: none;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      background: #1a3c34;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(26, 60, 52, 0.4);
+    }
+
+    button::after {
+      content: '✨';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      font-size: 20px;
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    button:active::after {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+      transition: none;
+    }
+
+    .clear-btn {
+      background: #dc3545;
+    }
+
+    .clear-btn:hover {
+      box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+    }
+
+    .copy-btn {
+      background: #28a745;
+    }
+
+    .copy-btn:hover {
+      box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+    }
+
+    .pdf-btn {
+      background: #e74c3c;
+    }
+
+    .pdf-btn:hover {
+      box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+    }
+
+    .word-btn {
+      background: #2ecc71;
+    }
+
+    .word-btn:hover {
+      box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+    }
+
+    .error {
+      color: #dc3545;
+      margin-top: 10px;
+      font-size: 14px;
+      display: none;
+      animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .output-container {
+      margin-top: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+
+    .output-container.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #outputSoal {
+      background: #f8f9fa;
+      height: 200px;
+    }
+
+    .greeting {
+      color: #FFD700;
+      font-size: 18px;
+      margin-top: 20px;
+      animation: fadeIn 1s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+
+      h2 {
+        font-size: 24px;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+
+      textarea {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-animation"></div>
+  <div class="container">
+    <div class="bismillah">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
+    <h2>Pengacak Soal PAI</h2>
+    <p>Masukkan soal (satu soal per blok, dimulai dengan nomor):</p>
+    <textarea id="inputSoal" placeholder="Contoh:
+1. Apa rukun Islam yang pertama?
+a. Shalat
+b. Syahadat
+c. Zakat
+2. Siapa nabi terakhir?
+a. Nabi Musa
+b. Nabi Muhammad
+c. Nabi Isa"></textarea>
+    <div class="button-group">
+      <button onclick="acakSoal()">Acak Soal</button>
+      <button class="clear-btn" onclick="clearInput()">Hapus Input</button>
+    </div>
+    <p class="error" id="errorMessage"></p>
+    <div class="output-container" id="outputContainer">
+      <h3>Hasil Soal yang Diacak</h3>
+      <textarea id="outputSoal" readonly></textarea>
+      <div class="button-group">
+        <button class="copy-btn" onclick="copyOutput()">Salin Hasil</button>
+        <button class="pdf-btn" onclick="downloadPDF()">Download PDF</button>
+        <button class="word-btn" onclick="downloadWord()">Download Word</button>
+      </div>
+      <p class="greeting" id="islamicGreeting"></p>
+    </div>
+  </div>
+
+  <!-- External Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.8.2/docx.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+  <script>
+    const { jsPDF } = window.jspdf;
+    const { Document, Packer, Paragraph, TextRun } = docx;
+
+    const islamicGreetings = [
+      "Semoga Allah memudahkan langkahmu.",
+      "Jadilah pelajar yang ikhlas karena Allah.",
+      "Ilmu adalah cahaya dari Allah.",
+      "Barang siapa yang menuntut ilmu, maka Allah akan memudahkan jalannya ke surga."
+    ];
+
+    function acakSoal() {
+      const input = document.getElementById('inputSoal').value.trim();
+      const errorMessage = document.getElementById('errorMessage');
+      const outputContainer = document.getElementById('outputContainer');
+      const outputSoal = document.getElementById('outputSoal');
+      const islamicGreeting = document.getElementById('islamicGreeting');
+
+      // Validation
+      if (input === '') {
+        showError(errorMessage, 'Silakan masukkan soal terlebih dahulu!');
+        outputContainer.style.display = 'none';
+        return;
+      }
+
+      const soalArray = input.split(/(?=\n\d+\.\s)/).map(s => s.trim()).filter(s => s);
+      if (soalArray.length < 2) {
+        showError(errorMessage, 'Masukkan minimal dua soal!');
+        outputContainer.style.display = 'none';
+        return;
+      }
+
+      errorMessage.style.display = 'none';
+      outputContainer.style.display = 'block';
+      outputContainer.classList.add('show');
+
+      // Shuffle questions
+      const hasilAcak = soalArray.sort(() => Math.random() - 0.5);
+      const hasilRenumber = hasilAcak.map((soal, index) => {
+        return soal.replace(/^\d+\.\s/, `${index + 1}. `);
+      });
+
+      outputSoal.value = hasilRenumber.join('\n\n');
+      islamicGreeting.textContent = islamicGreetings[Math.floor(Math.random() * islamicGreetings.length)];
+    }
+
+    function clearInput() {
+      const inputSoal = document.getElementById('inputSoal');
+      const outputSoal = document.getElementById('outputSoal');
+      const outputContainer = document.getElementById('outputContainer');
+      const errorMessage = document.getElementById('errorMessage');
+      const islamicGreeting = document.getElementById('islamicGreeting');
+
+      inputSoal.value = '';
+      outputSoal.value = '';
+      outputContainer.style.display = 'none';
+      errorMessage.style.display = 'none';
+      islamicGreeting.textContent = '';
+    }
+
+    function copyOutput() {
+      const outputSoal = document.getElementById('outputSoal');
+      navigator.clipboard.writeText(outputSoal.value).then(() => {
+        alert('Hasil berhasil disalin ke clipboard!');
+      }).catch(() => {
+        showError(document.getElementById('errorMessage'), 'Gagal menyalin hasil!');
+      });
+    }
+
+    function downloadPDF() {
+      const outputSoal = document.getElementById('outputSoal').value;
+      if (!outputSoal) {
+        showError(document.getElementById('errorMessage'), 'Tidak ada hasil untuk diunduh!');
+        return;
+      }
+
+      const doc = new jsPDF();
+      doc.setFont('Amiri');
+      doc.setFontSize(16);
+      doc.text('Hasil Pengacakan Soal PAI', 20, 20);
+
+      const lines = doc.splitTextToSize(outputSoal, 170);
+      let y = 30;
+      doc.setFontSize(12);
+      lines.forEach(line => {
+        if (y > 270) {
+          doc.addPage();
+          y = 20;
+        }
+        doc.text(line, 20, y);
+        y += 7;
+      });
+
+      doc.save('soal_pai_acak.pdf');
+    }
+
+    function downloadWord() {
+      const outputSoal = document.getElementById('outputSoal').value;
+      if (!outputSoal) {
+        showError(document.getElementById('errorMessage'), 'Tidak ada hasil untuk diunduh!');
+        return;
+      }
+
+      const doc = new Document({
+        sections: [{
+          properties: {},
+          children: [
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: 'Hasil Pengacakan Soal PAI',
+                  bold: true,
+                  size: 32,
+                }),
+              ],
+              spacing: { after: 200 },
+            }),
+            ...outputSoal.split('\n\n').flatMap((soal, index) => {
+              const lines = soal.split('\n');
+              return [
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: lines[0],
+                      bold: true,
+                      size: 24,
+                    }),
+                  ],
+                  spacing: { after: 100 },
+                }),
+                ...lines.slice(1).map(line => new Paragraph({
+                  children: [new TextRun({ text: line, size: 24 })],
+                  spacing: { after: 100 },
+                })),
+              ];
+            }),
+          ],
+        }],
+      });
+
+      Packer.toBlob(doc).then(blob => {
+        saveAs(blob, 'soal_pai_acak.docx');
+      }).catch(() => {
+        showError(document.getElementById('errorMessage'), 'Gagal menghasilkan file Word!');
+      });
+    }
+
+    function showError(element, message) {
+      element.textContent = message;
+      element.style.display = 'block';
+      setTimeout(() => element.style.display = 'none', 3000);
+    }
+  </script>
+</body>
+</html>

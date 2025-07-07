@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Zakat Hewan Ternak</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap');
+        
+        :root {
+            --primary: #5D4037;
+            --secondary: #EFEBE9;
+            --accent: #8D6E63;
+            --text: #3E2723;
+            --light: #fff;
+        }
+        
+        body {
+            font-family: 'Amiri', serif;
+            background-color: var(--secondary);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            background-image: url('https://example.com/islamic-pattern-2.png');
+            background-size: 300px;
+            background-blend-mode: overlay;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+        
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.3rem;
+            position: relative;
+        }
+        
+        h1::after {
+            content: "";
+            display: block;
+            width: 120px;
+            height: 3px;
+            background: var(--accent);
+            margin: 15px auto;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            padding: 12px 25px;
+            background: var(--secondary);
+            border: none;
+            cursor: pointer;
+            font-family: 'Amiri', serif;
+            font-size: 1rem;
+            margin: 0 5px;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+            color: var(--text);
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .tab-button.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .tab-button:hover:not(.active) {
+            background: #D7CCC8;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #BCAAA4;
+            border-radius: 8px;
+            font-family: 'Amiri', serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: var(--secondary);
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 8px rgba(93, 64, 55, 0.3);
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Amiri', serif;
+            font-size: 1.1rem;
+            display: block;
+            margin: 30px auto;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button:hover {
+            background-color: #3E2723;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        button::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        button:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+        
+        .result {
+            background-color: #EFEBE9;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border-left: 5px solid var(--primary);
+            display: none;
+            animation: fadeIn 0.7s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result h2 {
+            color: var(--primary);
+            margin-top: 0;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+        
+        .result p {
+            line-height: 1.8;
+            text-align: justify;
+            font-size: 1.1rem;
+        }
+        
+        .ayat {
+            font-family: 'Scheherazade New', serif;
+            font-size: 1.5rem;
+            text-align: center;
+            color: var(--primary);
+            font-weight: bold;
+            margin: 30px 0;
+            direction: rtl;
+            line-height: 2.5rem;
+        }
+        
+        .decoration {
+            text-align: center;
+            margin: 30px 0;
+            opacity: 0.8;
+        }
+        
+        .decoration span {
+            font-size: 2.5rem;
+            color: var(--primary);
+            display: inline-block;
+            margin: 0 10px;
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .decoration span:nth-child(1) { animation-delay: 0s; }
+        .decoration span:nth-child(2) { animation-delay: 0.5s; }
+        .decoration span:nth-child(3) { animation-delay: 1s; }
+        .decoration span:nth-child(4) { animation-delay: 1.5s; }
+        
+        .info-box {
+            background-color: #D7CCC8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .info-box h3 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #5D4037;
+            font-size: 0.9rem;
+            padding: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .tab-button {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kalkulator Zakat Hewan Ternak</h1>
+        
+        <div class="decoration">
+            <span>🐑</span>
+            <span>🐄</span>
+            <span>🐪</span>
+            <span>🕌</span>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'kambing')">Kambing/Domba</button>
+            <button class="tab-button" onclick="openTab(event, 'sapi')">Sapi/Kerbau</button>
+            <button class="tab-button" onclick="openTab(event, 'unta')">Unta</button>
+        </div>
+        
+        <!-- Tab Kambing/Domba -->
+        <div id="kambing" class="tab-content active">
+            <div class="info-box">
+                <h3>Ketentuan Zakat Kambing/Domba</h3>
+                <p>Nishab zakat kambing/domba adalah 40 ekor. Zakat yang harus dikeluarkan adalah 1 ekor kambing untuk setiap 40-120 ekor, 2 ekor untuk 121-200 ekor, dan seterusnya.</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="jumlah-kambing">Jumlah Kambing/Domba yang Dimiliki</label>
+                <input type="number" id="jumlah-kambing" placeholder="Masukkan jumlah kambing/domba">
+            </div>
+            
+            <button onclick="hitungZakatKambing()">Hitung Zakat</button>
+        </div>
+        
+        <!-- Tab Sapi/Kerbau -->
+        <div id="sapi" class="tab-content">
+            <div class="info-box">
+                <h3>Ketentuan Zakat Sapi/Kerbau</h3>
+                <p>Nishab zakat sapi/kerbau adalah 30 ekor. Zakat yang harus dikeluarkan adalah 1 ekor anak sapi berumur 1 tahun untuk setiap 30-39 ekor, 1 ekor anak sapi berumur 2 tahun untuk 40-59 ekor, dan seterusnya.</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="jumlah-sapi">Jumlah Sapi/Kerbau yang Dimiliki</label>
+                <input type="number" id="jumlah-sapi" placeholder="Masukkan jumlah sapi/kerbau">
+            </div>
+            
+            <button onclick="hitungZakatSapi()">Hitung Zakat</button>
+        </div>
+        
+        <!-- Tab Unta -->
+        <div id="unta" class="tab-content">
+            <div class="info-box">
+                <h3>Ketentuan Zakat Unta</h3>
+                <p>Nishab zakat unta adalah 5 ekor. Zakat yang harus dikeluarkan bervariasi mulai dari 1 kambing untuk 5-9 ekor unta, 2 kambing untuk 10-14 ekor, dan seterusnya dengan ketentuan khusus.</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="jumlah-unta">Jumlah Unta yang Dimiliki</label>
+                <input type="number" id="jumlah-unta" placeholder="Masukkan jumlah unta">
+            </div>
+            
+            <button onclick="hitungZakatUnta()">Hitung Zakat</button>
+        </div>
+        
+        <div class="ayat">
+            ﴿وَفِي أَمْوَالِهِمْ حَقٌّ لِّلسَّائِلِ وَالْمَحْرُومِ﴾
+            <div style="font-family: 'Amiri', serif; direction: ltr; font-size: 1rem; margin-top: 10px;">
+                "Dan pada harta-harta mereka ada hak untuk orang miskin yang meminta dan orang miskin yang tidak meminta." (QS. Adz-Dzariyat: 19)
+            </div>
+        </div>
+        
+        <div id="result" class="result">
+            <h2>Hasil Perhitungan Zakat</h2>
+            <div id="hasil-text"></div>
+            <div id="nishab-text"></div>
+            <div id="keterangan"></div>
+        </div>
+    </div>
+    
+    <footer>
+        © 2023 By Val_Ky
+    </footer>
+    
+    <script>
+        // Fungsi untuk berpindah tab (diperbaiki agar event parameter digunakan)
+        function openTab(event, tabName) {
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+
+            const tabButtons = document.getElementsByClassName('tab-button');
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+
+            document.getElementById(tabName).classList.add('active');
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+        }
+
+        // Fungsi menghitung zakat kambing/domba
+        function hitungZakatKambing() {
+            const jumlah = parseInt(document.getElementById('jumlah-kambing').value);
+
+            if (isNaN(jumlah) || jumlah < 0) {
+                alert('Mohon masukkan jumlah yang valid');
+                return;
+            }
+
+            let zakat = 0;
+            let keterangan = '';
+
+            if (jumlah < 40) {
+                keterangan = 'Jumlah kambing/domba Anda belum mencapai nishab (40 ekor), tidak wajib zakat. Namun dianjurkan untuk bersedekah.';
+            } else {
+                if (jumlah <= 120) {
+                    zakat = 1;
+                } else if (jumlah <= 200) {
+                    zakat = 2;
+                } else if (jumlah <= 300) {
+                    zakat = 3;
+                } else {
+                    // Untuk setiap 100 ekor tambahan, zakat bertambah 1 ekor
+                    zakat = 3 + Math.floor((jumlah - 300) / 100);
+                }
+
+                keterangan = `Anda memiliki ${jumlah} ekor kambing/domba, wajib mengeluarkan zakat sebanyak ${zakat} ekor kambing/domba.`;
+            }
+
+            tampilkanHasil(
+                jumlah,
+                'kambing/domba',
+                '40 ekor',
+                zakat,
+                keterangan
+            );
+        }
+
+        // Fungsi menghitung zakat sapi/kerbau
+        function hitungZakatSapi() {
+            const jumlah = parseInt(document.getElementById('jumlah-sapi').value);
+
+            if (isNaN(jumlah) || jumlah < 0) {
+                alert('Mohon masukkan jumlah yang valid');
+                return;
+            }
+
+            let zakat = '';
+            let keterangan = '';
+
+            if (jumlah < 30) {
+                keterangan = 'Jumlah sapi/kerbau Anda belum mencapai nishab (30 ekor), tidak wajib zakat. Namun dianjurkan untuk bersedekah.';
+            } else {
+                if (jumlah >= 30 && jumlah <= 39) {
+                    zakat = '1 ekor anak sapi berumur 1 tahun (tabi\')';
+                } else if (jumlah >= 40 && jumlah <= 59) {
+                    zakat = '1 ekor anak sapi berumur 2 tahun (musinnah)';
+                } else if (jumlah >= 60 && jumlah <= 69) {
+                    zakat = '2 ekor anak sapi berumur 1 tahun (tabi\')';
+                } else if (jumlah >= 70 && jumlah <= 79) {
+                    zakat = '1 ekor anak sapi berumur 2 tahun dan 1 ekor anak sapi berumur 1 tahun';
+                } else if (jumlah >= 80 && jumlah <= 89) {
+                    zakat = '2 ekor anak sapi berumur 2 tahun';
+                } else if (jumlah >= 90 && jumlah <= 99) {
+                    zakat = '3 ekor anak sapi berumur 1 tahun';
+                } else if (jumlah >= 100) {
+                    zakat = 'Perhitungan khusus (konsultasikan dengan ulama)';
+                }
+
+                keterangan = `Anda memiliki ${jumlah} ekor sapi/kerbau, wajib mengeluarkan zakat sebanyak ${zakat}.`;
+            }
+
+            tampilkanHasil(
+                jumlah,
+                'sapi/kerbau',
+                '30 ekor',
+                zakat,
+                keterangan
+            );
+        }
+
+        // Fungsi menghitung zakat unta
+        function hitungZakatUnta() {
+            const jumlah = parseInt(document.getElementById('jumlah-unta').value);
+
+            if (isNaN(jumlah) || jumlah < 0) {
+                alert('Mohon masukkan jumlah yang valid');
+                return;
+            }
+
+            let zakat = '';
+            let keterangan = '';
+
+            if (jumlah < 5) {
+                keterangan = 'Jumlah unta Anda belum mencapai nishab (5 ekor), tidak wajib zakat. Namun dianjurkan untuk bersedekah.';
+            } else {
+                if (jumlah >= 5 && jumlah <= 9) {
+                    zakat = '1 ekor kambing';
+                } else if (jumlah >= 10 && jumlah <= 14) {
+                    zakat = '2 ekor kambing';
+                } else if (jumlah >= 15 && jumlah <= 19) {
+                    zakat = '3 ekor kambing';
+                } else if (jumlah >= 20 && jumlah <= 24) {
+                    zakat = '4 ekor kambing';
+                } else if (jumlah >= 25 && jumlah <= 35) {
+                    zakat = '1 ekor unta bintu makhad (betina umur 1 tahun)';
+                } else if (jumlah >= 36 && jumlah <= 45) {
+                    zakat = '1 ekor unta bintu labun (betina umur 2 tahun)';
+                } else if (jumlah >= 46 && jumlah <= 60) {
+                    zakat = '1 ekor unta hiqqah (betina umur 3 tahun)';
+                } else if (jumlah >= 61 && jumlah <= 75) {
+                    zakat = '1 ekor unta jaz\'ah (betina umur 4 tahun)';
+                } else if (jumlah >= 76 && jumlah <= 90) {
+                    zakat = '2 ekor unta bintu labun (betina umur 2 tahun)';
+                } else if (jumlah >= 91 && jumlah <= 120) {
+                    zakat = '2 ekor unta hiqqah (betina umur 3 tahun)';
+                } else {
+                    zakat = 'Perhitungan khusus (konsultasikan dengan ulama)';
+                }
+
+                keterangan = `Anda memiliki ${jumlah} ekor unta, wajib mengeluarkan zakat sebanyak ${zakat}.`;
+            }
+
+            tampilkanHasil(
+                jumlah,
+                'unta',
+                '5 ekor',
+                zakat,
+                keterangan
+            );
+        }
+
+        // Fungsi untuk menampilkan hasil
+        function tampilkanHasil(jumlah, jenis, nishab, zakat, keterangan) {
+            document.getElementById('hasil-text').innerHTML = `
+                <p><strong>Jenis Ternak:</strong> ${jenis}</p>
+                <p><strong>Jumlah yang Dimiliki:</strong> ${jumlah} ekor</p>
+                ${zakat ? `<p><strong>Zakat yang Harus Dikeluarkan:</strong> ${zakat}</p>` : ''}
+            `;
+            
+            document.getElementById('nishab-text').innerHTML = `
+                <p><strong>Nishab zakat ${jenis}:</strong> ${nishab}</p>
+            `;
+            
+            document.getElementById('keterangan').innerHTML = `
+                <p>${keterangan}</p>
+                <p style="margin-top: 15px; font-style: italic;">Zakat hewan ternak dikeluarkan setelah memiliki ternak selama satu tahun (haul) dan mencapai nishab.</p>
+            `;
+            
+            // Tampilkan hasil dengan animasi
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animasi Gambar dengan Warna Dinamis</title>
+    <style>
+        :root {
+            --color-primary: #FF5733;
+            --color-secondary: #33A1FF;
+            --color-accent: #33FF57;
+            --color-background: #f5f5f5;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: var(--color-background);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+            animation: gradientBG 15s ease infinite;
+            background-size: 400% 400%;
+            overflow-x: hidden;
+        }
+        
+        @keyframes gradientBG {
+            0% {
+                background: linear-gradient(45deg, #f5f5f5, #e3f2fd);
+            }
+            25% {
+                background: linear-gradient(45deg, #e3f2fd, #fff8e1);
+            }
+            50% {
+                background: linear-gradient(45deg, #fff8e1, #f3e5f5);
+            }
+            75% {
+                background: linear-gradient(45deg, #f3e5f5, #e8f5e9);
+            }
+            100% {
+                background: linear-gradient(45deg, #e8f5e9, #f5f5f5);
+            }
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            bottom: -5px;
+            left: 0;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s ease;
+        }
+        
+        h1:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        .gambar-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1000px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+        
+        .gambar-item {
+            width: 200px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .gambar-item:hover {
+            transform: scale(1.1) rotate(2deg);
+        }
+        
+        .gambar-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s ease;
+            border: 3px solid white;
+        }
+        
+        .gambar-item:hover img {
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+            border-color: var(--color-primary);
+        }
+        
+        .arti {
+            margin-top: 10px;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,240,240,0.9));
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            transform: translateY(20px);
+            border-left: 4px solid var(--color-primary);
+        }
+        
+        .gambar-item:hover .arti {
+            opacity: 1;
+            height: auto;
+            transform: translateY(0);
+        }
+        
+        .gambar-item h3 {
+            margin: 15px 0 5px;
+            color: #444;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .gambar-item:hover h3 {
+            color: var(--color-primary);
+            transform: scale(1.05);
+        }
+        
+        .gambar-item h3::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--color-secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .gambar-item:hover h3::after {
+            width: 100%;
+        }
+        
+        .arti p {
+            margin: 0;
+            color: #555;
+            line-height: 1.5;
+            font-size: 0.9em;
+        }
+        
+        footer {
+            margin-top: 40px;
+            padding: 15px;
+            text-align: center;
+            color: #666;
+            font-size: 0.8em;
+            animation: fadeIn 2s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Floating bubbles background */
+        .bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: floating 15s infinite ease-in;
+        }
+        
+        @keyframes floating {
+            0% {
+                bottom: -100px;
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(100px);
+            }
+            100% {
+                bottom: 100vh;
+                transform: translateX(-200px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bubbles">
+        <!-- Bubbles akan dibuat dengan JavaScript -->
+    </div>
+    
+    <h1>Galeri Gambar Interaktif</h1>
+    
+    <div class="gambar-container">
+        <!-- Gambar 1 -->
+        <div class="gambar-item">
+            <img src="Galeri/1 (1).jpg" alt="Gunung">
+            <h3>Gunung</h3>
+            <div class="arti">
+                <p>Gunung adalah bentuk tanah yang menonjol di atas wilayah sekitarnya. Gunung biasanya memiliki ketinggian lebih dari 600 meter dan sering menjadi tempat wisata alam yang populer.</p>
+            </div>
+        </div>
+        
+        <!-- Gambar 2 -->
+        <div class="gambar-item">
+            <img src="Galeri/1 (2).jpg" alt="Laut">
+            <h3>Laut</h3>
+            <div class="arti">
+                <p>Laut adalah kumpulan air asin yang luas dan berhubungan dengan samudera. Laut menutupi sekitar 71% permukaan bumi dan menjadi habitat bagi berbagai macam kehidupan laut.</p>
+            </div>
+        </div>
+        
+        <!-- Gambar 3 -->
+        <div class="gambar-item">
+            <img src="Galeri/1 (3).jpg" alt="Hutan">
+            <h3>Hutan</h3>
+            <div class="arti">
+                <p>Hutan adalah wilayah yang ditumbuhi berbagai jenis pohon dan tumbuhan lainnya. Hutan berperan penting dalam menjaga keseimbangan ekosistem dan menyediakan oksigen bagi bumi.</p>
+            </div>
+        </div>
+        
+        <!-- Gambar 4 -->
+        <div class="gambar-item">
+            <img src="Galeri/1 (4).jpg" alt="Hewan">
+            <h3>Hewan</h3>
+            <div class="arti">
+                <p>Hewan adalah organisme eukariotik multiseluler yang membentuk kerajaan biologi Animalia. Mereka memiliki kemampuan untuk bergerak, bereproduksi secara seksual, dan merespon lingkungan.</p>
+            </div>
+        </div>
+
+        <!-- Gambar 5 -->
+        <div class="gambar-item">
+            <img src="Galeri/1 (5).jpg" alt="Tumbuhan">
+            <h3>Tumbuhan</h3>
+            <div class="arti">
+                <p>Tumbuhan adalah organisme eukariotik multiseluler yang tidak memiliki tubuh akar. Mereka dapat bergerak, bereproduksi secara seksual, dan merespon lingkungan.</p>
+            </div>
+        </div>    
+    </div>
+    
+    <footer>
+        © 2025 By: Val_Ky❤️
+    </footer>
+    
+    <script>
+        // Animasi gelembung
+        function createBubbles() {
+            const bubblesContainer = document.querySelector('.bubbles');
+            const bubbleCount = 20;
+            
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                // Random size between 10px and 100px
+                const size = Math.random() * 90 + 10;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                
+                // Random position
+                bubble.style.left = `${Math.random() * 100}%`;
+                
+                // Random animation duration between 10s and 20s
+                const duration = Math.random() * 10 + 15;
+                bubble.style.animationDuration = `${duration}s`;
+                
+                // Random delay
+                bubble.style.animationDelay = `${Math.random() * 5}s`;
+                
+                bubblesContainer.appendChild(bubble);
+            }
+        }
+        
+        // Animasi warna dinamis
+        function changeThemeColors() {
+            const root = document.documentElement;
+            const colors = [
+                { primary: '#FF5733', secondary: '#33A1FF', accent: '#33FF57' },
+                { primary: '#9C27B0', secondary: '#FF9800', accent: '#4CAF50' },
+                { primary: '#3F51B5', secondary: '#E91E63', accent: '#00BCD4' },
+                { primary: '#673AB7', secondary: '#FF5722', accent: '#8BC34A' }
+            ];
+            
+            let currentIndex = 0;
+            
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % colors.length;
+                const colorSet = colors[currentIndex];
+                
+                root.style.setProperty('--color-primary', colorSet.primary);
+                root.style.setProperty('--color-secondary', colorSet.secondary);
+                root.style.setProperty('--color-accent', colorSet.accent);
+                
+                // Animate the change
+                document.body.style.transition = 'background 1.5s ease';
+                setTimeout(() => {
+                    document.body.style.transition = 'none';
+                }, 1500);
+                
+            }, 8000);
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            createBubbles();
+            changeThemeColors();
+            
+            const gambarItems = document.querySelectorAll('.gambar-item');
+            
+            gambarItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.zIndex = '10';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.zIndex = '1';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi Bab Ibadah</title>
+    <style>
+        /* Reset dan Font */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Amiri', serif;
+        }
+
+        body {
+            background: url('https://www.transparenttextures.com/patterns/arabesque.png'), #1e3a8a;
+            background-size: 200px;
+            color: #d4a017;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 20px;
+            background: #facc15;
+            color: #1e3a8a;
+        }
+
+        .header-content {
+            position: relative;
+        }
+
+        .arrow {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: #1e3a8a;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            display: inline-block;
+            padding: 10px 20px;
+            background: #facc15;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            display: block;
+            margin: 20px auto;
+            padding: 10px;
+            width: 80%;
+            max-width: 400px;
+            border: 2px solid #d4a017;
+            border-radius: 5px;
+            font-size: 1rem;
+            background: #f5f5f5;
+            color: #1e3a8a;
+        }
+
+        .search-bar::placeholder {
+            color: #4b5e97;
+        }
+
+        /* Card Container */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Card Styling */
+        .card {
+            background: #f5f5f5;
+            border: 2px solid #d4a017;
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(212, 160, 23, 0.5);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            color: #1e3a8a;
+            padding: 10px;
+            text-decoration: none !important;
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: #4b5e97;
+            padding: 0 10px 15px;
+            text-decoration: none !important;
+        }
+
+        /* Ubah struktur .card agar klik gambar langsung menuju tata cara ibadah, dan hilangkan garis biru pada tulisan */
+        .card a {
+            text-decoration: none !important;
+            box-shadow: none !important;
+        }
+        .card a:focus {
+            outline: none !important;
+        }
+        .card h3, .card p {
+            text-decoration: none !important;
+            box-shadow: none !important;
+        }
+        .card img {
+            cursor: pointer;
+        }
+
+        /* Animasi */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsif */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+            .card img {
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <span class="arrow">↓</span>
+            <h1>MATERI IBADAH SDQ</h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="card-container">
+            <!-- Sholat Jenazah -->
+            <div class="card">
+                <img src="https://i.pinimg.com/736x/b2/cb/30/b2cb3038733b50aeb440268ecb43d3d7.jpg" alt="Sholat Jenazah"
+                     onclick="window.location.href='jenazah.html'">
+                <a href="jenazah.html" tabindex="-1" style="pointer-events:none;">
+                    <h3>Sholat jenazah</h3>
+                    <p>صلاة الجنازة هي صلاة تؤدى على الميت المسلم قبل دفنه، وهي فرض كفاية. تتكون من أربع تكبيرات بدون ركوع أو سجود، ويُدعى فيها للميت بالرحمة والمغفرة.</p>
+                </a>
+            </div>
+            <!-- Sholat Fardhu -->
+            <div class="card">
+                <img src="https://i.pinimg.com/736x/3c/9e/14/3c9e14d01f506edfc738095036f9b1fd.jpg" alt="Sholat Fardhu"
+                     onclick="window.location.href='sholat.html'">
+                <a href="sholat.html" tabindex="-1" style="pointer-events:none;">
+                    <h3>Sholat fardhu</h3>
+                    <p>الصلاة المفروضة هي الصلوات التي فرضها الله على المسلمين خمس مرات في اليوم والليلة، وهي: الفجر، الظهر، العصر، المغرب، والعشاء. وهي ركن من أركان الإسلام وواجبة على كل مسلم بالغ عاقل.</p>
+                </a>
+            </div>
+            <!-- Tayamum -->
+            <div class="card">
+                <img src="https://i.pinimg.com/736x/87/6d/5c/876d5c9fedaa323caf48b25feebf5cbc.jpg" alt="Tayamum"
+                     onclick="window.location.href='tayammum.html'">
+                <a href="tayammum.html" tabindex="-1" style="pointer-events:none;">
+                    <h3>Tayamum</h3>
+                    <p>التيمم هو طهارة بديلة عن الوضوء أو الغُسل عند عدم وجود الماء أو تعذّر استعماله. يُستعمل فيه التراب الطاهر، ويُمسَح به الوجه واليدين بنية الطهارة لأداء الصلاة.</p>
+                </a>
+            </div>
+            <!-- Wudhu -->
+            <div class="card">
+                <img src="https://cdn1-production-images-kly.akamaized.net/KcHIObvV158LM7vAOVlfVCXLgeM=/640x360/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/1264298/original/011284800_1465926818-wudhu2.jpg" alt="Wudhu"
+                     onclick="window.location.href='wudhu.html'">
+                <a href="wudhu.html" tabindex="-1" style="pointer-events:none;">
+                    <h3>Wudhu</h3>
+                    <p>الوضوء هو الطهارة التي يقوم بها المسلم قبل الصلاة، ويتضمن غسل الوجه، اليدين، ومسح الرأس والأذنين، وغسل القدمين. وهو شرط لصحة الصلاة.</p>
+                </a>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const cards = document.querySelectorAll(".card");
+            const searchInput = document.createElement("input");
+            searchInput.type = "text";
+            searchInput.placeholder = "Cari ibadah...";
+            searchInput.className = "search-bar";
+            document.querySelector("header").appendChild(searchInput);
+
+            // Animasi saat halaman dimuat
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+            });
+
+            // Fungsi pencarian
+            searchInput.addEventListener("input", () => {
+                const query = searchInput.value.toLowerCase();
+                cards.forEach(card => {
+                    const title = card.querySelector("h3").textContent.toLowerCase();
+                    card.style.display = title.includes(query) ? "block" : "none";
+                });
+            });
+
+            // Efek klik pada kartu dengan konfirmasi
+            cards.forEach(card => {
+                const link = card.querySelector('a');
+                link.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    card.style.transition = "transform 0.3s ease";
+                    card.style.transform = "scale(0.95)";
+                    setTimeout(() => {
+                        if (confirm("Apakah Anda ingin melihat tata cara sholat ini?")) {
+                            window.location.href = link.getAttribute("href");
+                        } else {
+                            card.style.transform = "scale(1)";
+                        }
+                    }, 300);
+                });
+
+                // Kembali ke ukuran normal saat mouse keluar
+                card.addEventListener("mouseleave", () => {
+                    if (card.style.transform === "scale(0.95)") {
+                        card.style.transform = "scale(1)";
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

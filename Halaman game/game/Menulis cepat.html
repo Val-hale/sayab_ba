@@ -1,0 +1,641 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Menulis Cepat - PAI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Amiri', serif;
+            background: linear-gradient(135deg, #1a3c34, #4CAF50),
+                url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80');
+            background-size: cover, cover;
+            background-repeat: no-repeat, no-repeat;
+            background-position: center, center;
+            min-height: 100vh;
+            margin: 0;                      
+            padding: 0;
+            color: #222;
+            overflow-x: hidden;
+        } 
+        .container, .game-area {
+            background: #789871;
+            max-width: 450px;
+            margin: 40px auto 0 auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            padding: 30px 20px 25px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        .game-area {
+            max-width: 100vw;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            border-radius: 0;
+            box-shadow: none;
+            background: transparent;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        h1 {
+            color: #1a3c34;
+            margin-bottom: 10px;
+        }
+        .timer, .score {
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+        .btn {
+            background: #1a3c34;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 22px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #388e3c;
+        }
+        .result {
+            font-size: 1.2rem;
+            color: #e67e22;
+            margin-top: 18px;
+            font-weight: bold;
+        }
+        .speed-select, .time-select {
+            margin: 10px 0 0 0;
+            font-size: 1rem;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #4CAF50;
+        }
+        /* Balloon styles */
+        .balloon-area {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .balloon {
+            position: absolute;
+            min-width: 80px;
+            min-height: 80px;
+            background: var(--balloon-bg, radial-gradient(circle at 60% 40%, #ffecb3 60%, #fbc02d 100%));
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.13);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff;
+            border: 3px solid #fff;
+            animation: floatBalloon var(--balloon-speed, 6s) linear forwards;
+            transition: opacity 0.3s, background 0.3s;
+            user-select: none;
+            text-shadow: 0 2px 8px #222, 0 0 2px #000;
+        }
+        .balloon .balloon-text {
+            padding: 0 10px;
+            text-align: center;
+            word-break: break-word;
+        }
+        .balloon.pop {
+            opacity: 0;
+            animation: popBalloon 0.4s forwards !important;
+        }
+        @keyframes floatBalloon {
+            0% {
+                top: 100vh;
+                opacity: 0.7;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                top: -100px;
+                opacity: 0.2;
+            }
+        }
+        @keyframes popBalloon {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(0.2); opacity: 0; }
+        }
+        .input-area-game {
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            z-index: 10;
+            background: rgba(255,255,255,0.95);
+            padding: 18px 0 10px 0;
+        }
+        .input-area-game input[type="text"] {
+            width: 80vw;
+            max-width: 400px;
+            padding: 14px;
+            font-size: 1.1rem;
+            border: 2px solid #4CAF50;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .input-area-game input[type="text"]:focus {
+            border-color: #1a3c34;
+        }
+        .animated-title {
+            font-size: 2.1rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #f9532d, #43a047, #0288d1, #fbc02d, #d81b60, #f9532d);
+            background-size: 400% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            animation: rainbowText 3s linear infinite;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+        @keyframes rainbowText {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+        @media (max-width: 600px) {
+            .container { max-width: 98vw; padding: 15px 5px; }
+            .balloon { min-width: 60px; min-height: 60px; font-size: 0.9rem; }
+            .input-area-game input[type="text"] { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Video background dari file lokal PC -->
+    <video autoplay muted loop id="bgVideo" style="position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-1;">
+        <source src="" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="container" id="startContainer">
+        <h1 class="animated-title">Game Menulis Cepat PAI</h1>
+        <p>Ketik kata yang ada di balon secepat mungkin!</p>
+        <label for="speedSelect"><b>Kecepatan Balon:</b></label>
+        <select id="speedSelect" class="speed-select">
+            <option value="7">Lambat</option>
+            <option value="5" selected>Sedang</option>
+            <option value="3.5">Cepat</option>
+        </select>
+        <br>
+        <label for="timeSelect"><b>Waktu Main:</b></label>
+        <select id="timeSelect" class="time-select">
+            <option value="15">15 detik</option>
+            <option value="30" selected>30 detik</option>
+            <option value="60">60 detik</option>
+        </select>
+        <br>
+        <button class="btn" id="startBtn">Mulai</button>
+        <button class="btn" id="pauseBtn" style="display:none;background:#e67e22;">Pause</button>
+        <button class="btn" id="restartBtn" style="display:none;background:#0288d1;">Ulang</button>
+    </div>
+
+    <!-- Skor di atas area permainan -->
+    <div id="scoreBoard" style="position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:100;font-size:1.4rem;font-weight:bold;background:rgba(255,255,255,0.92);color:#388e3c;padding:8px 28px 8px 28px;border-radius:16px;box-shadow:0 2px 12px #0002;display:none;">
+        Skor: <span id="scoreTop">0</span>
+    </div>
+
+    <div class="game-area" id="gameArea" style="display:none;">
+        <div class="timer">Waktu: <span id="timer">30</span> detik</div>
+        <div class="score" style="display:none;">Skor: <span id="score">0</span></div>
+        <div class="result" id="result"></div>
+        <!-- Tombol Pause/Lanjut & Retry di dalam area game -->
+        <div id="inGameBtns" style="margin:18px 0 0 0;display:flex;justify-content:center;gap:16px;">
+            <button class="btn" id="inPauseBtn" style="background:#e67e22;">Pause</button>
+            <button class="btn" id="inRetryBtn" style="background:#0288d1;">Ulang</button>
+        </div>
+    </div>
+    <div class="balloon-area" id="balloonArea" style="display:none;"></div>
+    <div class="input-area-game" id="inputAreaGame" style="display:none;">
+        <input type="text" id="inputBox" placeholder="Ketik di sini..." disabled autocomplete="off" />
+    </div>
+    <script>
+        // Daftar kata-kata PAI
+        const words = [
+            "syahadat", "shalat", "zakat", "Puasa", "Haji",
+            "wudhu", "qurban", "sedekah", "iman", "islam",
+            "ihsan", "aquran", "Hadits", "Nabi", "rasul",
+            "Hijrah", "Adzan", "Iqamah", "Doa", "surga",
+            "Neraka", "Sujud", "Ruku", "Takbir", "Tasbih",
+            "Tahmid", "Tahlil", "Istighfar", "Syukur", "Sabar",
+            "Ikhlas", "Tawakal", "Akhlak", "Muamalah", "Syariah",
+            "Halal", "Haram", "Thaharah", "Najis", "Mukjizat",
+            "Sunnah", "Fardhu", "Makruh", "Mubah", "Wajib"
+        ];
+
+        let timer = 30;
+        let score = 0;
+        let interval = null;
+        let started = false;
+        let balloonInterval = null;
+        let activeBalloons = [];
+        let balloonSpeed = 5; // default sedang
+        let gameTime = 30;
+
+        // Sistem Poin: multiplier berdasarkan kecepatan & level
+        let pointMultiplier = 1;
+        let lastPopTime = null;
+        let level = "Sedang"; // default
+
+        // DOM
+        const timerEl = document.getElementById('timer');
+        const scoreEl = document.getElementById('score');
+        const scoreTop = document.getElementById('scoreTop');
+        const inputBox = document.getElementById('inputBox');
+        const resultEl = document.getElementById('result');
+        const balloonArea = document.getElementById('balloonArea');
+        const speedSelect = document.getElementById('speedSelect');
+        const timeSelect = document.getElementById('timeSelect');
+        const startBtn = document.getElementById('startBtn');
+        const startContainer = document.getElementById('startContainer');
+        const gameArea = document.getElementById('gameArea');
+        const inputAreaGame = document.getElementById('inputAreaGame');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const inPauseBtn = document.getElementById('inPauseBtn');
+        const inRetryBtn = document.getElementById('inRetryBtn');
+        const scoreBoard = document.getElementById('scoreBoard');
+
+        let paused = false;
+
+        speedSelect.addEventListener('change', function() {
+            balloonSpeed = parseFloat(speedSelect.value);
+        });
+        timeSelect.addEventListener('change', function() {
+            gameTime = parseInt(timeSelect.value);
+        });
+
+        function pickWord() {
+            let word;
+            do {
+                word = words[Math.floor(Math.random() * words.length)];
+            } while (activeBalloons.some(b => b.word === word));
+            return word;
+        }
+
+        // Update multiplier saat kecepatan/level berubah
+        function updateMultiplier() {
+            if (balloonSpeed <= 3.5) {
+                level = "Cepat";
+                pointMultiplier = 2.5;
+            } else if (balloonSpeed <= 5) {
+                level = "Sedang";
+                pointMultiplier = 1.5;
+            } else {
+                level = "Lambat";
+                pointMultiplier = 1;
+            }
+        }
+        speedSelect.addEventListener('change', updateMultiplier);
+        updateMultiplier();
+
+        // Efek transisi antar layar
+        function fadeIn(el) {
+            el.style.opacity = 0;
+            el.style.display = "";
+            setTimeout(() => { el.style.transition = "opacity 0.5s"; el.style.opacity = 1; }, 10);
+        }
+        function fadeOut(el) {
+            el.style.transition = "opacity 0.5s";
+            el.style.opacity = 0;
+            setTimeout(() => { el.style.display = "none"; }, 500);
+        }
+
+        // Modifikasi showGameArea/hideGameArea agar transisi
+        function showGameArea() {
+            fadeOut(startContainer);
+            setTimeout(() => {
+                fadeIn(gameArea);
+                fadeIn(balloonArea);
+                fadeIn(inputAreaGame);
+                scoreBoard.style.display = "block";
+                pauseBtn.style.display = "inline-block";
+                restartBtn.style.display = "inline-block";
+                document.getElementById('inGameBtns').style.display = "flex";
+                inPauseBtn.textContent = "Pause";
+            }, 500);
+        }
+        function hideGameArea() {
+            fadeOut(gameArea);
+            fadeOut(balloonArea);
+            fadeOut(inputAreaGame);
+            setTimeout(() => {
+                fadeIn(startContainer);
+                scoreBoard.style.display = "none";
+                pauseBtn.style.display = "none";
+                restartBtn.style.display = "none";
+                document.getElementById('inGameBtns').style.display = "none";
+            }, 500);
+        }
+
+        function startGame() {
+            timer = parseInt(timeSelect.value);
+            score = 0;
+            started = true;
+            paused = false;
+            pauseBtn.textContent = "Pause";
+            inPauseBtn.textContent = "Pause";
+            scoreEl.textContent = score;
+            scoreTop.textContent = score;
+            timerEl.textContent = timer;
+            inputBox.value = "";
+            inputBox.disabled = false;
+            inputBox.focus();
+            resultEl.textContent = "";
+            clearBalloons();
+            balloonSpeed = parseFloat(speedSelect.value);
+            showGameArea();
+            if (interval) clearInterval(interval);
+            if (balloonInterval) clearInterval(balloonInterval);
+            interval = setInterval(() => {
+                timer--;
+                timerEl.textContent = timer;
+                if (timer <= 0) {
+                    endGame();
+                }
+            }, 1000);
+            balloonInterval = setInterval(spawnBalloon, 1200);
+            spawnBalloon();
+        }
+
+        function endGame(restart = false) {
+            started = false;
+            paused = false;
+            pauseBtn.textContent = "Pause";
+            inPauseBtn.textContent = "Pause";
+            clearInterval(interval);
+            clearInterval(balloonInterval);
+            inputBox.disabled = true;
+            resultEl.textContent = `Skor akhir kamu: ${score}`;
+            setTimeout(clearBalloons, 600);
+            if (restart) {
+                setTimeout(() => {
+                    startGame();
+                }, 1000);
+            } else {
+                setTimeout(() => {
+                    hideGameArea();
+                }, 2000);
+            }
+        }
+
+        function clearBalloons() {
+            activeBalloons.forEach(b => {
+                if (b.el.parentNode) b.el.parentNode.removeChild(b.el);
+            });
+            activeBalloons = [];
+        }
+
+        function spawnBalloon() {
+            if (!started || paused) return;
+            const word = pickWord();
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            const left = Math.random() * 80 + 5; // 5% - 85%
+            balloon.style.left = left + 'vw';
+            balloon.style.setProperty('--balloon-speed', balloonSpeed + 's');
+            const balloonColors = [
+                "radial-gradient(circle at 60% 40%, #ffecb3 60%, #fbc02d 100%)",
+                "radial-gradient(circle at 60% 40%, #b3e5fc 60%, #0288d1 100%)",
+                "radial-gradient(circle at 60% 40%, #ffcdd2 60%, #e53935 100%)",
+                "radial-gradient(circle at 60% 40%, #c8e6c9 60%, #43a047 100%)",
+                "radial-gradient(circle at 60% 40%, #d1c4e9 60%, #7e57c2 100%)",
+                "radial-gradient(circle at 60% 40%, #ffe0b2 60%, #fb8c00 100%)",
+                "radial-gradient(circle at 60% 40%, #f8bbd0 60%, #d81b60 100%)"
+            ];
+            const color = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+            balloon.style.setProperty('--balloon-bg', color);
+            balloon.innerHTML = `<span class="balloon-text">${word}</span>`;
+            balloonArea.appendChild(balloon);
+
+            const removeTimeout = setTimeout(() => {
+                if (balloon.parentNode) balloon.parentNode.removeChild(balloon);
+                activeBalloons = activeBalloons.filter(b => b.el !== balloon);
+            }, balloonSpeed * 1000);
+
+            activeBalloons.push({ word, el: balloon, removeTimeout });
+
+            balloon.addEventListener('click', () => {
+                popBalloon(word);
+            });
+        }
+
+        // Efek feedback benar/salah pada input
+        function feedbackInput(correct) {
+            inputBox.style.background = correct ? "#b6fcb6" : "#ffbdbd";
+            setTimeout(() => {
+                inputBox.style.background = "#fff";
+            }, 300);
+        }
+
+        function popBalloon(word) {
+            const idx = activeBalloons.findIndex(b => b.word.toLowerCase() === word.toLowerCase());
+            if (idx !== -1) {
+                const balloonObj = activeBalloons[idx];
+                clearTimeout(balloonObj.removeTimeout);
+                balloonObj.el.classList.add('pop');
+
+                // Efek ledakan lebih besar
+                createExplosion(balloonObj.el, 18);
+
+                setTimeout(() => {
+                    if (balloonObj.el.parentNode) balloonObj.el.parentNode.removeChild(balloonObj.el);
+                }, 400);
+                activeBalloons.splice(idx, 1);
+
+                // Hitung waktu reaksi
+                let now = Date.now();
+                let timeBonus = 1;
+                if (lastPopTime) {
+                    let diff = Math.max(0, 2000 - (now - lastPopTime)); // max 2 detik
+                    timeBonus = 1 + (diff / 2000); // 1 - 2
+                }
+                lastPopTime = now;
+
+                // Hitung skor dengan multiplier
+                let addPoint = Math.round(pointMultiplier * timeBonus);
+                score += addPoint;
+                scoreEl.textContent = score;
+                scoreTop.textContent = score;
+
+                // Animasi point
+                showPoint("+" + addPoint, balloonObj.el);
+
+                // Feedback benar
+                feedbackInput(true);
+            }
+        }
+
+        // Efek ledakan visual (confetti sederhana)
+        function createExplosion(balloonEl, count = 12) {
+            for (let i = 0; i < count; i++) {
+                const part = document.createElement('div');
+                part.style.position = 'absolute';
+                part.style.left = '50%';
+                part.style.top = '50%';
+                part.style.width = '10px';
+                part.style.height = '10px';
+                part.style.borderRadius = '50%';
+                part.style.background = ['#fbc02d','#43a047','#0288d1','#e53935','#d81b60','#fb8c00'][i%6];
+                part.style.transform = 'translate(-50%, -50%)';
+                part.style.opacity = '0.85';
+                part.style.pointerEvents = 'none';
+                balloonEl.appendChild(part);
+                setTimeout(() => {
+                    part.style.transition = 'all 0.7s cubic-bezier(.4,2,.6,1)';
+                    part.style.left = (50 + Math.random()*120-60) + '%';
+                    part.style.top = (50 + Math.random()*120-60) + '%';
+                    part.style.opacity = '0';
+                }, 10);
+                setTimeout(() => {
+                    if (part.parentNode) part.parentNode.removeChild(part);
+                }, 800);
+            }
+        }
+
+        // Animasi point
+        function showPoint(text, balloonEl) {
+            const pointEl = document.createElement('div');
+            pointEl.textContent = text;
+            pointEl.style.position = 'absolute';
+            pointEl.style.left = '50%';
+            pointEl.style.top = '50%';
+            pointEl.style.transform = 'translate(-50%, -50%)';
+            pointEl.style.color = '#43a047';
+            pointEl.style.fontSize = '1.2rem';
+            pointEl.style.fontWeight = 'bold';
+            pointEl.style.pointerEvents = 'none';
+            balloonEl.appendChild(pointEl);
+            setTimeout(() => {
+                pointEl.style.transition = 'all 0.5s ease-out';
+                pointEl.style.top = '20%';
+                pointEl.style.opacity = '0';
+            }, 10);
+            setTimeout(() => {
+                if (pointEl.parentNode) pointEl.parentNode.removeChild(pointEl);
+            }, 500);
+        }
+
+        inputBox.addEventListener('input', function() {
+            if (!started || paused) return;
+            const val = inputBox.value.trim().toLowerCase();
+            const idx = activeBalloons.findIndex(b => b.word.toLowerCase() === val);
+            if (idx !== -1) {
+                popBalloon(activeBalloons[idx].word);
+                inputBox.value = ""; // Clear the input immediately after a correct match
+            } else if (val.length > 0) {
+                feedbackInput(false);
+            }
+        });
+
+        // Tombol Pause/Lanjut
+        pauseBtn.addEventListener('click', function() {
+            if (!started) return;
+            paused = !paused;
+            if (paused) {
+                pauseBtn.textContent = "Lanjut";
+                inPauseBtn.textContent = "Lanjut";
+                inputBox.disabled = true;
+                clearInterval(interval);
+                clearInterval(balloonInterval);
+            } else {
+                pauseBtn.textContent = "Pause";
+                inPauseBtn.textContent = "Pause";
+                inputBox.disabled = false;
+                inputBox.focus();
+                interval = setInterval(() => {
+                    timer--;
+                    timerEl.textContent = timer;
+                    if (timer <= 0) {
+                        endGame();
+                    }
+                }, 1000);
+                balloonInterval = setInterval(spawnBalloon, 1200);
+            }
+        });
+
+        inPauseBtn.addEventListener('click', function() {
+            pauseBtn.click();
+        });
+
+        // Tombol Ulang
+        restartBtn.addEventListener('click', function() {
+            endGame(true);
+        });
+
+        inRetryBtn.addEventListener('click', function() {
+            restartBtn.click();
+        });
+
+        startBtn.addEventListener('click', startGame);
+
+        // Enter untuk mulai ulang jika selesai
+        inputBox.addEventListener('keydown', function(e) {
+            if (!started && e.key === "Enter") {
+                startGame();
+            }
+        });
+    </script>
+</body>
+</html>

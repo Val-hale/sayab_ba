@@ -1,0 +1,306 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galeri Tata Cara Wudhu</title>
+  <style>
+    body {
+      font-family: 'Amiri', serif;
+      background: linear-gradient(135deg, #e0f2e9, #b2dfdb);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      color: #1a3c34;
+      font-size: 2.5em;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 2s;
+      margin-bottom: 30px;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 1000px;
+      width: 100%;
+    }
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      cursor: pointer;
+      transition: transform 0.5s;
+    }
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+    .gallery-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://www.transparenttextures.com/patterns/arabesque.png');
+      opacity: 0.1;
+      pointer-events: none;
+    }
+    .caption {
+      background: #1a3c34;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      font-size: 1em;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      opacity: 0.9;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      animation: slideIn 0.5s;
+      border: 3px solid #1a3c34;
+      background: url('https://www.transparenttextures.com/patterns/arabesque.png'), #fff;
+      background-size: cover;
+    }
+    .modal-content h2 {
+      color: #1a3c34;
+      font-size: 1.8em;
+      margin-bottom: 15px;
+    }
+    .modal-content p {
+      color: #333;
+      font-size: 1.1em;
+      line-height: 1.5;
+    }
+    .hadith {
+      font-style: italic;
+      color: #00695c;
+      margin-top: 15px;
+      border-top: 1px solid #1a3c34;
+      padding-top: 10px;
+    }
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: #1a3c34;
+      font-size: 30px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .close:hover {
+      transform: rotate(90deg);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .gallery-item img:hover {
+      animation: pulse 1s infinite;
+    }
+    /* Kembalikan font Arabic agar tetap khas, bagian lain tetap Garamond */
+.arabic {
+    font-family: 'Amiri', serif !important;
+    font-size: 1.3rem;
+    text-align: right;
+    line-height: 2.1;
+    color: var(--dark);
+    margin: 25px 0;
+    direction: rtl;
+    font-weight: 700;
+    position: relative;
+    padding: 0 15px;
+}
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+</head>
+<body>
+  <h1>Galeri Tata Cara Wudhu</h1>
+  <div class="gallery">
+    <div class="gallery-item">
+      <img src="https://i.pinimg.com/736x/ba/9e/bb/ba9ebbf080493fc3aea7c97c55df9a59.jpg" alt="Step 1" onclick="openModal(1)">
+      <div class="caption">01 - Berniat dan Mencuci Tangan</div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://i.pinimg.com/736x/f4/5d/15/f45d156f82127b80c01026e473be38bb.jpg" alt="Step 2" onclick="openModal(2)">
+      <div class="caption">02 - Berkumur-kumur</div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://i.pinimg.com/736x/e5/07/5b/e5075ba437d7618e7857e137f785ef08.jpg" alt="Step 3" onclick="openModal(3)">
+      <div class="caption">03 - Membasuh Muka</div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://i.pinimg.com/736x/db/20/6a/db206a071df28b9e19964d8f80b340d7.jpg" alt="Step 4" onclick="openModal(4)">
+      <div class="caption">04 - Membasuh Tangan</div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://i.pinimg.com/736x/58/53/81/585381929a4a59c233350466007d69e8.jpg" alt="Step 5" onclick="openModal(5)">
+      <div class="caption">05 - Mengusap Kepala</div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://www.kehidupanislami.com/wp-content/uploads/2023/09/Membasuh-Seluruh-Kuping.webp" alt="Step 6" onclick="openModal(6)">
+      <div class="caption">06 - Mengusap Telinga</div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://i.pinimg.com/736x/58/fd/54/58fd54bb3e005e2e0a7551837259bf22.jpg" alt="Step 7" onclick="openModal(7)">
+      <div class="caption">07 - Mencuci Kaki</div>
+    </div>
+    <div class="gallery-item">
+      <img src="https://i.pinimg.com/736x/89/5a/2f/895a2fd63e72d7207a05c021d42dc494.jpg" alt="Step 8" onclick="openModal(8)">
+      <div class="caption">08 - Berdoa Setelah Wudhu</div>
+    </div>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modal-title"></h2>
+      <p id="modal-text"></p>
+      <p id="modal-hadith" class="hadith"></p>
+    </div>
+  </div>
+
+  <script>
+    function openModal(step) {
+      const modal = document.getElementById('modal');
+      const title = document.getElementById('modal-title');
+      const text = document.getElementById('modal-text');
+      const hadith = document.getElementById('modal-hadith');
+      modal.style.display = 'flex';
+      switch(step) {
+        case 1:
+          title.textContent = 'Langkah 1: Berniat dan Mencuci Tangan';
+          text.innerHTML = 'Berniat dalam hati untuk berwudhu dengan ikhlas karena Allah, lalu mencuci kedua telapak tangan sebanyak 3 kali, (<span style="background:#b6fcb6;color:#1a3c34;padding:2px 4px;border-radius:4px;">Menghadirkan niat di dalam hati wajib adapun melafadzkan niat hukumnya sunnah</span>).';
+          hadith.innerHTML = '<span class="arabic">لا وُضوءَ لِمَن لمْ يذكرِ اسمَ اللهِ عليه</span><br>Hadits: "Tidak ada wudhu bagi orang yang tidak menyebut nama Allah atasnya." (HR. Ahmad dan Abu Dawud)';
+          break;
+        case 2:
+          title.textContent = 'Langkah 2: Berkumur-kumur';
+          text.innerHTML = 'Ambil air dan berkumur sebanyak 3 kali untuk membersihkan mulut.';
+          hadith.innerHTML = '<span class="arabic">إذا توضأت فمضمض</span><br>Hadits: "Jika kamu berwudhu, maka berkumurlah." (HR. Bukhari dan Muslim)';
+          break;
+        case 3:
+          title.textContent = 'Langkah 3: Membasuh Muka';
+          text.innerHTML = 'Basuh seluruh wajah dari dahi hingga dagu sebanyak 3 kali.';
+          hadith.innerHTML = 'Hadits: "Barang siapa yang berwudhu dengan baik, maka dosa-dosanya keluar dari tubuhnya." (HR. Muslim)';
+          break;
+        case 4:
+          title.textContent = 'Langkah 4: Membasuh Tangan';
+          text.innerHTML = 'Basuh tangan kanan lalu kiri hingga siku sebanyak 3 kali.';
+          hadith.innerHTML = '<span class="arabic">مِفْتَاحُ الصَّلَاةِ الطُّهُورُ، وَتَحْرِيمُهَا التَّكْبِيرُ، وَتَحْلِيلُهَا التَّسْلِيمُ</span><br>Hadits: "Kunci shalat adalah bersuci (thaharah), permulaannya adalah takbir, dan penutupnya adalah salam." (HR. Tirmidzi)';
+          break;
+        case 5:
+          title.textContent = 'Langkah 5: Mengusap Kepala';
+          text.innerHTML = 'Usap seluruh kepala dengan tangan yang basah satu kali.';
+          hadith.innerHTML = '<span class="arabic">لطُّهُورُ شَطْرُ الْإِيمَانِ</span><br>Hadits: "Wudhu itu setengah dari iman." (HR. Muslim)';
+          break;
+        case 6:
+          title.textContent = 'Langkah 6: Mengusap Telinga';
+          text.innerHTML = 'Usap bagian luar dan dalam telinga dengan air.';
+          hadith.innerHTML = '<span class="arabic">الأُذُنَانِ مِنَ الرَّأْسِ</span><br>Hadits: "Kedua telinga termasuk bagian dari kepala." (HR. Ibnu Majah)';
+          break;
+        case 7:
+          title.textContent = 'Langkah 7: Mencuci Kaki';
+          text.innerHTML = 'Basuh kaki kanan lalu kiri hingga mata kaki sebanyak 3 kali.';
+          hadith.innerHTML = '<span class="arabic">وَيْلٌ لِلْأَعْقَابِ مِنَ النَّارِ</span><br>Hadits: "Celaka bagi tumit yang tidak terbasuh." (HR. Bukhari)';
+          break;
+        case 8:
+          title.textContent = 'Langkah 8: Berdoa Setelah Wudhu';
+          text.innerHTML = 'Setelah selesai wudhu, baca doa: Ash-hadu an la ilaha illallah wahdahu la sharika lah, wa ash-hadu anna Muhammadan ‘abduhu wa rasuluh.';
+          hadith.innerHTML = '<span class="arabic">مَا مِنْكُمْ مِنْ أَحَدٍ يَتَوَضَّأُ فَيُسْبِغُ الْوُضُوءَ، ثُمَّ يَقُولُ: أَشْهَدُ أَنْ لَا إِلٰهَ إِلَّا اللَّهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ، إِلَّا فُتِحَتْ لَهُ أَبْوَابُ الْجَنَّةِ الثَّمَانِيَةُ، يَدْخُلُ مِنْ أَيِّهَا شَاءَ</span><br>Hadits: "Barang siapa yang berwudhu lalu membaca doa ini, maka dibukakan baginya delapan pintu surga." (HR. Muslim)';
+          break;
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('modal');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>

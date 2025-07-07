@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery 3</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+/* filepath: c:\Users\rizky\Documents\Project\my project\Halaman game\halaman.html */
+body {
+    background: url('https://i.pinimg.com/736x/bf/78/13/bf781332aa0b575ab0bb029aab5b58b1.jpg') no-repeat center center fixed;
+    background-size: cover;
+    /* Tambahan agar konten tetap terbaca */
+    min-height: 100vh;
+    position: relative;
+}
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(34, 49, 63, 0.45); /* overlay gelap agar konten tetap jelas */
+    z-index: 0;
+    pointer-events: none;
+}
+.container {
+    position: relative;
+    z-index: 1;
+}
+    </style>
+  </head>
+  <body>
+    <!-- Video background dari file lokal PC -->
+    <video autoplay muted loop id="bgVideo" style="position:fixed;top:0;left:0;width:100vw;height:100vh;object-fit:cover;z-index:-1;">
+        <source src="I will create psychedelic ai music video.mp4" type="video/mp4">
+        <!-- Ganti src dengan nama file video di folder yang sama, misal: video-masjid.mp4 -->
+        Your browser does not support the video tag.
+    </video>
+    <div class="container">
+      <div class="card">
+        <img class="background" src="https://i.pinimg.com/736x/c3/94/51/c394514cef0d5246252930ab5d16424f.jpg" alt="">
+
+        <div class="card-content">
+          <div class="profile-image" data-link="game/Game 1.html">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gamepad-2">
+              <line x1="6" x2="10" y1="11" y2="11" />
+              <line x1="8" x2="8" y1="9" y2="13" />
+              <line x1="15" x2="15.01" y1="12" y2="12" />
+              <line x1="18" x2="18.01" y1="10" y2="10" />
+              <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" />
+            </svg>
+          </div>
+
+          <h3 class="title">لعبة الكتابة السريعة</h3>
+        </div>
+        <div class="backdrop"></div>
+      </div>
+
+      <div class="card">
+        <img class="background" src="https://i.pinimg.com/736x/bd/15/6c/bd156cbbf3837a14480943177a5da31c.jpg" alt="">
+
+        <div class="card-content">
+          <div class="profile-image" data-link="game/Menulis cepat.html">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gamepad-2">
+              <line x1="6" x2="10" y1="11" y2="11" />
+              <line x1="8" x2="8" y1="9" y2="13" />
+              <line x1="15" x2="15.01" y1="12" y2="12" />
+              <line x1="18" x2="18.01" y1="10" y2="10" />
+              <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" />
+            </svg>
+          </div>
+
+          <h3 class="title">Menulis Cepat</h3>
+        </div>
+        <div class="backdrop"></div>
+      </div>
+
+      <div class="card">
+        <img class="background" src="gambar/g3.jpg" alt="">
+
+        <div class="card-content">
+          <div class="profile-image" data-link="game/Tebak Gambar.html">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gamepad-2">
+              <line x1="6" x2="10" y1="11" y2="11" />
+              <line x1="8" x2="8" y1="9" y2="13" />
+              <line x1="15" x2="15.01" y1="12" y2="12" />
+              <line x1="18" x2="18.01" y1="10" y2="10" />
+              <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" />
+            </svg>
+          </div>
+
+          <h3 class="title">Teka-Teki Interaktif</h3>
+        </div>
+        <div class="backdrop"></div>
+      </div>
+
+      <div class="card">
+        <img class="background" src="https://i.pinimg.com/736x/26/e6/ae/26e6ae64397a9845065db153826af261.jpg" alt="">
+
+        <div class="card-content">
+          <div class="profile-image" data-link="game/quizz1.html">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gamepad-2">
+              <line x1="6" x2="10" y1="11" y2="11" />
+              <line x1="8" x2="8" y1="9" y2="13" />
+              <line x1="15" x2="15.01" y1="12" y2="12" />
+              <line x1="18" x2="18.01" y1="10" y2="10" />
+              <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" />
+            </svg>
+          </div>
+
+          <h3 class="title">Quizz PAI</h3>
+        </div>
+        <div class="backdrop"></div>
+      </div>
+
+      <div class="card">
+        <img class="background" src="gambar/g5.jpg" alt="">
+
+        <div class="card-content">
+          <div class="profile-image" data-link="game/elden-ring.html">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gamepad-2">
+              <line x1="6" x2="10" y1="11" y2="11" />
+              <line x1="8" x2="8" y1="9" y2="13" />
+              <line x1="15" x2="15.01" y1="12" y2="12" />
+              <line x1="18" x2="18.01" y1="10" y2="10" />
+              <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" />
+            </svg>
+          </div>
+
+          <h3 class="title">Elden Ring</h3>
+        </div>
+        <div class="backdrop"></div>
+      </div>
+    </div>
+
+    <script src="script.js" defer></script>
+    <script>
+// filepath: c:\Users\rizky\Documents\Project\my project\Halaman game\halaman.html
+document.querySelectorAll('.profile-image[data-link]').forEach(function(el) {
+  el.style.cursor = "pointer";
+  el.addEventListener('click', function() {
+    const link = el.getAttribute('data-link');
+    if (link) {
+      window.location.href = link;
+    }
+  });
+});
+    </script>
+  </body>
+</html>

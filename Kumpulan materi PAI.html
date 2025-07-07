@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rekomendasi Buku Pengembangan Diri</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f6f7f9 0%, #e3e7ed 100%);
+            background-image: url('https://www.transparenttextures.com/patterns/arabesque.png');
+            color: #333;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        h1::before,
+        h1::after {
+            content: '۞';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: #3498db;
+            opacity: 0.7;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        h1::before {
+            left: -40px;
+        }
+        
+        h1::after {
+            right: -40px;
+        }
+        
+        .divider {
+            height: 4px;
+            width: 100px;
+            background: linear-gradient(to right, #3498db, #9b59b6);
+            margin: 0 auto 20px;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '❁';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9b59b6;
+            font-size: 1.2rem;
+            opacity: 0.5;
+        }
+
+        .divider::before {
+            left: 20px;
+            animation: slideLeft 2s ease-in-out infinite;
+        }
+
+        .divider::after {
+            right: 20px;
+            animation: slideRight 2s ease-in-out infinite;
+        }
+        
+        .books-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .book-section {
+            border: 2px solid rgba(52, 152, 219, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin-bottom: 30px;
+            animation: slideUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .book-section::before {
+            content: '✧';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5rem;
+            color: #3498db;
+            opacity: 0.3;
+            animation: sparkle 3s ease-in-out infinite;
+        }
+        
+        .book-section h2 {
+            color: #3498db;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.8rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .book-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(to right, #3498db, #9b59b6);
+            border-radius: 3px;
+        }
+        
+        .book-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+        
+        .book-item {
+            width: 150px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .book-item::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .book-item:hover::after {
+            border-color: rgba(52, 152, 219, 0.3);
+            transform: scale(0.95);
+        }
+        
+        .book-item:hover {
+            transform: translateY(-10px);
+        }
+        
+        .book-cover {
+            width: 120px;
+            height: 160px;
+            margin: 0 auto 10px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+            border: 3px solid #3498db;
+        }
+        
+        .book-cover::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            z-index: 1;
+        }
+        
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .book-item:hover .book-cover img {
+            transform: scale(1.05);
+        }
+        
+        .book-cover::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .book-item:hover .book-cover::after {
+            opacity: 1;
+        }
+        
+        .book-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #2c3e50;
+        }
+        
+        .rating {
+            color: #f39c12;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        
+        .note {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-top: 30px;
+            text-align: center;
+            font-style: italic;
+            border-left: 4px solid #3498db;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.1); }
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        
+        @keyframes slideLeft {
+            0%, 100% { transform: translate(0, -50%); }
+            50% { transform: translate(-10px, -50%); }
+        }
+        
+        @keyframes slideRight {
+            0%, 100% { transform: translate(0, -50%); }
+            50% { transform: translate(10px, -50%); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .book-list {
+                gap: 15px;
+            }
+            
+            .book-item {
+                width: 130px;
+            }
+            
+            .book-cover {
+                width: 100px;
+                height: 140px;
+            }
+        }
+
+        .book-options {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 8px;
+            padding: 10px;
+            z-index: 100;
+        }
+
+        .book-options button {
+            width: 90%;
+            margin: 5px auto;
+            padding: 10px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+
+        .book-options button:last-child {
+            background: #2ecc71;
+        }
+
+        .book-options button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>مجموعة مواد</h1>
+            <div class="divider"></div>
+            <p><strong>Materi PAI SDQ Madhani Al Washiyyah</strong></p>
+        </header>
+        
+        <div class="books-container">
+            <section class="book-section">
+                <h2>كتب </h2>
+                <div class="book-list">
+                    <div class="book-item" onclick="window.location.href='Pdf gambar.html'">
+                        <div class="book-cover">
+                            <img src="https://i.pinimg.com/736x/ba/16/db/ba16dba48942b2044310451ef6d844df.jpg" alt="Buku 1">
+                        </div>
+                        <h3 class="book-title">اللغة العربية</h3>
+                    </div>
+                    
+                    <div class="book-item" onclick="window.location.href='fiqih_safinah.html'">
+                        <div class="book-cover">
+                            <img src="https://i.pinimg.com/736x/d5/4e/84/d54e841a861b50770661a1fa8f1ce283.jpg" alt="Buku 2">
+                        </div>
+                        <h3 class="book-title">فقه الأسلامي سفينة النجاة</h3>
+                    </div>
+                    
+                    <div class="book-item" onclick="window.location.href='siroh_nabawiyah.html'">
+                        <div class="book-cover">
+                            <img src="https://i.pinimg.com/736x/cd/42/a1/cd42a1a51e2ef590357547e12b36a49b.jpg" alt="Buku 3">
+                        </div>
+                        <h3 class="book-title">سيرة النبوية نور اليقين</h3>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="book-section">
+                <h2>كتب ٢</h2>
+                <div class="book-list">
+                    <div class="book-item" onclick="window.location.href='asmaul_husna.html'">
+                        <div class="book-cover">
+                            <img src="https://i.pinimg.com/736x/d2/a1/ab/d2a1abd10eca0e57d25bb337aec13da1.jpg" alt="Buku 4">
+                        </div>
+                        <h3 class="book-title">أسماء الحسنى</h3>
+                    </div>
+                    
+                    <div class="book-item" onclick="window.location.href='hadits.html'">
+                        <div class="book-cover">
+                            <img src="https://i.pinimg.com/736x/ce/f1/0b/cef10b739c75eb5f37395e4e05b69ba7.jpg" alt="Buku 5">
+                        </div>
+                        <h3 class="book-title">حديث</h3>
+                    </div>
+                    
+                    <div class="book-item">
+                        <div class="book-cover" onclick="showBookOptions(this)">
+                            <img src="https://i.pinimg.com/736x/31/27/a6/3127a62f9dde6472cbcdffdae1237ad6.jpg" alt="Buku 6">
+                            <div class="book-options" style="display:none">
+                                <button onclick="event.stopPropagation(); window.location.href='hadits_yaumiyah.html'">
+                                    أحاديث اليومية
+                                </button>
+                                <button onclick="event.stopPropagation(); window.location.href='B.arab senin.html'">
+                                    مفردات العربية 
+                                </button>
+                            </div>
+                        </div>
+                        <h3 class="book-title">أحاديث اليومية ومفردات العربية</h3>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <div class="note">
+            <p>By.Val_ky</p>
+        </div>
+        
+        <footer>
+            <p>&copy; ٢٠٢٥ مجموعة مواد</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentOpenOptions = null;
+
+        function showBookOptions(element) {
+            // Close previously opened options
+            if (currentOpenOptions && currentOpenOptions !== element) {
+                currentOpenOptions.querySelector('.book-options').style.display = 'none';
+            }
+            
+            const options = element.querySelector('.book-options');
+            if (options.style.display === 'none') {
+                options.style.display = 'flex';
+                options.style.flexDirection = 'column';
+                options.style.justifyContent = 'center';
+                options.style.alignItems = 'center';
+                options.style.animation = 'fadeIn 0.3s';
+                currentOpenOptions = element;
+            } else {
+                options.style.display = 'none';
+                currentOpenOptions = null;
+            }
+        }
+
+        // Add click outside listener to close options
+        document.addEventListener('click', function(event) {
+            if (currentOpenOptions && !currentOpenOptions.contains(event.target)) {
+                currentOpenOptions.querySelector('.book-options').style.display = 'none';
+                currentOpenOptions = null;
+            }
+        });
+    </script>
+</body>
+</html>

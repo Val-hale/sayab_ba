@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Sholat Jenazah</title>
+    <style>
+        :root {
+            --primary: #2c786c;
+            --secondary: #004445;
+            --accent: #f8b400;
+            --light: #faf5e4;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            /* Animasi gradasi warna islami */
+            background: linear-gradient(-45deg, #e0eafc, #cfdef3, #a8edea, #2c786c, #f8b400, #fbc2eb, #fad0c4);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease-in-out infinite;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease;
+        }
+        
+        h1 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+        
+        .subtitle {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .gender-selector {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+            gap: 20px;
+        }
+        
+        .gender-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gender-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .male-btn {
+            background-color: #2c786c;
+            color: white;
+        }
+        
+        .female-btn {
+            background-color: #f8b400;
+            color: #333;
+        }
+        
+        .active {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 3px rgba(44, 120, 108, 0.3);
+        }
+        
+        .active.female-btn {
+            box-shadow: 0 0 0 3px rgba(248, 180, 0, 0.3);
+        }
+        
+        .prayer-steps {
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+        
+        .step {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        
+        .step-title {
+            color: var(--primary);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .step-number {
+            background-color: var(--accent);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        .step-content {
+            display: none;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .arabic {
+            font-size: 1.3rem;
+            text-align: right;
+            line-height: 2.1;
+            color: var(--secondary);
+            font-weight: bold;
+        }
+        
+        .translation {
+            font-style: italic;
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .image-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .image-container img {
+            max-width: 320px;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .image-container img:hover {
+            transform: scale(1.02);
+        }
+        
+        .caption {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .gender-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .arabic {
+                font-size: 1.5rem;
+                line-height: 2;
+            }
+        }
+        
+        .islamic-decoration {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            z-index: 20;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            pointer-events: none;
+            animation: floatDecor 4s ease-in-out infinite alternate;
+        }
+        .islamic-decoration .crescent {
+            filter: drop-shadow(0 0 8px #f8b40088);
+        }
+        .islamic-decoration .star {
+            margin-top: 10px;
+            filter: drop-shadow(0 0 6px #f8b40055);
+            animation: spinStar 3s linear infinite;
+        }
+        @keyframes floatDecor {
+            0% { transform: translateY(0);}
+            100% { transform: translateY(18px);}
+        }
+        @keyframes spinStar {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+        @media (max-width: 600px) {
+            .islamic-decoration {
+                top: 10px;
+                right: 10px;
+                gap: 4px;
+            }
+            .islamic-decoration .crescent,
+            .islamic-decoration .star {
+                width: 32px;
+                height: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Panduan Sholat Jenazah</h1>
+            <p class="subtitle">Tata Cara dan Bacaan Sholat Jenazah Lengkap</p>
+        </header>
+        
+        <div class="gender-selector">
+            <button class="gender-btn male-btn active" onclick="selectGender('male')">Jenazah Laki-laki</button>
+            <button class="gender-btn female-btn" onclick="selectGender('female')">Jenazah Perempuan</button>
+        </div>
+        
+        <div id="male-steps" class="prayer-steps">
+            <div class="step">
+                <div class="step-header" onclick="toggleStep(this)">
+                    <h2 class="step-title">Takbir Pertama</h2>
+                    <div class="step-number">1</div>
+                </div>
+                <div class="step-content">
+                    <div class="arabic">اللهُ أَكْبَرُ</div>
+                    <div class="translation">"Allahu Akbar" (Allah Maha Besar)</div>
+                    <div class="explanation">
+                        <p>Setelah takbir pertama, membaca surat Al-Fatihah. Membaca Al-Fatihah dalam sholat jenazah hukumnya sunnah menurut pendapat yang kuat.</p>
+                    </div>
+                    <div class="image-container">
+                        <img src="jenazah/l.png" alt="Posisi Takbiratul Ihram">
+                        <p class="caption">Posisi takbiratul ihram dengan mengangkat tangan setinggi bahu</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-header" onclick="toggleStep(this)">
+                    <h2 class="step-title">Takbir Kedua</h2>
+                    <div class="step-number">2</div>
+                </div>
+                <div class="step-content">
+                    <div class="arabic">اللهُ أَكْبَرُ</div>
+                    <div class="translation">"Allahu Akbar" (Allah Maha Besar)</div>
+                    <div class="arabic">اَللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيْمَ وَعَلَى آلِ إِبْرَاهِيْمَ، إِنَّكَ حَمِيْدٌ مَجِيْدٌ، اَللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيْمَ وَعَلَى آلِ إِبْرَاهِيْمَ، إِنَّكَ حَمِيْدٌ مَجِيْدٌ</div>
+                    <div class="translation">"Ya Allah, berilah shalawat kepada Muhammad dan keluarga Muhammad, sebagaimana Engkau telah memberi shalawat kepada Ibrahim dan keluarga Ibrahim. Sesungguhnya Engkau Maha Terpuji lagi Maha Mulia. Ya Allah, berilah berkah kepada Muhammad dan keluarga Muhammad, sebagaimana Engkau telah memberi berkah kepada Ibrahim dan keluarga Ibrahim. Sesungguhnya Engkau Maha Terpuji lagi Maha Mulia."</div>
+                    <div class="explanation">
+                        <p>Setelah takbir kedua, membaca shalawat kepada Nabi Muhammad SAW. Shalawat ini sama seperti shalawat yang dibaca dalam tasyahud akhir sholat lima waktu.</p>
+                    </div>
+                    <div class="image-container">
+                        <img src="jenazah/l.png" alt="Posisi Ruku">
+                        <p class="caption">Posisi berdiri dengan tangan bersedekap setelah takbir</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-header" onclick="toggleStep(this)">
+                    <h2 class="step-title">Takbir Ketiga</h2>
+                    <div class="step-number">3</div>
+                </div>
+                <div class="step-content">
+                    <div class="arabic">اللهُ أَكْبَرُ</div>
+                    <div class="translation">"Allahu Akbar" (Allah Maha Besar)</div>
+                    <div class="arabic">اَللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ وَعَافِهِ وَاعْفُ عَنْهُ، وَأَكْرِمْ نُزُلَهُ، وَوَسِّعْ مَدْخَلَهُ، وَاغْسِلْهُ بِالْمَاءِ وَالثَّلْجِ وَالْبَرَدِ، وَنَقِّهِ مِنَ الْخَطَايَا كَمَا نَقَّيْتَ الثَّوْبَ الْأَبْيَضَ مِنَ الدَّنَسِ، وَأَبْدِلْهُ دَارًا خَيْرًا مِنْ دَارِهِ، وَأَهْلًا خَيْرًا مِنْ أَهْلِهِ، وَزَوْجًا خَيْرًا مِنْ زَوْجِهِ، وَأَدْخِلْهُ الْجَنَّةَ، وَأَعِذْهُ مِنْ عَذَابِ الْقَبْرِ وَعَذَابِ النَّارِ</div>
+                    <div class="translation">"Ya Allah, ampunilah dia, rahmatilah dia, selamatkanlah dia (dari segala macam penyakit), maafkanlah dia dan tempatkanlah dia di tempat yang mulia (Surga), luaskanlah kuburannya, mandikanlah dia dengan air salju dan air es. Bersihkanlah dia dari segala kesalahan sebagaimana Engkau membersihkan baju yang putih dari kotoran. Gantilah untuknya rumah yang lebih baik dari rumahnya (di dunia), keluarga yang lebih baik dari keluarganya (di dunia), istri yang lebih baik dari istrinya (di dunia). Masukkanlah dia ke dalam Surga, lindungilah dia dari siksa kubur dan Neraka."</div>
+                    <div class="explanation">
+                        <p>Setelah takbir ketiga, membaca doa untuk jenazah laki-laki. Doa ini berisi permohonan ampunan, rahmat, dan perlindungan untuk mayit.</p>
+                    </div>
+                    <div class="image-container">
+                        <img src="jenazah/l.png" alt="Posisi Sujud">
+                        <p class="caption">Posisi tangan saat berdoa untuk jenazah</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-header" onclick="toggleStep(this)">
+                    <h2 class="step-title">Takbir Keempat</h2>
+                    <div class="step-number">4</div>
+                </div>
+                <div class="step-content">
+                    <div class="arabic">اللهُ أَكْبَرُ</div>
+                    <div class="translation">"Allahu Akbar" (Allah Maha Besar)</div>
+                    <div class="explanation">
+                        <p>Setelah takbir keempat, diam sejenak kemudian salam ke kanan. Tidak ada doa khusus setelah takbir keempat menurut pendapat yang kuat.</p>
+                    </div>
+                    <div class="image-container">
+                        <img src="jenazah/l.png" alt="Posisi Salam">
+                        <p class="caption">Gerakan salam ke kanan dan ke kiri</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-header" onclick="toggleStep(this)">
+                    <h2 class="step-title">Salam</h2>
+                    <div class="step-number">5</div>
+                </div>
+                <div class="step-content">
+                    <div class="arabic">السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللهِ</div>
+                    <div class="translation">"Assalamu'alaikum warahmatullah" (Semoga keselamatan dan rahmat Allah tercurah kepadamu)</div>
+                    <div class="explanation">
+                        <p>Sholat jenazah diakhiri dengan salam seperti sholat biasa. Disunnahkan untuk mengucapkan salam sekali dengan menengok ke kanan, meskipun ada juga yang melakukan salam ke kiri seperti sholat biasa.</p>
+                    </div>
+                    <div class="image-container">
+                        <img src="jenazah/l.png" alt="Tata Cara Sholat Jenazah Lengkap">
+                        <p class="caption">Urutan lengkap sholat jenazah untuk laki-laki</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="female-steps" class="prayer-steps">
+            <div class="step">
+                <div class="step-header" onclick="toggleStep(this)">
+                    <h2 class="step-title">Takbir Pertama</h2>
+                    <div class="step-number">1</div>
+                </div>
+                <div class="step-content">
+                    <div class="arabic">اللهُ أَكْبَرُ</div>
+                    <div class="translation">"Allahu Akbar" (Allah Maha Besar)</div>
+                    <div class="explanation">
+                        <p>Setelah takbir pertama, membaca surat Al-Fatihah. Membaca Al-Fatihah dalam sholat jenazah hukumnya sunnah menurut pendapat yang kuat.</p>
+                    </div>
+                    <div class="image-container">
+                        <img src="jenazah/p.png" alt="Posisi Takbiratul Ihram">
+                        <p class="caption">Posisi takbiratul ihram dengan mengangkat tangan setinggi bahu</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-header" onclick="toggleStep(this)">
+                    <h2 class="step-title">Takbir Kedua</h2>
+                    <div class="step-number">2</div>
+                </div>
+                <div class="step-content">
+                    <div class="arabic">اللهُ أَكْبَرُ</div>
+                    <div class="translation">"Allahu Akbar" (Allah Maha Besar)</div>
+                    <div class="arabic">اَللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيْمَ وَعَلَى آلِ إِبْرَاهِيْمَ، إِنَّكَ حَمِيْدٌ مَجِيْدٌ، اَللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ، كَمَا بَارَكْتَ عَلَى إِبْرَاهِيْمَ وَعَلَى آلِ إِبْرَاهِيْمَ، إِنَّكَ حَمِيْدٌ مَجِيْدٌ</div>
+                    <div class="translation">"Ya Allah, berilah shalawat kepada Muhammad dan keluarga Muhammad, sebagaimana Engkau telah memberi shalawat kepada Ibrahim dan keluarga Ibrahim. Sesungguhnya Engkau Maha Terpuji lagi Maha Mulia. Ya Allah, berilah berkah kepada Muhammad dan keluarga Muhammad, sebagaimana Engkau telah memberi berkah kepada Ibrahim dan keluarga Ibrahim. Sesungguhnya Engkau Maha Terpuji lagi Maha Mulia."</div>
+                    <div class="explanation">
+                        <p>Setelah takbir kedua, membaca shalawat kepada Nabi Muhammad SAW. Shalawat ini sama seperti shalawat yang dibaca dalam tasyahud akhir sholat lima waktu.</p>
+                    </div>
+                    <div class="image-container">
+                        <img src="jenazah/p.png" alt="Posisi Ruku">
+                        <p class="caption">Posisi berdiri dengan tangan bersedekap setelah takbir</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-header" onclick="toggleStep(this)">
+                    <h2 class="step-title">Takbir Ketiga</h2>
+                    <div class="step-number">3</div>
+                </div>
+                <div class="step-content">
+                    <div class="arabic">اللهُ أَكْبَرُ</div>
+                    <div class="translation">"Allahu Akbar" (Allah Maha Besar)</div>
+                    <div class="arabic">اَللَّهُمَّ اغْفِرْ لَهَا وَارْحَمْهَا وَعَافِهَا وَاعْفُ عَنْهَا، وَأَكْرِمْ نُزُلَهَا، وَوَسِّعْ مَدْخَلَهَا، وَاغْسِلْهَا بِالْمَاءِ وَالثَّلْجِ وَالْبَرَدِ، وَنَقِّهَا مِنَ الْخَطَايَا كَمَا نَقَّيْتَ الثَّوْبَ الْأَبْيَضَ مِنَ الدَّنَسِ، وَأَبْدِلْهَا دَارًا خَيْرًا مِنْ دَارِهَا، وَأَهْلًا خَيْرًا مِنْ أَهْلِهَا، وَزَوْجًا خَيْرًا مِنْ زَوْجِهَا، وَأَدْخِلْهَا الْجَنَّةَ، وَأَعِذْهَا مِنْ عَذَابِ الْقَبْرِ وَعَذَابِ النَّارِ</div>
+                    <div class="translation">"Ya Allah, ampunilah dia, rahmatilah dia, selamatkanlah dia (dari segala macam penyakit), maafkanlah dia dan tempatkanlah dia di tempat yang mulia (Surga), luaskanlah kuburannya, mandikanlah dia dengan air salju dan air es. Bersihkanlah dia dari segala kesalahan sebagaimana Engkau membersihkan baju yang putih dari kotoran. Gantilah untuknya rumah yang lebih baik dari rumahnya (di dunia), keluarga yang lebih baik dari keluarganya (di dunia), suami yang lebih baik dari suaminya (di dunia). Masukkanlah dia ke dalam Surga, lindungilah dia dari siksa kubur dan Neraka."</div>
+                    <div class="explanation">
+                        <p>Setelah takbir ketiga, membaca doa untuk jenazah perempuan. Perhatikan perubahan kata ganti dari "-hu" (untuk laki-laki) menjadi "-ha" (untuk perempuan).</p>
+                    </div>
+                    <div class="image-container">
+                        <img src="jenazah/p.png" alt="Posisi Sujud">
+                        <p class="caption">Posisi tangan saat berdoa untuk jenazah perempuan</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-header" onclick="toggleStep(this)">
+                    <h2 class="step-title">Takbir Keempat</h2>
+                    <div class="step-number">4</div>
+                </div>
+                <div class="step-content">
+                    <div class="arabic">اللهُ أَكْبَرُ</div>
+                    <div class="translation">"Allahu Akbar" (Allah Maha Besar)</div>
+                    <div class="explanation">
+                        <p>Setelah takbir keempat, diam sejenak kemudian salam ke kanan. Tidak ada doa khusus setelah takbir keempat menurut pendapat yang kuat.</p>
+                    </div>
+                    <div class="image-container">
+                        <img src="jenazah/p.png" alt="Posisi Salam">
+                        <p class="caption">Gerakan salam ke kanan dan ke kiri</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <div class="step-header" onclick="toggleStep(this)">
+                    <h2 class="step-title">Salam</h2>
+                    <div class="step-number">5</div>
+                </div>
+                <div class="step-content">
+                    <div class="arabic">السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللهِ</div>
+                    <div class="translation">"Assalamu'alaikum warahmatullah" (Semoga keselamatan dan rahmat Allah tercurah kepadamu)</div>
+                    <div class="explanation">
+                        <p>Sholat jenazah diakhiri dengan salam seperti sholat biasa. Disunnahkan untuk mengucapkan salam sekali dengan menengok ke kanan, meskipun ada juga yang melakukan salam ke kiri seperti sholat biasa.</p>
+                    </div>
+                    <div class="image-container">
+                        <img src="jenazah/p.png" alt="Tata Cara Sholat Jenazah Lengkap">
+                        <p class="caption">Urutan lengkap sholat jenazah untuk perempuan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2025 Panduan Sholat Jenazah - By Val_Ky</p>
+    </footer>
+    
+    <div class="islamic-decoration">
+        <svg class="crescent" width="60" height="60" viewBox="0 0 60 60">
+            <path d="M40 30a20 20 0 1 1-20-20 15 15 0 1 0 20 20z" fill="#f8b400"/>
+        </svg>
+        <svg class="star" width="32" height="32" viewBox="0 0 32 32">
+            <polygon points="16,2 19,12 30,12 21,18 24,28 16,22 8,28 11,18 2,12 13,12" fill="#f8b400"/>
+        </svg>
+    </div>
+    
+    <script>
+        // Show male steps by default
+        document.getElementById('male-steps').style.display = 'block';
+        
+        function selectGender(gender) {
+            // Update button styles
+            const maleBtn = document.querySelector('.male-btn');
+            const femaleBtn = document.querySelector('.female-btn');
+            
+            if (gender === 'male') {
+                maleBtn.classList.add('active');
+                femaleBtn.classList.remove('active');
+                document.getElementById('male-steps').style.display = 'block';
+                document.getElementById('female-steps').style.display = 'none';
+            } else {
+                femaleBtn.classList.add('active');
+                maleBtn.classList.remove('active');
+                document.getElementById('female-steps').style.display = 'block';
+                document.getElementById('male-steps').style.display = 'none';
+            }
+            
+            // Close all step contents when switching gender
+            const allContents = document.querySelectorAll('.step-content');
+            allContents.forEach(content => {
+                content.style.display = 'none';
+            });
+        }
+        
+        function toggleStep(header) {
+            const content = header.nextElementSibling;
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+            } else {
+                content.style.display = 'block';
+            }
+        }
+        
+        // Add animation to steps when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    step.style.opacity = '1';
+                    step.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
